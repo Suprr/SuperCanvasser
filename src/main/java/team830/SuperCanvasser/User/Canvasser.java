@@ -9,9 +9,4 @@ public class Canvasser extends User {
     private ArrayList<Date> availabilityDates;
     private ArrayList<Task> tasks;
 
-    @Override
-    public boolean verifyLogin() {
-
-        return false;
-    }
 }
