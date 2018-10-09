@@ -1,4 +1,15 @@
 package team830.SuperCanvasser.User;
 
-public class Manager {
+import team830.SuperCanvasser.Campaign.Campaign;
+
+import java.util.ArrayList;
+
+public class Manager extends User {
+    private ArrayList<Campaign> campaigns;
+
+    @Override
+    public boolean verifyLogin() {
+
+        return false;
+    }
 }
