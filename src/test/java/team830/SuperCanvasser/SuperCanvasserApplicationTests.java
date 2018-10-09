@@ -1,4 +1,4 @@
-package team830.demo;
+package team830.SuperCanvasser;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
