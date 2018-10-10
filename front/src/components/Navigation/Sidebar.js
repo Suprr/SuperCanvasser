@@ -1,17 +1,20 @@
-import React from 'react';
+import React, {Component} from 'react';
 import classes from './nav.module.css'
 
-const sidebar = (props) => (
+class Sidebar extends Component{
+	render(){
+		return (
+			<header className={classes.Sidebar}>
+					
+					<div> Super Canvasser Sidebar Bar</div>
+					
+					<nav>
+						...
+					</nav>
 
-	<header className={classes.Sidebar}>
-		
-		<div> Super Canvasser Sidebar Bar</div>
-		
-		<nav>
-			...
-		</nav>
+				</header>
+			);
+	}
+} 
 
-	</header>
-);
-
-export default sidebar;
+export default Sidebar;
