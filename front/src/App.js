@@ -4,8 +4,10 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Base from './containers/Base/Base'
 import SignIn from './containers/SignIn/SignIn';
-import Manager from './containers/Manager/Manager';
 
+import Manager from './containers/Manager/Manager';
+import Canvasser from './containers/Canvasser/Canvasser';
+import SysAdmin from './containers/SysAdmin/SysAdmin';
 class App extends Component {
   state = {
   	user : {
@@ -38,17 +40,19 @@ class App extends Component {
   render() {
   	//let page = <Route path="/sign-in" exact component={SignIn} />
 	//let page = <SignIn user = {this.state.user} />
-  	let page = <Layout user = {this.state.user}><Manager /></Layout>
-  	
-  	if(this.state.authenticated){
-  		if(this.state.user.role === 'manager2'){
-  			page = <Layout> </Layout> 
+  	let page = null
+  	//if(this.state.authenticated){
+  		if(this.state.user.role === 'manager'){
+			page = <Layout user = {this.state.user}><Manager /></Layout>
+  		} else if(this.state.user.role === 'canvasser'){
+  			page =  <Layout user = {this.state.user}><Canvasser /></Layout>
   		} else{
-  			//Canvasser
-  			//System Admin
-  		}
-  		page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
-  	}
+  			page = <Layout user = {this.state.user}><SysAdmin /></Layout>
+  		}	
+  		
+  		
+  	//	page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
+  	//}
 
     return (
       <BrowserRouter>
