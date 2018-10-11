@@ -10,9 +10,9 @@ class App extends Component {
   state = {
   	user : {
   		authenticated : false,
-  		userID : null,
+  		userID : 'Manager1',
   		passwords : null,
-  		role : null
+  		role : 'manager'
   	}
   }
 
@@ -38,9 +38,10 @@ class App extends Component {
   render() {
   	//let page = <Route path="/sign-in" exact component={SignIn} />
 	//let page = <SignIn user = {this.state.user} />
-  	let page = <Layout><Manager /></Layout>
+  	let page = <Layout user = {this.state.user}><Manager /></Layout>
+  	
   	if(this.state.authenticated){
-  		if(this.state.user.role === 'manager'){
+  		if(this.state.user.role === 'manager2'){
   			page = <Layout> </Layout> 
   		} else{
   			//Canvasser

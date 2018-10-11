@@ -4,6 +4,8 @@ import {NavLink} from 'react-router-dom'
 
 class Sidebar extends Component{
 	
+	//Before use sidebar, the props 'menus' must be passed. 
+
 	state={
 		menus : this.props.menus
 	}
@@ -13,10 +15,10 @@ class Sidebar extends Component{
 	    let menus = this.state.menus.map(menu =>{
 		    return (
 	    		//<Link to = {'/'+post.id}  key={post.id}> 
-	    		<li className = {[classes.SidebarItem, "nav-item"].join(' ')}>
+	    		<li key={menu.id} className = {[classes.SidebarItem, "nav-item"].join(' ')}>
 		    		<NavLink
 		    			className = {[classes.SidebarItemLink].join(' ')}
-		    			key={menu.id}
+		    			
 		    			to = {'/'+menu.title}>
 				        
 				        {menu.title}
