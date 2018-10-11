@@ -11,7 +11,7 @@ const menuData = {
 					id : 'mbbb'
 				},
 				{
-					title : 'Canvassing Assignment',
+					title : 'Task Assignment',
 					id : 'mccc'
 				},
 				{

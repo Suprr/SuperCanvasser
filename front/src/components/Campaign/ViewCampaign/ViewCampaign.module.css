@@ -1,0 +1,94 @@
+
+
+/* Manager*/
+.ManagerBody{
+	text-align: left;
+	margin-top:2%;
+	
+}
+
+.ManagerSection{
+	margin-top:2%;
+	width:70%;
+}
+
+.Manager{
+	margin-top: 1%;
+}
+
+/*Date*/
+.DateSection{
+	margin-top:5%;
+	text-align: center;
+	width:70%;
+
+}
+
+.DateBody{
+	width:50%;
+}
+
+.Title{
+	padding-left:10%;
+}
+
+/*Talking Point*/
+.TPSection{
+	margin-top:5%;
+	text-align: center;
+	width:70%;
+}
+
+.TPBody{
+	width:70%;
+}
+
+/*Questionnaire*/
+.QNRSection{
+	margin-top:5%;
+	text-align: center;
+	width:70%;
+}
+
+.QNRBody{
+	margin-top:5%;
+	width:70%;
+}
+
+.ViewBtn{
+	border: 1px solid black;
+}
+
+/*QNRList */
+
+.QNRListSection{
+	margin-top:5%;
+	text-align: center;
+	width:100%;
+}
+.QNRListBody{
+	margin : 5% 0;
+	width:60%;
+}
+
+.QNRItem{
+	margin-top:10px;
+	border-bottom: 1px solid black;
+	padding-bottom: 10px;
+}
+
+/*VisitDuration*/
+.VDSection{
+	margin-top:5%;
+	text-align: center;
+	width:70%;
+}
+
+.VDBody{
+	margin-top:5%;
+	width:70%;
+	font-weight: bold;
+	font-size: 30px;
+	color : #cb4d58;
+	font-family: 'Raleway', sans-serif;
+}

@@ -11,7 +11,9 @@
 }
 
 .Sidebar{
-	position: fixed;	
+	position: fixed;
+	border-right: 1px solid black;
+	height: 100vh;	
 }
 
 .Toolbar{

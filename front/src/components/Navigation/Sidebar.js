@@ -15,7 +15,7 @@ class Sidebar extends Component{
 	    let menus = this.state.menus.map(menu =>{
 		    return (
 	    		//<Link to = {'/'+post.id}  key={post.id}> 
-	    		<li key={menu.id} className = {[classes.SidebarItem, "nav-item"].join(' ')}>
+	    		<div key={menu.id} className = {[classes.SidebarItem, "nav-item"].join(' ')}>
 		    		<NavLink
 		    			className = {[classes.SidebarItemLink].join(' ')}
 		    			
@@ -24,14 +24,14 @@ class Sidebar extends Component{
 				        {menu.title}
 
 			        </NavLink>
-		        </li>
+		        </div>
 		        );
 		  });   
 
 		return (
-			<ul className={[classes.Sidebar, "nav", "flex-column"].join(' ')}>
+			<div className={[classes.Sidebar, 'col-2', 'flex-column'].join(' ')}>
 					{menus}
-			</ul>
+			</div>
 		);
 	}
 } 
