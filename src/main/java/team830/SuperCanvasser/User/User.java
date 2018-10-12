@@ -1,12 +1,8 @@
 package team830.SuperCanvasser.User;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 
-@Builder
 @Document(collection = "users")
-public class User implements UserDetails {
+public class User{
     @Id
     private ObjectId id;
 
@@ -27,46 +22,71 @@ public class User implements UserDetails {
     private String lastName;
     private String zipCode;
     @NotEmpty(message = "Please type email")
-    private String email;
+    private static String email;
     private String pwdHash;
 
     @NotEmpty(message = "Please select role(s)")
-    @DBRef
     private Role[] roles;
 
-    @Override
-    public String getPassword() {
-        return pwdHash;
+    public User(String username, String password, Role[] roles) {
+        this.setEmail(username);
+        this.setPwdHash(password);
+        this.setRoles(roles);
     }
 
-    @Override
-    public String getUsername() {
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public static String getEmail() {
         return email;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
+    public static void setEmail(String email) {
+        User.email = email;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
+    public String getPwdHash() {
+        return pwdHash;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
+    public void setPwdHash(String pwdHash) {
+        this.pwdHash = pwdHash;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public Role[] getRoles() {
+        return roles;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public void setRoles(Role[] roles) {
+        this.roles = roles;
     }
-
 }
