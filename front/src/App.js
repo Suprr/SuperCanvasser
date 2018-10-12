@@ -18,29 +18,17 @@ class App extends Component {
     }
   };
 
-<<<<<<< HEAD
-  signInHandler = () => {
-    console.log("called Sign In handelr");
+  signInHandler = loginInfo => {
+    console.log("called Sign In handelr", loginInfo);
 
     this.setState({
       user: {
         authenticated: true,
-        userID: this.state.user.userID,
-        passwords: this.state.user.passwords,
-        role: this.state.user.role
+        userID: loginInfo.userID,
+        passwords: loginInfo.passwords,
+        role: loginInfo.role
       }
     });
-=======
-  signInHandler = (loginInfo) => {
-    console.log('called Sign In handelr', loginInfo);
-    
-    this.setState({
-      user: {authenticated: true,
-      userID: loginInfo.userID,
-      passwords: loginInfo.passwords,
-      role: loginInfo.role, 
-     }});
->>>>>>> 34e45f71d9abc08615e2e866bc84be65ea2f2d2d
   };
 
   signOutHandler = () => {
@@ -56,16 +44,9 @@ class App extends Component {
     //let page = <Route path="/sign-in" exact component={SignIn} />
     //let page = <SignIn user = {this.state.user} />
     let page = null;
-<<<<<<< HEAD
-    console.log("[Render]", this.state.user.authenticated);
+    console.log("[Render]", this.state.user.role);
     if (this.state.user.authenticated) {
-      if (this.state.user.role === "manager") {
-=======
-    console.log('[Render]',this.state.user.role)
-    if(this.state.user.authenticated){
-
       if (this.state.user.role === "Manager") {
->>>>>>> 34e45f71d9abc08615e2e866bc84be65ea2f2d2d
         console.log("here");
         page = (
           <Layout user={this.state.user}>
@@ -91,7 +72,11 @@ class App extends Component {
       page = <SignIn user={this.state.user} signedIn={this.signInHandler} />;
     }
 
-    return { page };
+    return (
+      <BrowserRouter>
+        <div>{page}</div>
+      </BrowserRouter>
+    );
   }
 }
 
