@@ -22,24 +22,13 @@ class CreateCampaign extends Component{
 	state = {
 		
 		campaignTitle : '',
-		managers : [{
-			name : 'Manager1',
-			id : 'm1'
-		}],
+		managers : [],
 		startDate : moment(),
 		endDate : moment(),
 		talkingPoint : '',
-		questionnaire : [{
-				question : 'Question1',
-				id : 'q1'
-			},
-			{
-				question : 'Question2',
-				id : 'q2'
-			}],
+		questionnaire : [],
 		locations : [],
 		duration : '',
-		
 		newManager : '',
 		newQuestionnaire :'',
 		newLocation : ''
@@ -71,6 +60,49 @@ class CreateCampaign extends Component{
 	    });
 	  }
 
+	  addManagerHandler = (event) =>{
+	  		let newManager = {
+	  			name : this.state.newManager, 
+	  			id : 'm'+this.state.newManager
+	  		}
+	  		this.setState((prevState)=>({
+	  			managers : [...prevState.managers, newManager]
+	  		}))
+
+	  		this.setState({
+	  			newManager : ''
+	  		});
+	  }
+
+	  addLocationHandler = (event) =>{
+	  		let newLocation = {
+	  			location : this.state.newLocation, 
+	  			id : 'l'+this.state.newLocation
+	  		}
+	  		this.setState((prevState)=>({
+	  			locations : [...prevState.locations, newLocation]
+	  		}))
+
+	  		this.setState({
+	  			newLocation : ''
+	  		});
+	  }
+
+	  addQuestionnaireHandler = (event) =>{
+	  		let newQuestion = {
+	  			question : this.state.newQuestionnaire, 
+	  			id : 'q'+this.state.newQuestionnaire
+	  		}
+	  		this.setState((prevState)=>({
+	  			questionnaire : [...prevState.questionnaire, newQuestion]
+	  		}))
+
+	  		this.setState({
+	  			newQuestionnaire : ''
+	  		});
+	  }
+
+
 	  handleSubmit = (event) =>{
 	  		const campaign = {...this.state}
 	  		axios.post('/campaigns.json', campaign).then( response => {
@@ -85,26 +117,31 @@ class CreateCampaign extends Component{
 	render(){
 		return(
 			<div className='container'>
-				<form onSubmit = {this.handleSubmit}>
-					<PageHead title='Create Campaign'/>
-					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
-						onChange = {(event) => this.handleInputChange(event)}/>
-					<AddManager onChange = {(event) => this.handleInputChange(event)} 
-						manager = {this.state.newManager}/>
-					<AddedManagers managers = {this.state.managers}/>
 					
-					<DateSection name = 'startDate' date = {this.state.startDate} onChange = {this.handleStartDateChange}/>
-					<DateSection name = 'endDate' date = {this.state.endDate} onChange = {this.handleEndDateChange}/>
-					<TalkingPoint talkingPoint = {this.state.talkingPoint} onChange = {(event) => this.handleInputChange(event)}/>
-					<CreateQNR questionnaire={this.state.newQuestionnaire} onChange={(event)=>this.handleInputChange(event)}/>
-					<AddedQuestionnaire questionnaire = {this.state.questionnaire}/>
-					<AddLocation location={this.state.newLocation} onChange={(event)=>this.handleInputChange(event)}/>
-					<AddedLocation locations = {this.state.locations}/>
-					<VisitDuration VisitDuration = {this.state.visitDuration} onChange = {(event) => this.handleInputChange(event)}/>
-					<div className = {classes.Btn}>
-						<button className="btn btn-dark">Submit</button>
-					</div>
-				</form>
+						<PageHead title='Create Campaign'/>
+						<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
+							onChange = {(event) => this.handleInputChange(event)}/>
+						<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)}  
+							manager = {this.state.newManager}/>
+						<AddedManagers managers = {this.state.managers}/>
+						
+						<DateSection name = 'startDate' date = {this.state.startDate} onChange = {this.handleStartDateChange}/>
+						<DateSection name = 'endDate' date = {this.state.endDate} onChange = {this.handleEndDateChange}/>
+						<TalkingPoint talkingPoint = {this.state.talkingPoint} onChange = {(event) => this.handleInputChange(event)}/>
+						<CreateQNR questionnaire={this.state.newQuestionnaire} onChange={(event)=>this.handleInputChange(event)}
+							onClick = {(event)=>this.addQuestionnaireHandler(event)}/>
+						<AddedQuestionnaire questionnaire = {this.state.questionnaire} />
+						<AddLocation location={this.state.newLocation} onChange={(event)=>this.handleInputChange(event)}
+								onClick = {(event)=>this.addLocationHandler(event)}/>
+						<AddedLocation locations = {this.state.locations}/>
+						<VisitDuration VisitDuration = {this.state.visitDuration} onChange = {(event) => this.handleInputChange(event)}/>
+					
+					<form onSubmit = {this.handleSubmit}>
+						<div className = {classes.Btn}>
+							<button className="btn btn-dark">Submit</button>
+						</div>
+					</form>
+				
 			</div>
 		);
 	}

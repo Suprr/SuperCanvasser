@@ -11,26 +11,26 @@ import SysAdmin from "./containers/SysAdmin/SysAdmin";
 class App extends Component {
   state = {
     user: {
-      authenticated: true,
+      authenticated: false,
       userID: "",
       passwords: "",
-      role: "manager"
+      role: ""
     }
   };
 
-  signInHandler = (login) => {
-    console.log('called Sign In handelr', login);
+  signInHandler = () => {
+    console.log('called Sign In handelr');
     
-    this.user.setState({
-      authenticated: true,
-      userID: null,
-      passwords: null,
-      role: 'manager', 
-    });
+    this.setState({
+      user: {authenticated: true,
+      userID: this.state.user.userID,
+      passwords: this.state.user.passwords,
+      role: this.state.user.role, 
+     }});
   };
 
   signOutHandler = () => {
-    this.user.setState({
+    this.state.user.setState({
       authenticated: false,
       userID: null,
       passwords: null,
@@ -43,6 +43,7 @@ class App extends Component {
     //let page = <Route path="/sign-in" exact component={SignIn} />
     //let page = <SignIn user = {this.state.user} />
     let page = null;
+    console.log('[Render]',this.state.user.authenticated)
     if(this.state.user.authenticated){
       if (this.state.user.role === "manager") {
         console.log("here");
@@ -67,7 +68,7 @@ class App extends Component {
 
     //	page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
     }else{
-      page = <SignIn user = {this.state.user} signedIn={()=>this.signInHandler}/>
+      page = <SignIn user = {this.state.user} signedIn={this.signInHandler}/>
     }
 
     return (

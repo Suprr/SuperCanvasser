@@ -19,7 +19,7 @@ class SignIn extends Component {
             </div>
           </div>
           <div>
-            <SignInBody signedin = {()=>this.props.signedin}/>
+            <SignInBody signedIn = {this.props.signedIn}/>
           </div>
         </div>
       </Aux>

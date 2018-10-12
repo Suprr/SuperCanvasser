@@ -16,8 +16,6 @@ class SignInBody extends Component{
 		event.preventDefault();
         const formData = {};
 
-
-        
         const loginInfo = {
             userID : this.state.userID,
             password: this.state.password,
@@ -27,7 +25,7 @@ class SignInBody extends Component{
         axios.post( '/login.json', loginInfo )
             .then( response => {
            		console.log("Loginned", loginInfo);
-           		this.props.signedin();
+           		this.props.signedIn();
             } )
             .catch( error => {
                 console.log("Error", error);
