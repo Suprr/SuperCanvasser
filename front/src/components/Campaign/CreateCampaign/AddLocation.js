@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import classes from './CreateCampaign.module.css'
 
 class AddLocation extends Component{
-	
 
 		render(){
 		return(
