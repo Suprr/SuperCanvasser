@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Campaign from '../../../components/Campaign/Campaign'
-
+import PageHead from '../../../components/Layout/PageHead/PageHead'
 class CampaignList extends Component{
 	
 	state ={
@@ -20,7 +20,7 @@ class CampaignList extends Component{
 
 		return(
 			<div>
-				<div> View CampaignList </div> 
+					<PageHead title = 'Campaign List'/>
 					<div className="row"> 
 					{
 						campaigns

@@ -43,7 +43,7 @@ class App extends Component {
   	let page = null
   	//if(this.state.authenticated){
   		if(this.state.user.role === 'manager'){
-			page = <Layout user = {this.state.user}><Manager /></Layout>
+			page = <Layout user = {this.state.user}><Manager manager={this.state.user} /></Layout>
   		} else if(this.state.user.role === 'canvasser'){
   			page =  <Layout user = {this.state.user}><Canvasser /></Layout>
   		} else{
