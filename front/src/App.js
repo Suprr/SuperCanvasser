@@ -76,6 +76,9 @@ class App extends Component {
       <BrowserRouter>
         <div>{page}</div>
       </BrowserRouter>
+      <div>
+        
+      </div>
     );
   }
 }

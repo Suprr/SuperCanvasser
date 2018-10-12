@@ -26,7 +26,7 @@ class AddUser extends Component {
     );
     return (
       <div className="nest">
-        <h1>AddUser</h1>
+        <h1>Add User</h1>
         <form className="heading mt-3 add-user-box nest">
           <p>User ID {textField}</p>
           <p>Password {textField}</p>
