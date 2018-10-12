@@ -4,29 +4,28 @@ import MainImage from '../../assets/images/background.jpg'
 import SignInBody from '../../components/SignIn/SignInBody';
 import classes from './SignIn.module.css';
 
-class SignIn extends Component{
 
-	signInHandler = () =>{
+class SignIn extends Component {
+  signInHandler = () => {};
 
-	}
-
-	render(){
-		
-		console.log("SignIn render");
-		return (<Aux>
-					<div className={[classes.SignIn].join(' ')}>
-						<div className={classes.Title}> Super Canvasser </div>
-						<div className={classes.ImgContainer}>
-							<div className="ImageWraper">
-								<img src={MainImage}/>
-							</div>
-						</div>
-						<div>
-							<SignInBody/>
-						</div>
-					</div>
-				</Aux>);
-	}
+  render() {
+    console.log("SignIn render");
+    return (
+      <Aux>
+        <div className={[classes.SignIn].join(" ")}>
+          <div className={classes.Title}> Super Canvasser </div>
+          <div className={classes.ImgContainer}>
+            <div className="ImageWraper">
+              <img src={MainImage} />
+            </div>
+          </div>
+          <div>
+            <SignInBody />
+          </div>
+        </div>
+      </Aux>
+    );
+  }
 }
 
 export default SignIn;

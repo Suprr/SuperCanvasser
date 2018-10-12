@@ -1,0 +1,16 @@
+.nest {
+  padding-left: 50px;
+}
+
+.var-list {
+  width: 800px;
+}
+
+.var-row {
+  width: 500px;
+  border-bottom: 1px solid #aaa;
+}
+
+.h4 {
+  color: red;
+}

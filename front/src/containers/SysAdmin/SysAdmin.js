@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, {Component} from 'react'
 
 class SysAdmin extends Component{
@@ -11,3 +12,21 @@ class SysAdmin extends Component{
 }
 
 export default SysAdmin;
+=======
+import React, { Component } from "react";
+import EditGV from "./EditGlobalVar/EditGlobalVar";
+import ManageUsers from "./ManageUsers/ManageUsers";
+
+class SysAdmin extends Component {
+  state = {};
+  render() {
+    return (
+      <div>
+        <EditGV />
+      </div>
+    );
+  }
+}
+
+export default SysAdmin;
+>>>>>>> chris
