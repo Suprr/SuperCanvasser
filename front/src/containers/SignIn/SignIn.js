@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Aux from '../../hoc/Aux';
+import Aux from '../../hoc/Auxx';
 import MainImage from '../../assets/images/background.jpg'
 import SignInBody from '../../components/SignIn/SignInBody';
 import classes from './SignIn.module.css';
