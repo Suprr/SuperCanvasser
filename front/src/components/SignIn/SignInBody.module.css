@@ -1,0 +1,44 @@
+.SignInBody{
+	width: 35%;
+	height: 50%;
+	background-color: white;
+	position: relative;
+	margin-top:-350px;
+	padding-top:2%;
+	padding-bottom: 5%;
+	display: block;
+	border: black solid 1px;
+}
+
+.Title{
+	margin-bottom: 10%;
+	font-family: 'Raleway', sans-serif;
+}
+
+.Dropdown{
+	margin-top : 10%;
+	margin-bottom: 10%;
+}
+.placeholderClassName{
+	border-bottom: 1px solid black;
+}
+.dropdown-toggle{
+	background-color: red;
+}
+
+.SignInBtn{
+	display: inline-block;
+}
+
+.FormControl {
+    border: 0;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    padding-left:10px;
+}
+
+.InputTextWrapper{
+	width:100%;
+	padding:0 20%;
+}
+

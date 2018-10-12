@@ -1,0 +1,14 @@
+.Manager{
+	margin-left:5%;
+	margin-top:5%;
+}
+
+.Content{
+	margin-top:40px;
+}
+
+
+.Sidebar{
+	border-right:black solid 1px;
+	height:100vh;
+}

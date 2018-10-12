@@ -1,13 +1,28 @@
-import React from 'react';
+import React, {Component} from 'react';
 import classes from './nav.module.css'
 
-const toolbar = (props) => (
+class Toolbar extends Component {
 
-	<header className={classes.Toolbar}>
-		
-		<div> Super Canvasser Tool Bar</div>
+	render(){
+		return <div className={classes.Toolbar}>
+					
+						<div className="row">
+							<div className = {[classes.TitleSection, "col-3"].join(' ')}>
+								<div> Super Canvasser</div>
+							</div>
+							<div className = {[classes.OtherSection, "col-9", "row", "justify-content-end"].join(' ')}>
+									<div className = {[classes.OtherItem].join(' ')}> Image</div>
+									<div className = {[classes.OtherItem].join(' ')}> {this.props.user.userID}</div>
+									<div className = {[classes.OtherItem].join(' ')}> / </div>
+									<div className = {[classes.OtherItem].join(' ')}> {this.props.user.role}</div>
+									<div className = {[classes.OtherItem].join(' ')}>Sign Out</div>
+								
+							</div>
+						</div>
+				
+				</div>
+	}
 
-	</header>
-);
+}
 
-export default toolbar;
+export default Toolbar;
