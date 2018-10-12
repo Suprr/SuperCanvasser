@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 class Variable extends Component {
-  state = {};
+  state = {
+    newValue: 0
+  };
+  handleVarChange = e => {
+    this.setState({ newValue: e.target.value });
+  };
   render() {
     return (
       <div className="row var-row nest">
@@ -9,14 +14,21 @@ class Variable extends Component {
         </div>
         <div className="col-sm">
           <input
-            onChange={this.handleNameChange}
+            onChange={this.handleVarChange}
             className="border-top-0 border-right-0 border-left-0"
             type="text"
             defaultValue={this.props.variable.value}
           />
         </div>
         <div className="col-sm">
-          <button className="btn btn-danger">edit</button>
+          <button
+            conClick={() =>
+              this.props.onEdit(this.state.newValue, this.props.variable.id)
+            }
+            className="btn btn-danger"
+          >
+            edit
+          </button>
         </div>
       </div>
     );

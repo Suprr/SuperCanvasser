@@ -8,6 +8,8 @@ import SignIn from "./containers/SignIn/SignIn";
 import Manager from "./containers/Manager/Manager";
 import Canvasser from "./containers/Canvasser/Canvasser";
 import SysAdmin from "./containers/SysAdmin/SysAdmin";
+
+import Routes from "./routes";
 class App extends Component {
   state = {
     user: {
@@ -64,11 +66,7 @@ class App extends Component {
     //	page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
     //}
 
-    return (
-      <BrowserRouter>
-        <div>{page}</div>
-      </BrowserRouter>
-    );
+    return <Routes />;
   }
 }
 
