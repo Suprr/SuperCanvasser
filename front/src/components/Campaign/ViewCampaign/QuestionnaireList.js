@@ -9,7 +9,7 @@ class QuestionnaireList extends Component{
 
 	render(){
 		let questionnaire = this.state.questionnaire.map(qnr =>{
-			let question = (<div className ={classes.QNRItem}>{qnr.question}</div> )
+			let question = (<div key = {qnr.id} className ={classes.QNRItem}>{qnr.question}</div> )
 		    return question;
 		  });   
 

@@ -92,3 +92,24 @@
 	color : #cb4d58;
 	font-family: 'Raleway', sans-serif;
 }
+
+.TasksSection{
+	margin-top:5%;
+	text-align: center;
+	width:100%;
+
+}
+.TasksBody{
+	margin-top:5%;
+	width:100%;
+}
+
+.TaskCard{
+	width:30%;
+	text-align: center;
+	margin:10px;
+}
+.TaskCardBody{
+	width:100%;
+	margin-top:30%;
+}

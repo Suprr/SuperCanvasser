@@ -1,3 +1,4 @@
+
 const CampaignModel = {
 
 	campaigns : [
@@ -21,7 +22,49 @@ const CampaignModel = {
 					}
 				],
 				visitDuration : '3h30',
-				task : [],
+				task : [
+					{
+						locations : null,
+						date : null,
+						taskStatus : null,
+						recommendedLoc : null,
+						recommendedList : [],
+						id : 't1'
+					},
+					{
+						locations : null,
+						date : null,
+						taskStatus : null,
+						recommendedLoc : null,
+						recommendedList : [],
+						id : 't2'
+					},
+					{
+						locations : null,
+						date : null,
+						taskStatus : null,
+						recommendedLoc : null,
+						recommendedList : [],
+						id : 't3'
+					},
+					{
+						locations : null,
+						date : null,
+						taskStatus : null,
+						recommendedLoc : null,
+						recommendedList : [],
+						id : 't4'
+					},
+					{
+						locations : null,
+						date : null,
+						taskStatus : null,
+						recommendedLoc : null,
+						recommendedList : [],
+						id : 't5'
+					},
+
+				],
 				managers: [
 					{
 						name : 'Manager1',
@@ -40,6 +83,7 @@ const CampaignModel = {
 					}, 	
 				]
 			},
+			
 			{	
 				title : 'Campaign 2',
 				startDate : 'Nov 2',

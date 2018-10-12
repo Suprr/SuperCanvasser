@@ -5,6 +5,8 @@ import DateSection from '../../../../components/Campaign/ViewCampaign/DateSectio
 import TalkingPointSection from '../../../../components/Campaign/ViewCampaign/TalkingPointSection'
 import QuestionnaireSection from '../../../../components/Campaign/ViewCampaign/QuestionnaireSection'
 import VisitDurationSection from '../../../../components/Campaign/ViewCampaign/VisitDurationSection'
+import TasksSection from '../../../../components/Campaign/ViewCampaign/TasksSection'
+
 import QuestionnaireList from '../../../../components/Campaign/ViewCampaign/QuestionnaireList'
 
 import Modal from '../../../../components/UI/Modal/Modal'
@@ -41,7 +43,8 @@ class ViewCampaign extends Component{
 					<div className='row justify-content-center'><TalkingPointSection talkingPoint = {this.state.talkingPoint}/></div>
 					<div className='row justify-content-center'><QuestionnaireSection showModal = {this.state.show} clickedHandler={this.openModalHandelr}/></div>
 					<div className='row justify-content-center'><VisitDurationSection duration = {this.state.visitDuration}/></div>
-				
+					<div className='row justify-content-center'><TasksSection tasks = {this.state.task}/></div>
+									
 				</div>
 			</div> 
 		);
