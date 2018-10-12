@@ -1,10 +1,8 @@
-package team830.SuperCanvasser.DataAccessLayer;
+package team830.SuperCanvasser.User;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import team830.SuperCanvasser.User.User;
 
 public interface UserRepo extends MongoRepository<User, ObjectId> {
-    User findByUsername(String username);
-
+    User findByEmail(String email);
 }
