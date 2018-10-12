@@ -26,7 +26,6 @@ public class LogInConfig extends WebSecurityConfigurerAdapter {
 
                     .and()
                 .formLogin()
-                    .loginPage("/login")
                     .usernameParameter("email")
                     .passwordParameter("password")
                     .defaultSuccessUrl("/selectRole")
