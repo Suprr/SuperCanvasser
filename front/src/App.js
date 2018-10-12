@@ -71,7 +71,7 @@ class App extends Component {
     }else{
       page = <SignIn user = {this.state.user} signedIn={this.signInHandler}/>
     }
-
+    
     return (
       <BrowserRouter>
         <div>{page}</div>
