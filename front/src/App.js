@@ -18,6 +18,7 @@ class App extends Component {
     }
   };
 
+<<<<<<< HEAD
   signInHandler = () => {
     console.log("called Sign In handelr");
 
@@ -29,6 +30,17 @@ class App extends Component {
         role: this.state.user.role
       }
     });
+=======
+  signInHandler = (loginInfo) => {
+    console.log('called Sign In handelr', loginInfo);
+    
+    this.setState({
+      user: {authenticated: true,
+      userID: loginInfo.userID,
+      passwords: loginInfo.passwords,
+      role: loginInfo.role, 
+     }});
+>>>>>>> 34e45f71d9abc08615e2e866bc84be65ea2f2d2d
   };
 
   signOutHandler = () => {
@@ -44,16 +56,23 @@ class App extends Component {
     //let page = <Route path="/sign-in" exact component={SignIn} />
     //let page = <SignIn user = {this.state.user} />
     let page = null;
+<<<<<<< HEAD
     console.log("[Render]", this.state.user.authenticated);
     if (this.state.user.authenticated) {
       if (this.state.user.role === "manager") {
+=======
+    console.log('[Render]',this.state.user.role)
+    if(this.state.user.authenticated){
+
+      if (this.state.user.role === "Manager") {
+>>>>>>> 34e45f71d9abc08615e2e866bc84be65ea2f2d2d
         console.log("here");
         page = (
           <Layout user={this.state.user}>
             <Manager manager={this.state.user} />
           </Layout>
         );
-      } else if (this.state.user.role === "canvasser") {
+      } else if (this.state.user.role === "Canvasser") {
         page = (
           <Layout user={this.state.user}>
             <Canvasser />

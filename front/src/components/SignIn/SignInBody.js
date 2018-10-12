@@ -25,7 +25,7 @@ class SignInBody extends Component{
         axios.post( '/login.json', loginInfo )
             .then( response => {
            		console.log("Loginned", loginInfo);
-           		this.props.signedIn();
+           		this.props.signedIn(loginInfo);
             } )
             .catch( error => {
                 console.log("Error", error);
