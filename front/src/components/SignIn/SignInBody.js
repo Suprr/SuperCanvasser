@@ -1,23 +1,44 @@
 import React,{Component} from 'react';
 import Dropdown from 'react-dropdown';
 import classes from './SignInBody.module.css';
-
+import axios from '../../axios'
 class SignInBody extends Component{
 	
 	state={
 		options : ['Manager', 'Canvasser', 'System Admin'],
 		userID : null,
 		password : null,
-		role : null
+		role : null,
+		loading:true
 	}
 	
+	onSubmitHandler = (event) =>{
+		event.preventDefault();
+        const formData = {};
+
+        const loginInfo = {
+            userID : this.state.userID,
+            password: this.state.password,
+            role: this.state.role
+        }
+        
+        axios.post( '/login.json', loginInfo )
+            .then( response => {
+           		console.log("Loginned", loginInfo);
+           		this.props.signedIn(loginInfo);
+            } )
+            .catch( error => {
+                console.log("Error", error);
+            });
+	}
+
 	render(){
 		return (
 			<div className={[classes.SignInBody, "container", "text-center"].join(' ')}> 
 				
 				<h1 className = {classes.Title}>Sign In </h1>
 
-				<form className={"form-signin"}>
+				<form className={"form-signin"} onSubmit = {this.onSubmitHandler}>
 					<div className= {[classes.InputTextWrapper,"text-center","form-group"].join(' ')}>
 						<input 
 							className = {[classes.FormControl].join(' ')}

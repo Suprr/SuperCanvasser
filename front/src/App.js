@@ -8,29 +8,31 @@ import SignIn from "./containers/SignIn/SignIn";
 import Manager from "./containers/Manager/Manager";
 import Canvasser from "./containers/Canvasser/Canvasser";
 import SysAdmin from "./containers/SysAdmin/SysAdmin";
-
-import Routes from "./routes";
 class App extends Component {
   state = {
     user: {
       authenticated: false,
-      userID: "Manager1",
-      passwords: null,
-      role: "manager"
+      userID: "",
+      passwords: "",
+      role: ""
     }
   };
 
-  signInHandler = () => {
-    this.user.setState({
-      authenticated: true,
-      userID: null,
-      passwords: null,
-      role: null
+  signInHandler = loginInfo => {
+    console.log("called Sign In handelr", loginInfo);
+
+    this.setState({
+      user: {
+        authenticated: true,
+        userID: loginInfo.userID,
+        passwords: loginInfo.passwords,
+        role: loginInfo.role
+      }
     });
   };
 
   signOutHandler = () => {
-    this.user.setState({
+    this.state.user.setState({
       authenticated: false,
       userID: null,
       passwords: null,
@@ -42,31 +44,39 @@ class App extends Component {
     //let page = <Route path="/sign-in" exact component={SignIn} />
     //let page = <SignIn user = {this.state.user} />
     let page = null;
-    //if(this.state.authenticated){
-    if (this.state.user.role === "manager") {
-      page = (
-        <Layout user={this.state.user}>
-          <Manager manager={this.state.user} />
-        </Layout>
-      );
-    } else if (this.state.user.role === "canvasser") {
-      page = (
-        <Layout user={this.state.user}>
-          <Canvasser />
-        </Layout>
-      );
+    console.log("[Render]", this.state.user.role);
+    if (this.state.user.authenticated) {
+      if (this.state.user.role === "Manager") {
+        console.log("here");
+        page = (
+          <Layout user={this.state.user}>
+            <Manager manager={this.state.user} />
+          </Layout>
+        );
+      } else if (this.state.user.role === "Canvasser") {
+        page = (
+          <Layout user={this.state.user}>
+            <Canvasser />
+          </Layout>
+        );
+      } else {
+        page = (
+          <Layout user={this.state.user}>
+            <SysAdmin />
+          </Layout>
+        );
+      }
+
+      //	page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
     } else {
-      page = (
-        <Layout user={this.state.user}>
-          <SysAdmin />
-        </Layout>
-      );
+      page = <SignIn user={this.state.user} signedIn={this.signInHandler} />;
     }
 
-    //	page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
-    //}
-
-    return <Routes />;
+    return (
+      <BrowserRouter>
+        <div>{page}</div>
+      </BrowserRouter>
+    );
   }
 }
 

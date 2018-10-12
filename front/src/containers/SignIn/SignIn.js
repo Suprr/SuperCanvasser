@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import Aux from "../../hoc/Auxx";
-import MainImage from "../../assets/images/background.jpg";
-import SignInBody from "../../components/SignIn/SignInBody";
-import classes from "./SignIn.module.css";
+import React, {Component} from 'react';
+import Aux from '../../hoc/Auxx';
+import MainImage from '../../assets/images/background.jpg'
+import SignInBody from '../../components/SignIn/SignInBody';
+import classes from './SignIn.module.css';
+
 
 class SignIn extends Component {
-  signInHandler = () => {};
 
   render() {
     console.log("SignIn render");
@@ -19,7 +19,7 @@ class SignIn extends Component {
             </div>
           </div>
           <div>
-            <SignInBody />
+            <SignInBody signedIn = {this.props.signedIn}/>
           </div>
         </div>
       </Aux>
