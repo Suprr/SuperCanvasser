@@ -20,7 +20,7 @@ class AddLocation extends Component{
 
 				<div className='col-2 text-center'> 
 					<div className='row'>
-						<button className = 'btn btn-light'>Add Location</button>
+						<button className = 'btn btn-light' onClick = {this.props.onClick}>Add Location</button>
 					</div>
 				</div>
 			</div>

@@ -24,7 +24,7 @@ class AddManager extends Component{
 				<div className='col-2 text-center'> 
 					<div className='row'>
 						<button className = 'btn btn-light'>Search</button>
-						<button className = 'btn btn-light'>Add</button>
+						<button className = 'btn btn-light' name = 'managers' onClick={this.props.onClick}>Add</button>
 					</div>
 				</div>
 	
