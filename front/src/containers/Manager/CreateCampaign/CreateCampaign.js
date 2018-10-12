@@ -17,6 +17,7 @@ import AddLocation from '../../../components/Campaign/CreateCampaign/AddLocation
 import AddedLocation from '../../../components/Campaign/CreateCampaign/AddedLocation'
 import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDuration'
 
+import axios from '../../../axios'
 class CreateCampaign extends Component{
 	state = {
 		
@@ -70,28 +71,40 @@ class CreateCampaign extends Component{
 	    });
 	  }
 
+	  handleSubmit = (event) =>{
+	  		const campaign = {...this.state}
+	  		axios.post('/campaigns.json', campaign).then( response => {
+           		console.log("campaignCreated", campaign);
+           		this.props.signedin();
+            } )
+            .catch( error => {
+                console.log("Error", error);
+            });
+	  }
 
 	render(){
 		return(
 			<div className='container'>
-				<PageHead title='Create Campaign'/>
-				<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
-					onChange = {(event) => this.handleInputChange(event)}/>
-				<AddManager onChange = {(event) => this.handleInputChange(event)} 
-					manager = {this.state.newManager}/>
-				<AddedManagers managers = {this.state.managers}/>
-				
-				<DateSection name = 'startDate' date = {this.state.startDate} onChange = {this.handleStartDateChange}/>
-				<DateSection name = 'endDate' date = {this.state.endDate} onChange = {this.handleEndDateChange}/>
-				<TalkingPoint talkingPoint = {this.state.talkingPoint} onChange = {(event) => this.handleInputChange(event)}/>
-				<CreateQNR questionnaire={this.state.newQuestionnaire} onChange={(event)=>this.handleInputChange(event)}/>
-				<AddedQuestionnaire questionnaire = {this.state.questionnaire}/>
-				<AddLocation location={this.state.newLocation} onChange={(event)=>this.handleInputChange(event)}/>
-				<AddedLocation locations = {this.state.locations}/>
-				<VisitDuration VisitDuration = {this.state.visitDuration} onChange = {(event) => this.handleInputChange(event)}/>
-				<div className = {classes.Btn}>
-					<button className="btn btn-dark">Submit</button>
-				</div>
+				<form onSubmit = {this.handleSubmit}>
+					<PageHead title='Create Campaign'/>
+					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
+						onChange = {(event) => this.handleInputChange(event)}/>
+					<AddManager onChange = {(event) => this.handleInputChange(event)} 
+						manager = {this.state.newManager}/>
+					<AddedManagers managers = {this.state.managers}/>
+					
+					<DateSection name = 'startDate' date = {this.state.startDate} onChange = {this.handleStartDateChange}/>
+					<DateSection name = 'endDate' date = {this.state.endDate} onChange = {this.handleEndDateChange}/>
+					<TalkingPoint talkingPoint = {this.state.talkingPoint} onChange = {(event) => this.handleInputChange(event)}/>
+					<CreateQNR questionnaire={this.state.newQuestionnaire} onChange={(event)=>this.handleInputChange(event)}/>
+					<AddedQuestionnaire questionnaire = {this.state.questionnaire}/>
+					<AddLocation location={this.state.newLocation} onChange={(event)=>this.handleInputChange(event)}/>
+					<AddedLocation locations = {this.state.locations}/>
+					<VisitDuration VisitDuration = {this.state.visitDuration} onChange = {(event) => this.handleInputChange(event)}/>
+					<div className = {classes.Btn}>
+						<button className="btn btn-dark">Submit</button>
+					</div>
+				</form>
 			</div>
 		);
 	}

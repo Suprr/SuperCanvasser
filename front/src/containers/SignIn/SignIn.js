@@ -6,7 +6,6 @@ import classes from './SignIn.module.css';
 
 
 class SignIn extends Component {
-  signInHandler = () => {};
 
   render() {
     console.log("SignIn render");
@@ -20,7 +19,7 @@ class SignIn extends Component {
             </div>
           </div>
           <div>
-            <SignInBody />
+            <SignInBody signedin = {()=>this.props.signedin}/>
           </div>
         </div>
       </Aux>
