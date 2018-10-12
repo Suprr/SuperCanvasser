@@ -19,14 +19,16 @@ class App extends Component {
   };
 
   signInHandler = () => {
-    console.log('called Sign In handelr');
-    
+    console.log("called Sign In handelr");
+
     this.setState({
-      user: {authenticated: true,
-      userID: this.state.user.userID,
-      passwords: this.state.user.passwords,
-      role: this.state.user.role, 
-     }});
+      user: {
+        authenticated: true,
+        userID: this.state.user.userID,
+        passwords: this.state.user.passwords,
+        role: this.state.user.role
+      }
+    });
   };
 
   signOutHandler = () => {
@@ -38,13 +40,12 @@ class App extends Component {
     });
   };
 
-
   render() {
     //let page = <Route path="/sign-in" exact component={SignIn} />
     //let page = <SignIn user = {this.state.user} />
     let page = null;
-    console.log('[Render]',this.state.user.authenticated)
-    if(this.state.user.authenticated){
+    console.log("[Render]", this.state.user.authenticated);
+    if (this.state.user.authenticated) {
       if (this.state.user.role === "manager") {
         console.log("here");
         page = (
@@ -66,16 +67,12 @@ class App extends Component {
         );
       }
 
-    //	page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
-    }else{
-      page = <SignIn user = {this.state.user} signedIn={this.signInHandler}/>
+      //	page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
+    } else {
+      page = <SignIn user={this.state.user} signedIn={this.signInHandler} />;
     }
 
-    return (
-      <BrowserRouter>
-        <div>{page}</div>
-      </BrowserRouter>
-    );
+    return { page };
   }
 }
 
