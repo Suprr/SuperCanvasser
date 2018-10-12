@@ -18,14 +18,14 @@ class App extends Component {
     }
   };
 
-  signInHandler = () => {
-    console.log('called Sign In handelr');
+  signInHandler = (loginInfo) => {
+    console.log('called Sign In handelr', loginInfo);
     
     this.setState({
       user: {authenticated: true,
-      userID: this.state.user.userID,
-      passwords: this.state.user.passwords,
-      role: this.state.user.role, 
+      userID: loginInfo.userID,
+      passwords: loginInfo.passwords,
+      role: loginInfo.role, 
      }});
   };
 
@@ -43,16 +43,17 @@ class App extends Component {
     //let page = <Route path="/sign-in" exact component={SignIn} />
     //let page = <SignIn user = {this.state.user} />
     let page = null;
-    console.log('[Render]',this.state.user.authenticated)
+    console.log('[Render]',this.state.user.role)
     if(this.state.user.authenticated){
-      if (this.state.user.role === "manager") {
+
+      if (this.state.user.role === "Manager") {
         console.log("here");
         page = (
           <Layout user={this.state.user}>
             <Manager manager={this.state.user} />
           </Layout>
         );
-      } else if (this.state.user.role === "canvasser") {
+      } else if (this.state.user.role === "Canvasser") {
         page = (
           <Layout user={this.state.user}>
             <Canvasser />
