@@ -9,6 +9,7 @@ class Variable extends Component {
         </div>
         <div className="col-sm">
           <input
+            onChange={this.handleNameChange}
             className="border-top-0 border-right-0 border-left-0"
             type="text"
             defaultValue={this.props.variable.value}

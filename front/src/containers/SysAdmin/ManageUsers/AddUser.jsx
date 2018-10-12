@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import "./ManageUsersCSS.css";
 class AddUser extends Component {
   state = {
-    userID: "id",
-    password: "pass",
-    confirmPassword: "pass",
-    name: "name",
-    role: "Manager"
+    userID: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
+    role: ""
   };
 
   handleNameChange = e => {
