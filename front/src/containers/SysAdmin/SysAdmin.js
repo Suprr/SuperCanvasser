@@ -7,11 +7,10 @@ class SysAdmin extends Component {
   render() {
     return (
       <div>
-        <EditGV />
+        <ManageUsers />
       </div>
     );
   }
 }
 
 export default SysAdmin;
-

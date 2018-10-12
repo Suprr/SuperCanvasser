@@ -13,7 +13,16 @@ class EditGlobalVar extends Component {
       { id: 8, value: 123, name: "GlobalVariable8" }
     ]
   };
-  handleEdit = () => {};
+  handleEdit = (newValue, id) => {
+    const tempVariables = { ...this.state.variables };
+    for (let i = 0; i < this.state.variables.length; i++) {
+      if (this.state.variables[i].id === id) {
+        tempVariables[i].value = newValue;
+        break;
+      }
+    }
+    this.setState({ variables: tempVariables });
+  };
 
   render() {
     return (
