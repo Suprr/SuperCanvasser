@@ -1,7 +1,10 @@
 
-const CampaignModel = {
+const ManagerData = {
 
-	campaigns : [
+	manager : {
+		id : 'm1',
+		name : 'Manager1',
+		campaigns : [
 			{	
 				title : 'Campaign 1',
 				startDate : 'Nov 1',
@@ -164,7 +167,7 @@ const CampaignModel = {
 				startDate : 'Nov 20',
 				endDate : 'Nov 24',
 				progress : 0,
-				id : 'c3',
+				id : 'c1',
 				talkingPoint : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 				questionnaire : [
 					{
@@ -243,7 +246,7 @@ const CampaignModel = {
 				startDate : 'Nov 1',
 				endDate : 'Nov 2',
 				progress : 0,
-				id : 'c4',
+				id : 'c1',
 				talkingPoint : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 				questionnaire : [
 					{
@@ -322,6 +325,8 @@ const CampaignModel = {
 			}
 
 	]
+	}
+	
 }
 
-export default CampaignModel;
+export default ManagerData;

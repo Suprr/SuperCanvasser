@@ -13,10 +13,11 @@ import TasksSection from "../../../../components/Campaign/ViewCampaign/TasksSect
 import QuestionnaireList from "../../../../components/Campaign/ViewCampaign/QuestionnaireList";
 
 import Modal from "../../../../components/UI/Modal/Modal";
+import {withRouter} from 'react-router-dom'
 
 class ViewCampaign extends Component {
   state = {
-    ...this.props.campaign,
+    ...this.props,
     show: false
   };
 
@@ -29,25 +30,28 @@ class ViewCampaign extends Component {
   };
 
   render() {
+    console.log('[Veiw Campaign]', this.props)
+    let campaign = this.props.campaign[parseInt(this.props.match.params.index)];
+  	
     return (
       <div className={[classes.ViewCampaign].join(" ")}>
         <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
-          <QuestionnaireList questionnaire={this.state.questionnaire} />
+          <QuestionnaireList questionnaire={campaign.questionnaire} />
         </Modal>
-        <PageHead title="View Campaign" subtitle={this.state.title} />
+        <PageHead title="View Campaign" subtitle={campaign.title} />
 
         <div className={[classes.Components, "container"].join(" ")}>
           <div className="row justify-content-center">
-            <ManagerSection managers={this.state.managers} />
+            <ManagerSection managers={campaign.managers} />
           </div>
           <div className="row justify-content-center">
             <DateSection
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
+              startDate={campaign.startDate}
+              endDate={campaign.endDate}
             />
           </div>
           <div className="row justify-content-center">
-            <TalkingPointSection talkingPoint={this.state.talkingPoint} />
+            <TalkingPointSection talkingPoint={campaign.talkingPoint} />
           </div>
           <div className="row justify-content-center">
             <QuestionnaireSection
@@ -56,10 +60,10 @@ class ViewCampaign extends Component {
             />
           </div>
           <div className="row justify-content-center">
-            <VisitDurationSection duration={this.state.visitDuration} />
+            <VisitDurationSection duration={campaign.visitDuration} />
           </div>
           <div className="row justify-content-center">
-            <TasksSection tasks={this.state.task} />
+            <TasksSection tasks={campaign.task} />
           </div>
         </div>
       </div>
@@ -67,4 +71,4 @@ class ViewCampaign extends Component {
   }
 }
 
-export default ViewCampaign;
+export default withRouter(ViewCampaign);

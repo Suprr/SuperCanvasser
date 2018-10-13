@@ -7,24 +7,28 @@ import Sidebar from '../Navigation/Sidebar'
 import MenuData from './MenuData'
 class Layout extends Component{
   state= {
-    menus : MenuData.menus
+    menus : MenuData.menus,
+    user : {
+      userID : this.props.userID,
+      role : this.props.role
+    }
   }
-
+  
   render(){
     let sidebar = null;
-    if(this.props.user.role === 'manager'){
-      sidebar = <Sidebar className="h-100" menus = {this.state.menus.manager}/>
-    } else if(this.props.user.role === 'canvasser'){
-      sidebar = <Sidebar className="h-100" menus = {this.state.menus.canvasser}/>
+    if(this.props.role == 'manager'){
+      sidebar = <Sidebar className="h-100" menus = {this.state.menus.manager} url={this.props.url}/>
+    } else if(this.props.role == 'canvasser'){
+      sidebar = <Sidebar className="h-100" menus = {this.state.menus.canvasser} url={this.props.url}/>
     } else{
-      sidebar = <Sidebar className="h-100" menus = {this.state.menus.sysAdmin}/>
+      sidebar = <Sidebar className="h-100" menus = {this.state.menus.sysAdmin} url={this.props.url}/>
     }
-
+    
     return (
       <Aux>
 
         <div className={["row", "fixed-top"].join(' ')}>
-          <Toolbar user={this.props.user}/>
+          <Toolbar user={this.state.user}/>
         </div>
 
         <div className={["row", "fixed-center", classes.Content].join(' ')}>

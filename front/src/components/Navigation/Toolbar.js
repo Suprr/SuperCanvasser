@@ -11,7 +11,6 @@ class Toolbar extends Component {
 								<div> Super Canvasser</div>
 							</div>
 							<div className = {[classes.OtherSection, "col-9", "row", "justify-content-end"].join(' ')}>
-									<div className = {[classes.OtherItem].join(' ')}> Image</div>
 									<div className = {[classes.OtherItem].join(' ')}> {this.props.user.userID}</div>
 									<div className = {[classes.OtherItem].join(' ')}> / </div>
 									<div className = {[classes.OtherItem].join(' ')}> {this.props.user.role}</div>

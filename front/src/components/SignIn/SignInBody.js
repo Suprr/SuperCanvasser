@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import Dropdown from 'react-dropdown';
 import classes from './SignInBody.module.css';
 import axios from '../../axios'
+import {Redirect, withRouter} from 'react-router-dom'
 class SignInBody extends Component{
 	
 	state={
@@ -25,7 +26,18 @@ class SignInBody extends Component{
         axios.post( '/login.json', loginInfo )
             .then( response => {
            		console.log("Loginned", loginInfo);
-           		this.props.signedIn(loginInfo);
+           		//this.props.signedIn(loginInfo);
+           		let role = null;
+		        if(this.state.role=='Manager'){
+		        	role = 'manager';
+		        }else if(this.state.role=='Canvasser'){
+		        	role = 'canvasser';
+		        } else{
+		        	role = 'sys-admin';
+		        }
+
+       			this.props.history.push('/'+role+'/'+this.state.userID);
+
             } )
             .catch( error => {
                 console.log("Error", error);
@@ -33,6 +45,7 @@ class SignInBody extends Component{
 	}
 
 	render(){
+		//console.log('[SignInBody]',this.props);
 		return (
 			<div className={[classes.SignInBody, "container", "text-center"].join(' ')}> 
 				
@@ -71,4 +84,4 @@ class SignInBody extends Component{
 	}
 }
 
-export default SignInBody;
+export default withRouter(SignInBody);

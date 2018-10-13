@@ -8,7 +8,7 @@ import classes from './SignIn.module.css';
 class SignIn extends Component {
 
   render() {
-    console.log("SignIn render");
+    console.log("SignIn render", this.props);
     return (
       <Aux>
         <div className={[classes.SignIn].join(" ")}>
