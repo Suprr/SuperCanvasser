@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Algorithm;
 
 import java.util.ArrayList;
 
@@ -11,27 +5,27 @@ import java.util.ArrayList;
  *
  * @author Chris
  */
-public class Main {
+public class Algorithm {
     public static final double CANVASSAR_SPEED = 1;
     public static final int CANVASSAR_WORKDAY = 480;
     public static final int NUM_LOCATIONS = 100;
     public static final int TIME_PER_VISIT = 15;
     public static double[][] distMatrix;
+    public static Location[] locations;
     
     public static void main(String[] args) {
-        Location[] locations = new Location[NUM_LOCATIONS];
+        locations = new Location[NUM_LOCATIONS];
         
         // Randomize lattitude and logitude for testing
         for (int i = 0; i < NUM_LOCATIONS; i++) {
             locations[i] = new Location(Math.random() * 100, Math.random() * 100);
         }
-        distMatrix = makeDistanceMatrix(locations);
+        distMatrix = makeDistanceMatrix();
 
-        ArrayList<ArrayList<Location>> canvasserVisits = calculate(locations);
-        System.out.print("same");
+        ArrayList<ArrayList<Location>> canvasserVisits = calculate();
         for(int i = 0; i < canvasserVisits.size();i++){
-            for(int j =0; j<100;j++) {
-                System.out.print(canvasserVisits.get(i).get(i));
+            for(int j =0; j<canvasserVisits.get(i).size();j++) {
+                System.out.print(canvasserVisits.get(i).get(j).x + " " + canvasserVisits.get(i).get(j).x);
             }
             System.out.println();
         }
@@ -40,7 +34,7 @@ public class Main {
     // Calculate the paths for canvassers by choosing the
     // first location and finding the closest not chosen location
     // Returns an array of canvassers each with an array of locations
-    public static ArrayList<ArrayList<Location>> calculate(Location[] locations) {
+    public static ArrayList<ArrayList<Location>> calculate() {
         Location curLocation = locations[0];
         ArrayList<ArrayList<Location>> pathList = new ArrayList();
         ArrayList<Location> curList = new ArrayList();
@@ -49,13 +43,13 @@ public class Main {
         int curLocIndex = 0;
         while (!allLocationsVisited(locations)) {
             int closestIndex = findClosestNonVisitedLocation(curLocIndex);
-            System.out.print(closestIndex);
             if (totalTimeWillBeReached(curPathTime, curLocIndex, closestIndex)) {
                 pathList.add(curList);
                 curList = new ArrayList();
                 curPathTime = 0;
             }
-            addLocation(curList, closestIndex, locations);
+            addLocation(curList, closestIndex);
+            curPathTime += TIME_PER_VISIT + (distMatrix[curLocIndex][closestIndex]/CANVASSAR_SPEED);
         }
         pathList.add(curList);
         return pathList;
@@ -73,7 +67,7 @@ public class Main {
     }
     
     // Creates a distance matrix used in our calculations
-    static double[][] makeDistanceMatrix(Location[] locations) {
+    static double[][] makeDistanceMatrix() {
         int numElements = locations.length;
         double[][] distMatrix = new double[numElements][numElements];
         double distance;
@@ -104,16 +98,17 @@ public class Main {
         int curIndex = 0;
         for (int i = 0; i < distMatrix.length; i++) {
             double compareValue = distMatrix[index][i];
-            if ((compareValue < curLength) && (compareValue != 0)) {
+            if ((compareValue < curLength) && (compareValue != 0) &&(!locations[i].visited)) {
                 curIndex = i;
             }
         }
+        
         return curIndex;
     }
     
     // Adds location to the ArrayList and changes the value
     // of the location's boolean visited to true
-    static void addLocation(ArrayList listOfLoc, int index, Location[] locations) {
+    static void addLocation(ArrayList listOfLoc, int index) {
         listOfLoc.add(locations[index]);
         locations[index].visited = true;
     }
