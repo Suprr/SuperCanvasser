@@ -9,4 +9,5 @@ public class SuperCanvasserApplication {
     public static void main(String[] args) {
         SpringApplication.run(SuperCanvasserApplication.class, args);
     }
+
 }

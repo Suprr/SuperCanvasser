@@ -4,19 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import team830.SuperCanvasser.Repo.UserRepo;
 
 import javax.validation.Valid;
 
-
-@RestController
-@RequestMapping("/admin/*")
 public class UserController {
-
     @Autowired
-    private UserRepo userRepo;
+    private UserService userService;
 
     @GetMapping("/admin/editUser")
     public String editUser(User user){
@@ -24,7 +17,7 @@ public class UserController {
     }
     @PostMapping("/admin/addUser")
     public String addUser(@Valid User user, BindingResult result){
-//        User userExists = u.loadUserByUsername(user.getUsername());
+        User userExists = userService.loadUserByUsername(user.getUsername());
         return " YES";
     }
 }
