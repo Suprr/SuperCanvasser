@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -11,7 +12,7 @@
 .sts4-cache
 
 ### IntelliJ IDEA ###
-*.idea
+.idea
 *.iws
 *.iml
 *.ipr
@@ -26,3 +27,4 @@
 =======
 # Add any directories, files, or patterns you don't want to be tracked by version control
 .DS_STORE
+>>>>>>> 5d568072c999dcdb1358344c5bfd8bbd50ef6ae1
