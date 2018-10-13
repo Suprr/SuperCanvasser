@@ -8,18 +8,12 @@ import team830.SuperCanvasser.Variable.Variable;
 import team830.SuperCanvasser.Variable.VariableRepo;
 
 @SpringBootApplication
-public class SuperCanvasserApplication implements CommandLineRunner {
+public class SuperCanvasserApplication{
 
 
     public static void main(String[] args)
     {
         SpringApplication.run(SuperCanvasserApplication.class, args);
     }
-
-    @Override
-    public void run(String... args) throws Exception {
-
-    }
-
 }
 

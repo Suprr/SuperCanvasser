@@ -22,7 +22,6 @@ import java.util.Map;
 public class MongoTest {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
     private VariableRepo repository;
 
     public void test (MongoTemplate mongoTemplate){
