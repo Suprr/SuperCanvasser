@@ -6,5 +6,5 @@ import java.util.List;
 @Service
 public interface VariableInterface {
     Variable editVariable(Variable variable);
-    List<Variable> getAllVariables();
+    List<Variable> findAll();
 }

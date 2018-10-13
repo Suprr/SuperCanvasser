@@ -5,13 +5,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
-
-@Document(collection = "variable")
 @Data
+@Document(collection = "variable")
 public class Variable{
     @Id
-    private String id;
+    private String _id;
+
     private String type;
     private String value;
 
