@@ -1,11 +1,10 @@
-package team830.SuperCanvasser.repository;
+package team830.SuperCanvasser.Variable;
 
-import team830.SuperCanvasser.User.Variable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface VariableInterface {
-    Variable findByName(String name);
     Variable editVariable(Variable variable);
     List<Variable> getAllVariables();
 }

@@ -1,12 +1,14 @@
-package team830.SuperCanvasser.User;
+package team830.SuperCanvasser.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import team830.SuperCanvasser.repository.VariableService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class VariableController {
     @Autowired
     private VariableService variableService;
@@ -21,9 +23,5 @@ public class VariableController {
         return(variableService.getAllVariables());
     }
 
-    @PostMapping("/var/")
-    public Variable findByName(@RequestParam(value="name") String name){
-        return(variableService.findByName(name));
-    }
 }
 

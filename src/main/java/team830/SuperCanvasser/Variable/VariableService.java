@@ -1,8 +1,7 @@
-package team830.SuperCanvasser.repository;
+package team830.SuperCanvasser.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team830.SuperCanvasser.User.Variable;
 
 import java.util.List;
 
@@ -21,7 +20,4 @@ public class VariableService implements VariableInterface {
         return variableRepo.findAll();
     }
 
-    public Variable findByName(String name) {
-        return variableRepo.findByName(name);
-    }
 }
