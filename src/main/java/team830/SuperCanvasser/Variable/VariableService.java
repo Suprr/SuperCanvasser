@@ -16,7 +16,7 @@ public class VariableService implements VariableInterface {
     }
 
     @Override
-    public List<Variable> getAllVariables() {
+    public List<Variable> findAll() {
         return variableRepo.findAll();
     }
 

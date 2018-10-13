@@ -5,13 +5,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-//@Configuration
 //@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+@Configuration
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
-    protected void configure(HttpSecurity security) throws Exception
-    {
-        security.httpBasic().disable();
+    protected void configure(HttpSecurity http) throws Exception {
+        // For example: Use only Http Basic and not form login.
+        http
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll();
+
     }
 }

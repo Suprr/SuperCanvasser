@@ -6,11 +6,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "variable")
 @Data
+@Document(collection = "variable")
 public class Variable{
     @Id
-    private ObjectId id;
+    private String _id;
+
     @Indexed(unique = true)
     private String type;
     private String value;

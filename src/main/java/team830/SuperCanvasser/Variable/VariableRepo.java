@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VariableRepo extends MongoRepository<Variable, ObjectId> {
+public interface VariableRepo extends MongoRepository<Variable, String> {
     Variable findByType(String type);
 }
