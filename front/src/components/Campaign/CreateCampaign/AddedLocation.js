@@ -1,18 +1,18 @@
 import React, {Component} from 'react'
 import classes from './CreateCampaign.module.css'
 
-class AddedQuestionnaire extends Component{
+class AddedLocations extends Component{
 	
 
 	render(){
 		let locations = this.props.locations.map(loc => {
 			let location = (
 				<div className = 'row' key={loc.id}>
-					<div className={[classes.QuestionnaireItem, 'col-7'].join(' ')}> 
+					<div className={[classes.QuestionnaireItem, 'col-10'].join(' ')}> 
 						{loc.location} 
 					</div>
 					<div className = 'col-2'>
-						<button className = 'btn btn-danger'>Remove</button>
+						<button className = 'btn btn-danger' name={loc.id} onClick={this.props.onClick}>Remove</button>
 					</div>
 				</div>
 			)
@@ -31,4 +31,4 @@ class AddedQuestionnaire extends Component{
 
 }
 
-export default AddedQuestionnaire;
+export default AddedLocations;

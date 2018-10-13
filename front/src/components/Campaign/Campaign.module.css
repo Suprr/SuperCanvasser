@@ -7,3 +7,11 @@
 	width:100%;
 	margin: 10% 0%;
 }
+
+.Link{
+	color:white;
+}
+.Link:hover{
+	color : white;
+	text-decoration: none;
+}

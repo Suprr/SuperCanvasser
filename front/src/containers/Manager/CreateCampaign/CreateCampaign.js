@@ -18,6 +18,7 @@ import AddedLocation from '../../../components/Campaign/CreateCampaign/AddedLoca
 import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDuration'
 
 import axios from '../../../axios'
+import Modal from '../../../components/UI/Modal/Modal'
 class CreateCampaign extends Component{
 	state = {
 		
@@ -31,8 +32,7 @@ class CreateCampaign extends Component{
 		duration : '',
 		newManager : '',
 		newQuestionnaire :'',
-		newLocation : ''
-
+		newLocation : '',
 	}
 
 	handleInputChange = (event)=> {
@@ -63,7 +63,7 @@ class CreateCampaign extends Component{
 	  addManagerHandler = (event) =>{
 	  		let newManager = {
 	  			name : this.state.newManager, 
-	  			id : 'm'+this.state.newManager
+	  			id : this.state.managers.length
 	  		}
 	  		this.setState((prevState)=>({
 	  			managers : [...prevState.managers, newManager]
@@ -74,25 +74,35 @@ class CreateCampaign extends Component{
 	  		});
 	  }
 
-	  addLocationHandler = (event) =>{
-	  		let newLocation = {
-	  			location : this.state.newLocation, 
-	  			id : 'l'+this.state.newLocation
-	  		}
-	  		this.setState((prevState)=>({
-	  			locations : [...prevState.locations, newLocation]
-	  		}))
+	  addLocationHandler = (address, event) =>{
+	  		let loc ='';
+	  		if(address.number=='' || address.street=='' || address.city=='' || address.state=='' || address.zipcode==''){
+	  				//show modal
+	  		} else{
+		  		loc = address.number +", "+ address.street + ", "+ address.unit +", "+ address.city +", "+ address.state + ", "+ address.zipcode
+		  			
+		  		let newLocation = {
+		  			location : loc,
+		  			id : this.state.locations.length
+		  		}
 
-	  		this.setState({
-	  			newLocation : ''
-	  		});
+		  		this.setState((prevState)=>({
+		  			locations : [...prevState.locations, newLocation]
+		  		}))
+
+		  		this.setState({
+		  			newLocation : ''
+		  		});
+	  		}
 	  }
 
 	  addQuestionnaireHandler = (event) =>{
+	  		
 	  		let newQuestion = {
 	  			question : this.state.newQuestionnaire, 
-	  			id : 'q'+this.state.newQuestionnaire
+	  			id : this.state.questionnaire.length
 	  		}
+
 	  		this.setState((prevState)=>({
 	  			questionnaire : [...prevState.questionnaire, newQuestion]
 	  		}))
@@ -100,6 +110,21 @@ class CreateCampaign extends Component{
 	  		this.setState({
 	  			newQuestionnaire : ''
 	  		});
+	  }
+
+	  removeQuestionnaireHandler = (event) =>{
+  			const removedList = this.state.questionnaire.filter(ele=>{return ele.id != event.target.name});
+		  	this.setState((prevState)=>({
+		  		questionnaire : removedList		
+		  	}));
+	  }
+
+	  removeLocationHandler = (event) =>{
+
+  			const removedList = this.state.locations.filter(ele=>{return ele.id != event.target.name});
+		  	this.setState((prevState)=>({
+		  		locations : removedList		
+		  	}));
 	  }
 
 
@@ -131,10 +156,10 @@ class CreateCampaign extends Component{
 					<TalkingPoint talkingPoint = {this.state.talkingPoint} onChange = {(event) => this.handleInputChange(event)}/>
 					<CreateQNR questionnaire={this.state.newQuestionnaire} onChange={(event)=>this.handleInputChange(event)}
 						onClick = {(event)=>this.addQuestionnaireHandler(event)}/>
-					<AddedQuestionnaire questionnaire = {this.state.questionnaire} />
-					<AddLocation location={this.state.newLocation} onChange={(event)=>this.handleInputChange(event)}
+					<AddedQuestionnaire questionnaire = {this.state.questionnaire} onClick={this.removeQuestionnaireHandler}/>
+					<AddLocation location={this.state.newLocation} onChange={this.handleInputChange}
 							onClick = {(event)=>this.addLocationHandler(event)}/>
-					<AddedLocation locations = {this.state.locations}/>
+					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
 					<VisitDuration VisitDuration = {this.state.visitDuration} onChange = {(event) => this.handleInputChange(event)}/>
 				
 				<form onSubmit = {this.handleSubmit}>

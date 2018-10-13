@@ -28,11 +28,13 @@ class Campaign extends Component{
 					</div>
 
 					<div>
+						<Link className={classes.Link} to={this.props.url+'/'+this.props.id+'/'+this.props.name}>
 						<button name = {this.props.name} className = {["btn btn-danger"].join(' ')}>
-								<Link to={this.props.url+'/'+this.props.id+'/'+this.props.name}>
+								
 									View
-								</Link>
+								
 						</button>
+						</Link>
 					</div>
 				</div>
 			</div>

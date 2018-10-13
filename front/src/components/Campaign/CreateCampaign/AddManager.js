@@ -13,7 +13,7 @@ class AddManager extends Component{
 					<p>AddManager</p>
 				</div>
 				
-				<div className = {['col-7', classes.InputSection].join(' ')}>
+				<div className = {['col-6', classes.InputSection].join(' ')}>
 					<input 	
 							name = 'newManager'
 							value = {this.props.manager}
@@ -21,7 +21,7 @@ class AddManager extends Component{
 							onChange={this.props.onChange}/>
 				</div>
 
-				<div className='col-2 text-center'> 
+				<div className='col-3 text-center'> 
 					<div className='row'>
 						<button className = 'btn btn-light'>Search</button>
 						<button className = 'btn btn-light' name = 'managers' onClick={this.props.onClick}>Add</button>

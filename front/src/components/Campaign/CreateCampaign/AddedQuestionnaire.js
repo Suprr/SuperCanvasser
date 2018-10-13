@@ -12,7 +12,7 @@ class AddedQuestionnaire extends Component{
 					<div className = 'col-1'> {count}. </div>
 					<div className={[classes.QuestionnaireItem, 'col-6'].join(' ')}> {qnr.question} </div>
 					<div className = 'col-2'>
-						<button className = 'btn btn-danger'>Remove</button>
+						<button onClick={(event)=>this.props.onClick(event)} name={qnr.id} className = 'btn btn-danger'>Remove</button>
 					</div>
 				</div>
 			)
