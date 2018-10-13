@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public abstract class User {
     @Id
-    public ObjectId _id;
+    public String id;
     public String passHash;
     public String firstName;
     public String lastName;
