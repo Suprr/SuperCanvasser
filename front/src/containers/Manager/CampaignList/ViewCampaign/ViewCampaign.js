@@ -19,10 +19,12 @@ import Modal from "../../../../components/UI/Modal/Modal";
 import {withRouter} from 'react-router-dom'
 
 
+import axios from '../../../../axios'
 class ViewCampaign extends Component {
   state = {
     ...this.props,
-    show: false
+    show: false,
+    campaign : null
   };
 
   openModalHandelr = () => {
@@ -33,30 +35,47 @@ class ViewCampaign extends Component {
     this.setState({ show: false });
   };
 
+  componentDidMount(){
+     let cmpIndex = this.props.match.params.index;
+     axios.get('https://cse308-de3df.firebaseio.com/campaigns/'+cmpIndex+'.json').then(response=>{
+          let x= response.data
+          let newCampaign = x;
+          // let newCampaigns = [];
+          console.log(['ViewCmp componentDidMount'], newCampaign);
+          // for(let c in campaignIndexes){
+          //   if(x[c]){
+          //     newCampaigns.push(x[c]);
+          //   }
+          // }
+          this.setState({campaign:newCampaign});
+          // this.setState({campaigns : newCampaigns});
+          // this.props.campaignSet(newCampaigns);
+          //this.setState({campaigns : response.data.campaigns})
+      });     
+  }
+
   render() {
-    console.log('[Veiw Campaign]', this.props)
-    let campaign = this.props.campaign[parseInt(this.props.match.params.index)];
-  	
-    return (
-      <div className={[classes.ViewCampaign].join(" ")}>
+    console.log('[Veiw Campaign]', this.state.campaign)
+   // let campaign = this.props.campaign[parseInt(this.props.match.params.index)];
+  	let cmpaign = this.state.campaign ? (<div className={[classes.ViewCampaign].join(" ")}>
         <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
-          <QuestionnaireList questionnaire={campaign.questionnaire} />
+          <QuestionnaireList questionnaire={this.state.campaign.questionnaire} />
         </Modal>
-        <PageHead title="View Campaign" subtitle={campaign.title} />
+        <PageHead title="View Campaign" subtitle={this.state.campaign.title} />
 
         <div className={[classes.Components, "container"].join(" ")}>
           <div className="row justify-content-center">
-            <ManagerSection managers={campaign.managers} />
+            <ManagerSection managers={this.state.campaign.managers} />
           </div>
           <div className="row justify-content-center">
             <DateSection
-              startDate={campaign.startDate}
-              endDate={campaign.endDate}
+              startDate={this.state.campaign.startDate}
+              endDate={this.state.campaign.endDate}
             />
             
           </div>
           <div className="row justify-content-center">
-            <TalkingPointSection talkingPoint={campaign.talkingPoint} />
+            <TalkingPointSection talkingPoint={this.state.campaign.talkingPoint} />
           </div>
           <div className="row justify-content-center">
             <QuestionnaireSection
@@ -65,14 +84,20 @@ class ViewCampaign extends Component {
             />
           </div>
           <div className="row justify-content-center">
-            <VisitDurationSection duration={campaign.visitDuration} />
+            <VisitDurationSection duration={this.state.campaign.visitDuration} />
           </div>
           <div className="row justify-content-center">
-            <TasksSection tasks={campaign.task} />
+            <TasksSection tasks={this.state.campaign.task} />
           </div>
         </div>
+      </div>) : null;
+    
+    return (
+      <div>
+      {cmpaign}
       </div>
     );
+    
   }
 }
 

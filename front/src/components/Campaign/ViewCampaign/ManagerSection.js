@@ -8,7 +8,7 @@ class ManagerSection extends Component{
 
 
 	render(){
-		let managers = this.state.managers.map(mng=>{
+		let managers =  this.state.managers ? this.state.managers.map(mng=>{
 			//<div className={[classes.Unknown, 'rounded-circle', 'text-center'].join(' ')}></div>
 			let manager = (
 					  <div key={mng.id} className={['row',classes.Manager].join(' ')}> 
@@ -17,7 +17,7 @@ class ManagerSection extends Component{
 					  </div>);
 
 			return manager;
-		});
+		}) : null ;
 
 
 		return(

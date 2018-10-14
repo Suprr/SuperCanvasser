@@ -3,11 +3,14 @@ import Campaign from "../../../components/Campaign/Campaign";
 import PageHead from "../../../components/Layout/PageHead/PageHead";
 import ViewCampaign from "./ViewCampaign/ViewCampaign"
 import {withRouter, Route, Switch} from 'react-router-dom'
+
+import axios from '../../../axios'
 class CampaignList extends Component {
   state = {
-    campaigns: this.props.campaigns,
+    campaignList : this.props.campaignList,
+    campaigns:null,
     clicked : false, 
-    index : ''
+    index : '',
   };
 
   campaignViewClickHandler=(event)=>{
@@ -17,8 +20,46 @@ class CampaignList extends Component {
   		this.setState({index : count});
   		this.setState({clicked:true});
   }
+  
+  componentWillReceiveProps(nextProps){
+    if(!this.state.campaignList){
+      this.setState({campaignList : nextProps.campaignList});
+    }
+  }
+
+  componentDidMount(){
+    console.log(['componentWillMount List']);
+
+    if(!this.state.campaigns){
+      //console.log("First PAsS");
+      axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
+          let x= response.data 
+          let campaignIndexes = this.state.campaignList;
+          let newCampaigns = [];
+          for(let c in campaignIndexes){
+            if(x[c]){
+              newCampaigns.push(x[c]);
+            }
+          }
+
+          this.setState({campaigns : newCampaigns});
+          this.props.campaignSet(newCampaigns);
+          //this.setState({campaigns : response.data.campaigns})
+      });     
+    }
+    
+
+    // axios.get('https://cse308-de3df.firebaseio.com/managers/'+this.state.currentID+'.json').then(response=>{
+    //       let x= response.data 
+    //       console.log(['CampaignList Data'],x);
+    //       this.setState({campaigns : response.data.campaigns})
+    //   });
+  }
+
+
 
   render() {
+    console.log('[List] campaigns : ',this.state.campaigns);
   	let campaigns = null
   	//if(!this.state.clicked){
   	if(this.state.campaigns){

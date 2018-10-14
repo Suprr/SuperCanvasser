@@ -24,6 +24,9 @@ class VisitDurationSection extends Component{
 		this.setState((prevState)=>({
 			duration : this.state.editedHour + 'H '+this.state.editedMin+'M',
 			showEdit:false}));
+
+		
+		
 	}	
 
 	render(){

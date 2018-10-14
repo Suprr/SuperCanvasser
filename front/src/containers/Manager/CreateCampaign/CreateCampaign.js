@@ -21,7 +21,6 @@ import axios from '../../../axios'
 import Modal from '../../../components/UI/Modal/Modal'
 class CreateCampaign extends Component{
 	state = {
-		
 		campaignTitle : '',
 		managers : [],
 		startDate : moment(),
@@ -33,6 +32,7 @@ class CreateCampaign extends Component{
 		newManager : '',
 		newQuestionnaire :'',
 		newLocation : '',
+		id : null
 	}
 
 	handleInputChange = (event)=> {
@@ -133,15 +133,60 @@ class CreateCampaign extends Component{
 
 
 	  handleSubmit = (event) =>{
-	  		const campaign = {campaign:{...this.state}}
-	  		axios.post('/campaigns.json', campaign).then( response => {
+	  		const campaign = {
+		  		campaignTitle : this.state.campaignTitle,
+				managers : this.state.managers,
+				startDate : this.state.startDate,
+				endDate : this.state.endDate,
+				talkingPoint : this.state.talkingPoint,
+				questionnaire : this.state.questionnaire,
+				locations : this.state.locations,
+				duration : this.state.duration,
+				id : this.state.id 
+			}
+
+	  		//If I use push it generates auto key
+	  		//axios.push ('/campaigns.json', campaign).then( response => {
+	  		console.log('[[Hi]',this.state.id);
+	  		axios.put('/campaigns/'+this.state.id+'.json/', campaign).then( response => {
 
            		console.log("campaignCreated", campaign, "response : ", response);
            		this.props.signedin();
-            } )
+            })
             .catch( error => {
                 console.log("Error", error);
             });
+
+            // axios.put('/campaigns/length', this.state.id+1).then( response => {
+
+           	// 	console.log("id is increased");
+           		
+            // })
+            // .catch( error => {
+            //     console.log("Error", error);
+            // });
+
+
+	  }
+
+	  componentDidMount(){;
+	  	
+	  	
+	  	let x = null
+	  	axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
+	  		x= response.data
+	  		
+
+	  		if(x!=null){
+	  			console.log(x.length)
+	  			let lastID = x[x.length-1].id
+	  			this.setState({id : lastID+1})
+	  		}else{
+	  			this.setState({id : 0})
+	  		}
+	  	});	  	
+	  	// 	console.log('Fail');
+	  	// })
 	  }
 
 	render(){
@@ -166,11 +211,10 @@ class CreateCampaign extends Component{
 					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
 					<VisitDuration VisitDuration = {this.state.visitDuration} onChange = {(event) => this.handleInputChange(event)}/>
 				
-				<form onSubmit = {this.handleSubmit}>
 					<div className = {classes.Btn}>
-						<button className="btn btn-dark">Submit</button>
+						<button className="btn btn-dark" onClick={this.handleSubmit}>Submit</button>
 					</div>
-				</form>
+			
 				
 			</div>
 		);

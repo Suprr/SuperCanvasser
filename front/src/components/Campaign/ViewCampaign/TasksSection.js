@@ -9,11 +9,11 @@ class TaskSection extends Component{
 
 	render(){
 		let count = 1;
-		let tasks = this.state.tasks.map(task=>{
+		let tasks = this.state.tasks ? this.state.tasks.map(task=>{
 
 			return <TaskCard key={task.id} task={task} number={count++}/>;
 
-		});
+		}) : null;
 		return(
 			<div className = {[classes.TasksSection, 'col-10', 'text-center'].join(' ')}>
 				<div className = {['row'].join(' ')}>

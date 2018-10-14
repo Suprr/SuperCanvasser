@@ -74,10 +74,11 @@ class QuestionnaireList extends Component{
 
 
 	render(){
-		let questionnaire = this.state.questionnaire.map(qnr =>{
+
+		let questionnaire =  this.state.questionnaire? this.state.questionnaire.map(qnr =>{
 			let question = (<QuestionnaireComponent edit = {this.editHandler} key = {qnr.id} btnID = {qnr.id} question={qnr.question}/> )
 		    return question;
-		  });   
+		  }) : null;
 
 		let displayedComponent = this.state.showAdd? <EditQNR editedQuestion = {this.state.editedQuestion} onClick = {this.addQuestionHandler} onChange={this.addedQuestionChange} type='add' />  : null ;
 		return(
