@@ -40,13 +40,11 @@ class CreateCampaign extends Component{
 	    const value = target.value;
 	    const name = target.name;
 	    
-	    
    	 	this.setState({[name]: value });
 		
 	}
 
 	 handleStartDateChange = (newDate)=>{
-    	console.log('[HandleChange]',newDate)
 	    this.setState({
 	      startDate: newDate
 	    });
@@ -54,24 +52,27 @@ class CreateCampaign extends Component{
 
 
 	 handleEndDateChange = (newDate)=>{
-    	console.log('[HandleChange]',newDate)
 	    this.setState({
 	      endDate: newDate
 	    });
 	  }
 
 	  addManagerHandler = (event) =>{
-	  		let newManager = {
-	  			name : this.state.newManager, 
-	  			id : this.state.managers.length
-	  		}
-	  		this.setState((prevState)=>({
-	  			managers : [...prevState.managers, newManager]
-	  		}))
+	  		if(this.state.newManager==''){
+	  			//show modal
+	  		}else{
+		  		let newManager = {
+		  			name : this.state.newManager, 
+		  			id : this.state.managers.length
+		  		}
+		  		this.setState((prevState)=>({
+		  			managers : [...prevState.managers, newManager]
+		  		}))
 
-	  		this.setState({
-	  			newManager : ''
-	  		});
+		  		this.setState({
+		  			newManager : ''
+		  		});
+	  		}
 	  }
 
 	  addLocationHandler = (address, event) =>{
@@ -97,19 +98,22 @@ class CreateCampaign extends Component{
 	  }
 
 	  addQuestionnaireHandler = (event) =>{
-	  		
-	  		let newQuestion = {
-	  			question : this.state.newQuestionnaire, 
-	  			id : this.state.questionnaire.length
+	  		if(this.state.newQuestion==''){
+	  			//show modal
+	  		}else{
+		  		let newQuestion = {
+		  			question : this.state.newQuestionnaire, 
+		  			id : this.state.questionnaire.length
+		  		}
+
+		  		this.setState((prevState)=>({
+		  			questionnaire : [...prevState.questionnaire, newQuestion]
+		  		}));
+
+		  		this.setState({
+		  			newQuestionnaire : ''
+		  		});
 	  		}
-
-	  		this.setState((prevState)=>({
-	  			questionnaire : [...prevState.questionnaire, newQuestion]
-	  		}))
-
-	  		this.setState({
-	  			newQuestionnaire : ''
-	  		});
 	  }
 
 	  removeQuestionnaireHandler = (event) =>{

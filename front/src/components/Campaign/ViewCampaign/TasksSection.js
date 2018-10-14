@@ -18,7 +18,6 @@ class TaskSection extends Component{
 			<div className = {[classes.TasksSection, 'col-10', 'text-center'].join(' ')}>
 				<div className = {['row'].join(' ')}>
 					<h4 className={['col-11', classes.Title].join(' ')}>Tasks</h4> 
-					<button className = 'btn btn-danger col-1'>edit</button>
 				</div>
 				
 				<div className = 'row justify-content-center'>

@@ -10,10 +10,14 @@ import QuestionnaireSection from "../../../../components/Campaign/ViewCampaign/Q
 import VisitDurationSection from "../../../../components/Campaign/ViewCampaign/VisitDurationSection";
 import TasksSection from "../../../../components/Campaign/ViewCampaign/TasksSection";
 
+import EditDateSection from "../../../../components/Campaign/ViewCampaign/EditComponents/EditDateSection";
+
+
 import QuestionnaireList from "../../../../components/Campaign/ViewCampaign/QuestionnaireList";
 
 import Modal from "../../../../components/UI/Modal/Modal";
 import {withRouter} from 'react-router-dom'
+
 
 class ViewCampaign extends Component {
   state = {
@@ -49,6 +53,7 @@ class ViewCampaign extends Component {
               startDate={campaign.startDate}
               endDate={campaign.endDate}
             />
+            
           </div>
           <div className="row justify-content-center">
             <TalkingPointSection talkingPoint={campaign.talkingPoint} />
