@@ -1,25 +1,29 @@
 package team830.SuperCanvasser.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Optional;
 
+@RestController
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/user/edit")
+    @PostMapping("/edit")
     public User editUser(@RequestParam(value="user") User user){
         return(userService.editUser(user));
     }
 
-    @GetMapping("/user/view")
-    public User getUser(@RequestParam(value="user") User user) {
-        Optional<User> user1 = userService.getUser(user.id);
-        if (user1.isPresent())
-            return user1.get();
+    @GetMapping("/view")
+    public User getUser(@RequestParam(value="id") String id) {
+        Optional<User> user1 = userService.getUser(id);
+        if (user1.isPresent()) {
+            User user = user1.get();
+            System.out.println(user.email);
+            return user;
+        }
         else return null;
     }
 }

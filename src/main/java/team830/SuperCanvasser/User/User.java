@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
 @Data
-public abstract class User {
+public class User {
     @Id
     public String id;
     public String passHash;
