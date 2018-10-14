@@ -1,12 +1,19 @@
-
-
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import javafx.application.Application;
+import static javafx.application.Application.launch;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.stage.Stage;
 
 /**
  *
  * @author Chris
  */
-public class Algorithm {
+public class Algorithm extends Application {
     public static final double CANVASSAR_SPEED = 1;
     public static final int CANVASSAR_WORKDAY = 480;
     public static final int NUM_LOCATIONS = 100;
@@ -18,7 +25,37 @@ public class Algorithm {
     public static Location[] locations;
     public static double totalDistance = 0;
     
+    public static ArrayList<ArrayList<Location>> badSol = new ArrayList();
     public static ArrayList<ArrayList<Location>> bestSol = new ArrayList();
+    
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        int width = 1300, height = 650;
+        Canvas c = new Canvas(width, height);
+
+        for (int i = 0; i < bestSol.size(); i++) {
+            for (int j = 0; j < bestSol.get(i).size(); j++) {
+                c.getGraphicsContext2D().fillRect(bestSol.get(i).get(j).x * 6, bestSol.get(i).get(j).y * 6, 2, 2);
+                if (j != 0) {
+                    c.getGraphicsContext2D().strokeLine(bestSol.get(i).get(j - 1).x * 6, bestSol.get(i).get(j - 1).y * 6, bestSol.get(i).get(j).x * 6, bestSol.get(i).get(j).y * 6);
+                }
+            }
+        }
+        
+        for (int i = 0; i < badSol.size(); i++) {
+            for (int j = 0; j < badSol.get(i).size(); j++) {
+                c.getGraphicsContext2D().fillRect(650 + badSol.get(i).get(j).x * 6,badSol.get(i).get(j).y * 6, 2, 2);
+                if (j != 0) {
+                    c.getGraphicsContext2D().strokeLine(650 + badSol.get(i).get(j - 1).x * 6,  badSol.get(i).get(j - 1).y * 6, 650 + badSol.get(i).get(j).x * 6, badSol.get(i).get(j).y * 6);
+                }
+            }
+        }
+
+        Group root = new Group();
+        root.getChildren().add(c);
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
     
     public static void main(String[] args) {
         locations = new Location[NUM_LOCATIONS];
@@ -29,23 +66,22 @@ public class Algorithm {
         }
         makeDistanceMatrix();
         ArrayList<ArrayList<Location>> canvasserVisits = calculate();
-        for(int i = 0; i < canvasserVisits.size();i++){
-            for(int j =0; j<canvasserVisits.get(i).size();j++) {
-                System.out.print(canvasserVisits.get(i).get(j).x + " " + canvasserVisits.get(i).get(j).x);
-            }
-            System.out.println();
-        }
-        System.out.println(totalDistance);
         
+        System.out.println("Bad Solution total distance: " + totalDistance + " total canvassers " + canvasserVisits.size());
+                
+        
+        for (int i = 0; i < canvasserVisits.size(); i++) {
+            ArrayList tempArr = new ArrayList();
+            for (int j = 0; j < canvasserVisits.get(i).size(); j++) {
+                Location tempLoc = new Location(canvasserVisits.get(i).get(j).x, canvasserVisits.get(i).get(j).y, canvasserVisits.get(i).get(j).id);
+                tempArr.add(tempLoc);
+            }
+            badSol.add(tempArr);
+        }
         optimize(canvasserVisits);
         
-        for(int i = 0; i < canvasserVisits.size();i++){
-            for(int j =0; j<canvasserVisits.get(i).size();j++) {
-                System.out.print(canvasserVisits.get(i).get(j).x + " " + canvasserVisits.get(i).get(j).x);
-            }
-            System.out.println();
-        }
-        System.out.println(totalDistance);
+        System.out.println("Best Solution total distance: " + totalDistance + " total canvassers " + bestSol.size());
+        launch(args);
     }
     
     // Calculate the paths for canvassers by choosing the
@@ -62,6 +98,7 @@ public class Algorithm {
             int closestIndex = findClosestNonVisitedLocation(curLocIndex);
             if (totalTimeWillBeReached(curPathTime, curLocIndex, closestIndex)) {
                 pathList.add(curList);
+                bestSol.add(curList);
                 curList = new ArrayList();
                 curPathTime = 0;
             }
@@ -71,44 +108,47 @@ public class Algorithm {
             totalDistance += time;
         }
         pathList.add(curList);
+        bestSol.add(curList);
         return pathList;
     }
     
     // Optimizes the simple solution using Tabu Search
     static void optimize(ArrayList<ArrayList<Location>> visits) {
-        double tabuMatrix[][] = new double[locations.length][locations.length];
+        double tabuMatrix[][] = new double[locations.length+1][locations.length+1];
         double cost = totalDistance;
         int indA = -1, indB = -1, rF = -1, rT = -1;
         ArrayList<Location> pathFrom, pathTo;
+        int vehIndexFrom, vehIndexTo;
+        double bestNCost, nCost;
         for (int i = 0; i < TABU_ITERATIONS; i++) {
-            double bestNCost = Double.MAX_VALUE;
-            for (int j = 0; j < visits.size(); j++) {
-                pathFrom = visits.get(j);
-                for (int k = 0; k < pathFrom.size(); k++) {
-                    for (int l =0; l < visits.size(); l++) {
-                        pathTo = visits.get(l); 
-                        for(int m = 0; m < pathTo.size(); m++) {
-                            if ((j == l) && !((k == m) || (k == m - 1))) {
-                                double dist1 = distMatrix[pathFrom.get(m - 1).id][pathFrom.get(m).id];
-                                double dist2 = distMatrix[pathFrom.get(m).id][pathFrom.get(m+1).id];
-                                double dist3 = distMatrix[pathFrom.get(k).id][pathFrom.get(k+1).id];
+            bestNCost = Double.MAX_VALUE;
+            for (vehIndexFrom = 0; vehIndexFrom < visits.size(); vehIndexFrom++) {
+                pathFrom = visits.get(vehIndexFrom);
+                for (int j = 1; j < pathFrom.size() - 1; j++) {
+                    for (vehIndexTo =0; vehIndexTo < visits.size(); vehIndexTo++) {
+                        pathTo = visits.get(vehIndexTo); 
+                        for(int k = 0; k < pathTo.size() - 1; k++) {
+                            if (((vehIndexTo == vehIndexFrom) && ((k == j) || (k == j - 1))) == false) {
+                                double dist1 = distMatrix[pathFrom.get(j - 1).id][pathFrom.get(j).id];
+                                double dist2 = distMatrix[pathFrom.get(j).id][pathFrom.get(j+1).id];
+                                double dist3 = distMatrix[pathTo.get(k).id][pathTo.get(k+1).id];
                                 
-                                double addCost1 = distMatrix[pathFrom.get(m-1).id][pathFrom.get(m+1).id];
-                                double addCost2 = distMatrix[pathFrom.get(k).id][pathFrom.get(m).id];
-                                double addCost3 = distMatrix[pathFrom.get(m).id][pathFrom.get(k + 1).id];
+                                double addCost1 = distMatrix[pathFrom.get(j-1).id][pathFrom.get(j+1).id];
+                                double addCost2 = distMatrix[pathTo.get(k).id][pathFrom.get(j).id];
+                                double addCost3 = distMatrix[pathFrom.get(j).id][pathTo.get(k + 1).id];
                                 
-                                if ((tabuMatrix[pathFrom.get(m-1).id][pathFrom.get(m+1).id] != 0) || (tabuMatrix[pathFrom.get(k).id][pathFrom.get(m).id] != 0) || (tabuMatrix[pathFrom.get(m).id][pathFrom.get(k+1).id] != 0)) {
+                                if ((tabuMatrix[pathFrom.get(j-1).id][pathFrom.get(j+1).id] != 0) || (tabuMatrix[pathTo.get(k).id][pathFrom.get(j).id] != 0) || (tabuMatrix[pathFrom.get(j).id][pathTo.get(k+1).id] != 0)) {
                                     break;
                                 }
                                 
-                                double nCost = addCost1 + addCost2 + addCost3 - dist1 -dist2 -dist3;
+                                nCost = addCost1 + addCost2 + addCost3 - dist1 -dist2 -dist3;
                                 
                                 if (nCost < bestNCost) {
                                     bestNCost = nCost;
-                                    indA = m;
+                                    indA = j;
                                     indB = k;
-                                    rF = j;
-                                    rT = l;
+                                    rF = vehIndexFrom;
+                                    rT = vehIndexTo;
                                 }
                             }
                         }
@@ -124,16 +164,9 @@ public class Algorithm {
             }
             pathFrom = visits.get(rF);
             pathTo = visits.get(rT);
-            visits.remove(rF);
-            visits.remove(rT);
             
             Location tempLoc = pathFrom.get(indA);
-            
-            int lB = pathFrom.get(indA - 1).id;
-            int lA = pathFrom.get(indA + 1).id;
-            int lF = pathTo.get(indB).id;
-            int lG = pathTo.get(indB + 1).id;
-            
+
             pathFrom.remove(indA);
             
             if (rF == rT) {
@@ -155,18 +188,14 @@ public class Algorithm {
             
             if (cost < totalDistance) {
                 totalDistance = cost;
-                for (int x = 0; x < visits.size(); x++) {
-                    visits.get(x).clear();
-                    if (visits.get(x) != null) {
-                        for (int y = 0; y < visits.get(x).size(); y++) {
-                            Location l = visits.get(x).get(y);
-                            bestSol.get(x).add(l);
-                        }
-                    }
-                }
+                bestSol = visits;
             }
-            
-        }       
+            else if (cost == totalDistance) {
+                break;
+            }
+        }   
+        visits = bestSol;
+        cost = totalDistance;
     }
     
     // Calculates the distance between two locations
@@ -214,7 +243,6 @@ public class Algorithm {
                 curIndex = i;
             }
         }
-        
         return curIndex;
     }
     

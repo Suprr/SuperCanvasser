@@ -1,21 +1,24 @@
+
+
 /**
  *
  * @author Chris
  */
 public class Location {
-    private final double x;
-    private final double y;
+    public double x;
+    public double y;
+    public boolean visited;
+    public int id;
 
-    Location(double x, double y) {
+    Location(double x, double y, int id) {
     this.x = x;
     this.y = y;
+    visited = false;
+    this.id = id;
     }
     
-    public double getX() {
-        return x;
-    }
-    public double getY() {
-        return y;
+    public void visit() {
+        visited = true;
     }
 }
 
