@@ -6,7 +6,7 @@ class TalkingPointSection extends Component{
 	state = {
 		...this.props,
 		showEdit : false,
-		editedTalkingPoint:''
+		editedTalkingPoint: this.props.talkingPoint
 	}
 
 	showEditComponentHandler(){

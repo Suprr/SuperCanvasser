@@ -13,9 +13,10 @@ class EditTalkingPointComponent extends Component{
 					<div className = 'row justify-content-center'>
 						<textarea 	
 								name = 'editedTalkingPoint'
-								value = {this.props.edittedTalkingPoint}
+								value = {this.props.editedTalkingPoint}
 								className = {[classes.TPTextField].join(' ')}
-								onChange={this.props.onChange}/>
+								onChange={this.props.onChange}
+								placeholder = {this.props.editedTalkingPoint}/>
 					</div>
 
 					<div className = 'row justify-content-center'>

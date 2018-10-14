@@ -5,7 +5,7 @@ class QuestionnaireComponent extends Component{
 	state = {
 		...this.props,
 		showEdit : false,
-		editedQuestion : ''
+		editedQuestion : this.props.question
 	}
 
 	showEditComponentHandler(){
@@ -18,10 +18,15 @@ class QuestionnaireComponent extends Component{
 		this.setState({[event.target.name] : event.target.value});
 	}
 
-	editHandler(){
+	editHandler=(event)=>{
+		let qKey = event.target.name;
+
 		this.setState((prevState)=>({
 			question : this.state.editedQuestion,
 			showEdit:false}));
+		
+		this.props.edit(this.state.editedQuestion, qKey);
+
 	}
 
 	render(){

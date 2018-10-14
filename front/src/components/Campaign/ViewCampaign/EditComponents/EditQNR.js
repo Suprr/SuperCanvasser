@@ -7,6 +7,7 @@ class EditDuration extends Component{
 	}
 
 	render(){
+		let addBtn = this.props.type? <button className='btn btn-danger' onClick={this.props.onClick}>+</button> : null; 
 		return(
 			
 					<div className = {['text-center'].join(' ')}>
@@ -14,12 +15,11 @@ class EditDuration extends Component{
 							name = 'editedQuestion'
 							value = {this.props.editedQuestion}
 							className = {[classes.TextField].join(' ')}
-							placeHolder = {this.props.editedQuestion}
+							placeholder = {this.props.editedQuestion}
 							onChange={this.props.onChange}/>
+							{addBtn}
 					</div>
-				
 
-			
 		);
 	}
 
