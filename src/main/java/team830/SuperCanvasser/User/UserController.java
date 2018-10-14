@@ -12,15 +12,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @ResponseBody
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public User editUser(@ModelAttribute(value="users") User user){
+    public User editUser(@RequestBody User user){
         return(userService.editUser(user));
     }
 
-    @ResponseBody
     @RequestMapping(value = "/view" , method = RequestMethod.GET)
-    public User getUser(@RequestParam("email") String email) {
-        return userService.getUser(email);
+    public User getUserByEmail(@RequestParam("email") String email) {
+        User user = userService.getUserByEmail(email);
+        if(user == null)
+            System.out.println("nullllllll");
+        return user;
     }
 }

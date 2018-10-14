@@ -19,7 +19,7 @@ public class UserService implements UserInterface{
     }
 
     @Override
-    public User getUser(String email) {
+    public User getUserByEmail(String email) {
         return userRepo.findByEmail(email);
 
     }

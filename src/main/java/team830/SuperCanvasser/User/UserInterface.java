@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 public interface UserInterface {
     User editUser(User user);
     User addUser(User user);
-    User getUser(String email);
+    User getUserByEmail(String email);
 }

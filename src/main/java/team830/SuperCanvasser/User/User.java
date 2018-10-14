@@ -9,18 +9,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "user")
 public class User {
     @Id
-    private String id;
+    private String _id;
     private String email;
     private String pwd;
     private String firstName;
     private String lastName;
     private String zipcode;
-    private String[] role;
+    private Role[] role;
 
     public User(){}
 
-    public User(String id, String email, String pwd, String firstName, String lastName, String zipcode, String[] role) {
-        this.id = id;
+    public User(String _id, String email, String pwd, String firstName, String lastName, String zipcode, Role[] role) {
+        this._id = _id;
         this.email = email;
         this.pwd = pwd;
         this.firstName = firstName;
