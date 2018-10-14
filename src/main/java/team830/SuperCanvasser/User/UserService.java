@@ -3,7 +3,6 @@ package team830.SuperCanvasser.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class UserService implements UserInterface{
@@ -20,8 +19,8 @@ public class UserService implements UserInterface{
     }
 
     @Override
-    public Optional<User> getUser(String id) {
-        return userRepo.findById(id);
+    public User getUser(String email) {
+        return userRepo.findByEmail(email);
 
     }
 }

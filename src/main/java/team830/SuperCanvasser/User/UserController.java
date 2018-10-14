@@ -8,22 +8,19 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
-    @PostMapping("/edit")
-    public User editUser(@RequestParam(value="user") User user){
+    @ResponseBody
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public User editUser(@ModelAttribute(value="users") User user){
         return(userService.editUser(user));
     }
 
-    @GetMapping("/view")
-    public User getUser(@RequestParam(value="id") String id) {
-        Optional<User> user1 = userService.getUser(id);
-        if (user1.isPresent()) {
-            User user = user1.get();
-            System.out.println(user.email);
-            return user;
-        }
-        else return null;
+    @ResponseBody
+    @RequestMapping(value = "/view" , method = RequestMethod.GET)
+    public User getUser(@RequestParam("email") String email) {
+        return userService.getUser(email);
     }
 }

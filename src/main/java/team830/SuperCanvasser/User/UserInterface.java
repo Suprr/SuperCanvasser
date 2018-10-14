@@ -1,9 +1,10 @@
 package team830.SuperCanvasser.User;
 
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface UserInterface {
     User editUser(User user);
     User addUser(User user);
-    Optional<User> getUser(String id);
+    User getUser(String email);
 }
