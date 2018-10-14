@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Location {
 
     @org.springframework.data.annotation.Id
-    private ObjectId id;
+    private String _id;
     private double latitude;
     private double longitude;
     private String numberStreet;
@@ -20,7 +20,4 @@ public class Location {
     private String zip;
     private boolean visited;
     private Questionnaire questionnaire;
-
-    public class Id {
-    }
 }

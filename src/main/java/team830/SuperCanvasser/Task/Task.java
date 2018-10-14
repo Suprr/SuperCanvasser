@@ -10,4 +10,7 @@ public class Task {
     private Location recommendedLoc;
     private ArrayList<Location> recommendedList;
 
+    public Task() {
+    }
+
 }

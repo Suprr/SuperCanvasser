@@ -1,31 +1,53 @@
 package team830.SuperCanvasser.Campaign;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+
+@RequestMapping("/campaign")
+@RestController
 public class CampaignController {
-        @Autowired
+    private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
+
+    @Autowired
         private CampaignService campaignService;
 
-//        @GetMapping("/campaign/")
-//        public Campaign getCampaign(@RequestParam(value="id")ObjectId id) {
-//            return(campaignService.findByManagerID(id));
-//        }
+    @GetMapping("/{id}")
+    public Campaign getCampaign(@PathVariable("id") String id) {
+        return (campaignService.findBy_Id(id));
+    }
 
-        @PostMapping("/campaign/edit")
-        public Campaign editCampaign(@RequestParam(value="campaign") Campaign campaign){
-            return(campaignService.editCampaign(campaign));
+    @RequestMapping(value = "/edit/", method = RequestMethod.POST)
+    public Campaign editCampaign(@RequestBody Campaign campaign, BindingResult result) {
+        if (result.hasErrors()) {
+            return null;
+        } else {
+            return (campaignService.editCampaign(campaign));
         }
+    }
 
-        @GetMapping("/campaigns/")
+    @RequestMapping(value = "/create/", method = RequestMethod.POST)
+    public Campaign createCampaign(@Valid @RequestBody Campaign campaign, BindingResult result) {
+        log.debug("Creating campaign");
+        if (result.hasErrors()) {
+            log.debug("Creating failed");
+            return null;
+        } else {
+            log.debug("Campaign Created");
+            return (campaignService.addCampaign(campaign));
+        }
+    }
+
+    @RequestMapping(value = "/campaigns/", method = RequestMethod.GET)
         public List<Campaign> getAllCampaigns(){
-            return(campaignService.getAllCampaigns());
+        return (campaignService.findAll());
         }
 
 }

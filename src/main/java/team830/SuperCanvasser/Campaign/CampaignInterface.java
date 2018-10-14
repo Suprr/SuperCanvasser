@@ -8,10 +8,13 @@ import java.util.List;
 @Service
 public interface CampaignInterface {
     Campaign editCampaign(Campaign campaign);
-    List<Campaign> getAllCampaigns();
+
+    List<Campaign> findAll();
+
+    Campaign addCampaign(Campaign campaign);
+
+    Campaign findBy_Id(String id);
 
 //    @Query ("{ 'id' : ?0 }")
-//    Campaign findByManagerID(ObjectId id);
-
-
+//    Campaign findByIds(String id);
 }
