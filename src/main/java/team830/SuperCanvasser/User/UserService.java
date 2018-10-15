@@ -13,6 +13,7 @@ public class UserService implements UserInterface{
     public User editUser(User user) {
         return userRepo.save(user);
     }
+
     @Override
     public User addUser(User user) {
         return userRepo.insert(user);

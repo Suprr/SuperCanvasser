@@ -26,15 +26,6 @@ public class MongoTest {
 
     public void test (MongoTemplate mongoTemplate){
 
-//        DBObject object = BasicDBObjectBuilder.start()
-//                .add("id", new ObjectId("5bc21f17777948b9d3000000"))
-//                .get();
-
-//        mongoTemplate.save(object, "SuperCanvasser");
-//        MongoClient mongo = new MongoClient( "localhost" , 27017 );
-//        MongoDatabase database = mongo.getDatabase("SuperCanvasser")
-//        MongoCollection collection = database.getCollection("users");
-
         ObjectId id = new ObjectId("5bc21f17777948b9d3000000");
         Variable variable = new Variable("avgduration", "5.5");
 
@@ -47,20 +38,5 @@ public class MongoTest {
         }
         System.out.println();
 
-
-
-
-//        Map<String, Object> map = new LinkedHashMap<>();
-//        map.put("id", id);
-//        map.put("type", "Richy");
-//        map.put("last_name", "Ridsdell");
-//        map.put("email", "a@gmail.com");
-//        map.put("pwd", "aaa");
-//        map.put("roles", new ArrayList<String>().add("ADMIN"));
-//        Document document = new Document(map);
-//        collection.insertOne(document);
-//        mongoTemplate.save(object, "variable");
-
-//        assertThat(mongoTemplate.findAll(DBObject.class, "variable"));
     }
 }
