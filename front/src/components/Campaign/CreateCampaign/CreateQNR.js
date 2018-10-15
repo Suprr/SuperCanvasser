@@ -11,7 +11,7 @@ class CreateQNR extends Component{
 					<p>New Questionnaire</p>
 				</div>
 				
-				<div className = {['col-7', classes.InputSection].join(' ')}>
+				<div className = {['col-6', classes.InputSection].join(' ')}>
 					<input 	
 							name = 'newQuestionnaire'
 							value = {this.props.questionnaire}

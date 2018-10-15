@@ -11,7 +11,7 @@ class CampaignTitle extends Component{
 					<p>Campaign Name</p>
 				</div>
 				
-				<div className = {['col-7', classes.InputSection].join(' ')}>
+				<div className = {['col-6', classes.InputSection].join(' ')}>
 					<input 	
 							name = 'campaignTitle'
 							value = {this.props.campaignTitle}

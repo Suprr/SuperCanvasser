@@ -15,23 +15,23 @@ class Sidebar extends Component{
 	    let menus = this.state.menus.map(menu =>{
 		    return (
 	    		//<Link to = {'/'+post.id}  key={post.id}> 
-	    		<div key={menu.id} className = {[classes.SidebarItem, "nav-item"].join(' ')}>
+	    		<li key={menu.id} className = {[classes.SidebarItem, "nav-item"].join(' ')}>
 		    		<NavLink
 		    			className = {[classes.SidebarItemLink].join(' ')}
 		    			
-		    			to = {'/'+menu.title}>
+		    			to = {this.props.url+'/'+menu.path}>
 				        
 				        {menu.title}
 
 			        </NavLink>
-		        </div>
+		        </li>
 		        );
 		  });   
 
 		return (
-			<div className={[classes.Sidebar, 'col-2', 'flex-column'].join(' ')}>
+			<ul className={[classes.Sidebar, "nav", "flex-column"].join(' ')}>
 					{menus}
-			</div>
+			</ul>
 		);
 	}
 } 
