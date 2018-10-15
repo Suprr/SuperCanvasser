@@ -12,7 +12,7 @@ class Users extends Component {
   };
 
   render() {
-    const { onDelete } = this.props;
+    const { onDelete, onUpdate } = this.props;
     const buttonClass = "btn border border-danger btn-group";
     return (
       <div className="nest">
@@ -28,9 +28,14 @@ class Users extends Component {
         </button>
         <div className="nest">
           {this.props.users
-            .filter(c => c.identity === this.state.userDisplay)
+            .filter(c => c.value === this.state.userDisplay)
             .map(user => (
-              <User key={user.id} user={user} onDelete={onDelete} />
+              <User
+                key={user.id}
+                user={user}
+                onDelete={onDelete}
+                onUpdate={onUpdate}
+              />
             ))}
         </div>
       </div>
