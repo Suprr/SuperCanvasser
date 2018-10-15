@@ -4,14 +4,17 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.NonNull;
 
 @Data
-@Document(collection = "variable")
+@Document(collection = "variables")
 public class Variable{
     @Id
     private String _id;
-
+    @Indexed(unique = true)
+    @NonNull
     private String type;
+    @NonNull
     private String value;
 
     public Variable(){}

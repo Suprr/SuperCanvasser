@@ -28,7 +28,6 @@ public class SuperCanvasserApplicationTests {
         System.out.println("Objects Inserted\n============");
         System.out.println(var1);
         System.out.println(var2);
-
         System.out.println("Variables found with findAll():");
         System.out.println("-------------------------------");
         for (Variable var : repository.findAll()) {
