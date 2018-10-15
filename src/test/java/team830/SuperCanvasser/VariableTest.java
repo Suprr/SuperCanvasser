@@ -10,7 +10,7 @@ import team830.SuperCanvasser.Variable.VariableRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SuperCanvasserApplicationTests {
+public class VariableTest {
     @Autowired
     private VariableRepo repository;
 
