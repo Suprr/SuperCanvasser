@@ -20,49 +20,68 @@ class CampaignList extends Component {
   		this.setState({index : count});
   		this.setState({clicked:true});
   }
-  
-  componentWillReceiveProps(nextProps){
-    if(!this.state.campaignList){
-      this.setState({campaignList : nextProps.campaignList});
-    }
-  }
 
   componentDidMount(){
-    console.log(['componentWillMount List']);
+    console.log(['componentMount List'], this.setState.campaigns);
 
-    if(!this.state.campaigns){
-      //console.log("First PAsS");
+    // if(!this.state.campaigns&&this.state.campaignList){
+      
+    //   axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
+    //       let x= response.data 
+    //       let campaignIndexes = this.state.campaignList;
+    //       let newCampaigns = [];
+    //       for(let c in campaignIndexes){
+    //         if(x){
+    //           newCampaigns.push(x[campaignIndexes[c]]);
+    //         }
+    //       }
+
+    //       this.setState((prevState)=>({campaigns : newCampaigns}));
+    //       this.props.campaignSet(newCampaigns);
+    //   });     
+    // }
+    
+  }
+
+  componentDidUpdate(){
+    console.log(['componentUpdate List'], this.props);
+    if(!this.state.campaigns&&this.state.campaignList){
       axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
           let x= response.data 
           let campaignIndexes = this.state.campaignList;
           let newCampaigns = [];
           for(let c in campaignIndexes){
-            if(x[c]){
-              newCampaigns.push(x[c]);
+            if(x){
+              newCampaigns.push(x[campaignIndexes[c]]);
             }
           }
 
-          this.setState({campaigns : newCampaigns});
+          this.setState((prevState)=>({campaigns : newCampaigns}));
           this.props.campaignSet(newCampaigns);
-          //this.setState({campaigns : response.data.campaigns})
       });     
     }
     
-
-    // axios.get('https://cse308-de3df.firebaseio.com/managers/'+this.state.currentID+'.json').then(response=>{
-    //       let x= response.data 
-    //       console.log(['CampaignList Data'],x);
-    //       this.setState({campaigns : response.data.campaigns})
-    //   });
   }
+
+  componentWillReceiveProps(nextProps){
+
+    console.log(['componentWillReceiveProps List'], nextProps.campaignList);
+
+    if(!this.state.campaignList){
+      this.setState({campaignList : nextProps.campaignList});
+    }
+  }
+
+  
 
 
 
   render() {
-    console.log('[List] campaigns : ',this.state.campaigns);
+    console.log('[List, RENDER] campaigns : ',this.state.campaigns);
   	let campaigns = null
   	//if(!this.state.clicked){
-  	if(this.state.campaigns){
+  	if(this.state.campaigns&&this.state.campaigns.length!=0){
+      console.log('[List Render] HEre');
 	  		let count = 0;
 		    campaigns = this.state.campaigns.map(cpg => {
 		      let campaign = null;
@@ -71,6 +90,7 @@ class CampaignList extends Component {
 		      return campaign;
 		    });  
 		} else{
+      console.log('[List Render] MAYBE');
 			campaigns = <h1> No campaing List</h1>
 		}
 
@@ -83,11 +103,11 @@ class CampaignList extends Component {
 	//}
   console.log('[List]',this.props.match.url);
     return (
-
       <div>
         <PageHead title="Campaign List" />
         <div className="row">{campaigns}</div>
       </div>
+
     );
   }
 }

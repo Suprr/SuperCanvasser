@@ -45,6 +45,7 @@ class CreateCampaign extends Component{
 	}
 
 	 handleStartDateChange = (newDate)=>{
+	   
 	    this.setState({
 	      startDate: newDate
 	    });
@@ -136,8 +137,8 @@ class CreateCampaign extends Component{
 	  		const campaign = {
 		  		campaignTitle : this.state.campaignTitle,
 				managers : this.state.managers,
-				startDate : this.state.startDate,
-				endDate : this.state.endDate,
+				startDate : this.state.startDate._d.toDateString(),
+				endDate : this.state.endDate._d.toDateString(),
 				talkingPoint : this.state.talkingPoint,
 				questionnaire : this.state.questionnaire,
 				locations : this.state.locations,
@@ -157,6 +158,16 @@ class CreateCampaign extends Component{
                 console.log("Error", error);
             });
 
+            axios.put('/managers/0/campaigns/'+this.state.id+'.json/',JSON.stringify(this.state.id)).then( response => {
+
+           		console.log("addCampaignToManager");
+           		
+            })
+            .catch( error => {
+                console.log("Error", error);
+            });
+
+
             // axios.put('/campaigns/length', this.state.id+1).then( response => {
 
            	// 	console.log("id is increased");
@@ -170,7 +181,7 @@ class CreateCampaign extends Component{
 	  }
 
 	  componentDidMount(){;
-	  	
+	  	console.log(['Create Campaign Did Mount']);
 	  	
 	  	let x = null
 	  	axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
@@ -190,6 +201,7 @@ class CreateCampaign extends Component{
 	  }
 
 	render(){
+		console.log(['Create Campaign Render']);
 		return(
 			<div className='container'>
 					

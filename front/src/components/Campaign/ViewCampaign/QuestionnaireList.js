@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import classes from './ViewCampaign.module.css'
 import QuestionnaireComponent from './QuestionnaireComponent'
 import EditQNR from './EditComponents/EditQNR'
+import axios from '../../../axios'
 
 class QuestionnaireList extends Component{
 	state={
@@ -44,7 +45,17 @@ class QuestionnaireList extends Component{
 		console.log(newQuestionnaire);
 		this.setState((prevState)=>({
 			questionnaire : newQuestionnaire
-		}))
+		}));
+
+
+		console.log('EditHandler');
+	    
+	    axios.put('/campaigns/'+this.props.id+'/questionnaire.json/', newQuestionnaire).then( response => {  
+	              console.log("Success", this.state.newQuestionnaire);
+	      })
+	      .catch( error => {
+	          console.log("Error", error);
+	    });
 	}
 
 	//This method for showing textfield component
@@ -66,10 +77,19 @@ class QuestionnaireList extends Component{
 		this.setState((prevState)=>({
 			showAdd : false
 		}));
+
+		axios.put('/campaigns/'+this.props.id+'/questionnaire.json/', this.state.questionnaire).then( response => {  
+	              console.log("Success", this.state.questionnaire);
+	      })
+	      .catch( error => {
+	          console.log("Error", error);
+	    });
+
 	}
 
 	addedQuestionChange=(event)=>{
 		this.setState({editedQuestion : event.target.value})
+
 	}
 
 

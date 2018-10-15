@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import classes from './ViewCampaign.module.css'
 import EditDuration from './EditComponents/EditDuration'
-
+import axios from '../../../axios'
 class VisitDurationSection extends Component{
 	state = {
 		...this.props,
@@ -21,12 +21,19 @@ class VisitDurationSection extends Component{
 	}
 
 	editHandler(){
+		let newDuration = this.state.editedHour + 'H '+this.state.editedMin+'M'
 		this.setState((prevState)=>({
-			duration : this.state.editedHour + 'H '+this.state.editedMin+'M',
+			duration : newDuration,
 			showEdit:false}));
 
 		
-		
+		axios.put('/campaigns/'+this.props.id+'/duration.json/', JSON.stringify(newDuration)).then( response => {  
+	              console.log("Success", this.state.duration);
+	      })
+	      .catch( error => {
+	          console.log("Error", error);
+	    });
+
 	}	
 
 	render(){

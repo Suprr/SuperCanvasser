@@ -23,6 +23,7 @@ class AddUser extends Component {
         className="border-top-0 border-right-0 border-left-0 float-right"
         type="text"
       />
+      
     );
     return (
       <div className="nest">

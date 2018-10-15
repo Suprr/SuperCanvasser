@@ -12,7 +12,7 @@ class Campaign extends Component{
 
 			<div className = {["card", classes.Campaign].join(' ')}>
 				<div className={["card-body"].join(' ')}>
-					<h5 className="card-title">{this.state.title}</h5>
+					<h5 className="card-title">{this.state.campaignTitle}</h5>
 					
 					<div className={["container-fluid", classes.CampaignBody].join(' ')}>
 						<div className="row">
@@ -28,7 +28,7 @@ class Campaign extends Component{
 					</div>
 
 					<div>
-						<Link className={classes.Link} to={this.props.url+'/'+this.props.id+'/'+this.props.name}>
+						<Link className={classes.Link} to={this.props.url+'/'+this.props.campaign.id+'/'+this.props.name}>
 						<button name = {this.props.name} className = {["btn btn-danger"].join(' ')}>
 								
 									View

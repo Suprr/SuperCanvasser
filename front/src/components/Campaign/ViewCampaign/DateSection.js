@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import classes from './ViewCampaign.module.css'
 import EditDateSection from './EditComponents/EditDateSection'
 import moment from 'moment';
+import axios from '../../../axios'
 
 class DateSection extends Component{
 	state={
@@ -39,6 +40,22 @@ class DateSection extends Component{
 				showEdit:false
 			}));
 		}
+
+		
+		axios.put('/campaigns/'+this.props.id+'/startDate.json/', JSON.stringify(this.state.editedStartDate._d.toDateString())).then( response => {  
+	              console.log("Success", this.state.startDate);
+	      })
+	      .catch( error => {
+	          console.log("Error", error);
+	    });
+
+
+		axios.put('/campaigns/'+this.props.id+'/endDate.json/', JSON.stringify(this.state.editedEndDate._d.toDateString())).then( response => {  
+	              console.log("Success", this.state.endDate);
+	      })
+	      .catch( error => {
+	          console.log("Error", error);
+	    });
 
 	}
 

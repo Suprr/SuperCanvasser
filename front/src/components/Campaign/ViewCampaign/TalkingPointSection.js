@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import classes from './ViewCampaign.module.css'
 import EditTalkingPointComponent from './EditComponents/EditTalkingPointComponent'
-
+import axios from '../../../axios'
 class TalkingPointSection extends Component{
 	state = {
 		...this.props,
@@ -20,9 +20,22 @@ class TalkingPointSection extends Component{
 	}
 
 	editHandler(){
+		console.log('Edit TalkingPoint Handler');
 		this.setState((prevState)=>({
 			talkingPoint : this.state.editedTalkingPoint,
 			showEdit:false}));
+
+
+		
+	    console.log('EditHandler');
+	    
+	    axios.put('/campaigns/'+this.props.id+'/talkingPoint.json/', JSON.stringify(this.state.editedTalkingPoint)).then( response => {  
+	              console.log("Success", this.state.editedTalkingPoint);
+	      })
+	      .catch( error => {
+	          console.log("Error", error);
+	    });
+    
 	}
 
 	render(){

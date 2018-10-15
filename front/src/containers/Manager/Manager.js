@@ -27,7 +27,7 @@ class Manager extends Component{
 			 axios.get('https://cse308-de3df.firebaseio.com/managers/'+this.state.managerID+'.json').then(response=>{
 		          x= response.data 
 		          console.log('[Manager componentWillMount]',x.campaigns)
-		          this.setState({campaignList : response.data.campaigns})
+		          this.setState((prevState)=>({campaignList : response.data.campaigns}));
 		      });    
 			 console.log('HEREEEE',x);
 		}	
@@ -44,7 +44,7 @@ class Manager extends Component{
 		//<CreateCampaign />
 		// <Route path={this.props.match.url+'/campaign-list/:id'} 
   //                			 render={()=> <ViewCampaign campaign = {this.state.campaigns[0]}/>}/>
-		console.log('[Manager]',this.state.campaigns);
+		console.log('[Manager]',this.state.campaigns, '[campaignList]', this.state.campaignList);
 		return(	
 				
 				<div className={["col-10", "fixed-center", classes.Manager].join(' ')}>

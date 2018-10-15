@@ -36,7 +36,7 @@ class ViewCampaign extends Component {
   };
 
   componentDidMount(){
-     let cmpIndex = this.props.match.params.index;
+     let cmpIndex = this.props.match.params.id;
      axios.get('https://cse308-de3df.firebaseio.com/campaigns/'+cmpIndex+'.json').then(response=>{
           let x= response.data
           let newCampaign = x;
@@ -52,30 +52,36 @@ class ViewCampaign extends Component {
           // this.props.campaignSet(newCampaigns);
           //this.setState({campaigns : response.data.campaigns})
       });     
-  }
+    
+
+   }
+  
+
+  
 
   render() {
     console.log('[Veiw Campaign]', this.state.campaign)
    // let campaign = this.props.campaign[parseInt(this.props.match.params.index)];
   	let cmpaign = this.state.campaign ? (<div className={[classes.ViewCampaign].join(" ")}>
         <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
-          <QuestionnaireList questionnaire={this.state.campaign.questionnaire} />
+          <QuestionnaireList questionnaire={this.state.campaign.questionnaire} id={this.state.campaign.id} />
         </Modal>
         <PageHead title="View Campaign" subtitle={this.state.campaign.title} />
 
         <div className={[classes.Components, "container"].join(" ")}>
           <div className="row justify-content-center">
-            <ManagerSection managers={this.state.campaign.managers} />
+            <ManagerSection managers={this.state.campaign.managers} id={this.state.campaign.id}/>
           </div>
           <div className="row justify-content-center">
             <DateSection
               startDate={this.state.campaign.startDate}
               endDate={this.state.campaign.endDate}
+              id={this.state.campaign.id}
             />
             
           </div>
           <div className="row justify-content-center">
-            <TalkingPointSection talkingPoint={this.state.campaign.talkingPoint} />
+            <TalkingPointSection talkingPoint={this.state.campaign.talkingPoint} id={this.state.campaign.id}/>
           </div>
           <div className="row justify-content-center">
             <QuestionnaireSection
@@ -84,10 +90,10 @@ class ViewCampaign extends Component {
             />
           </div>
           <div className="row justify-content-center">
-            <VisitDurationSection duration={this.state.campaign.visitDuration} />
+            <VisitDurationSection duration={this.state.campaign.visitDuration} id={this.state.campaign.id}/>
           </div>
           <div className="row justify-content-center">
-            <TasksSection tasks={this.state.campaign.task} />
+            <TasksSection tasks={this.state.campaign.task} id={this.state.campaign.id}/>
           </div>
         </div>
       </div>) : null;
@@ -97,7 +103,7 @@ class ViewCampaign extends Component {
       {cmpaign}
       </div>
     );
-    
+
   }
 }
 
