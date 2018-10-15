@@ -90,7 +90,7 @@ class ViewCampaign extends Component {
             />
           </div>
           <div className="row justify-content-center">
-            <VisitDurationSection duration={this.state.campaign.visitDuration} id={this.state.campaign.id}/>
+            <VisitDurationSection duration={this.state.campaign.duration} id={this.state.campaign.id}/>
           </div>
           <div className="row justify-content-center">
             <TasksSection tasks={this.state.campaign.task} id={this.state.campaign.id}/>

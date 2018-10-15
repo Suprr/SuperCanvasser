@@ -21,17 +21,25 @@ class Manager extends Component{
 	}
 
 	componentDidMount(){
-		console.log('[Manager componentWillMount]', this.state.campaignList);
+		console.log(['Manager componentDidMount'], this.state.campaignList);
 		let x = null
+		
 		if(!this.state.campaignList){
 			 axios.get('https://cse308-de3df.firebaseio.com/managers/'+this.state.managerID+'.json').then(response=>{
 		          x= response.data 
-		          console.log('[Manager componentWillMount]',x.campaigns)
+		          console.log('[Manager componentDidMount]',x.campaigns)
 		          this.setState((prevState)=>({campaignList : response.data.campaigns}));
 		      });    
 			 console.log('HEREEEE',x);
 		}	
 	}
+	
+
+	componentDidUpdate(){
+		console.log(['Manager componentDidUpdate'], this.state.campaignList);
+		
+	}
+
 
 	realCampianSet=(realCamp)=>{
 		console.log('[Real Camp]',realCamp)
@@ -44,7 +52,7 @@ class Manager extends Component{
 		//<CreateCampaign />
 		// <Route path={this.props.match.url+'/campaign-list/:id'} 
   //                			 render={()=> <ViewCampaign campaign = {this.state.campaigns[0]}/>}/>
-		console.log('[Manager]',this.state.campaigns, '[campaignList]', this.state.campaignList);
+		console.log(['Manager render'],this.state.campaigns, '[campaignList]', this.state.campaignList);
 		return(	
 				
 				<div className={["col-10", "fixed-center", classes.Manager].join(' ')}>

@@ -221,11 +221,13 @@ class CreateCampaign extends Component{
 					<AddLocation location={this.state.newLocation} onChange={this.handleInputChange}
 							onClick = {(event)=>this.addLocationHandler(event)}/>
 					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
-					<VisitDuration VisitDuration = {this.state.visitDuration} onChange = {(event) => this.handleInputChange(event)}/>
-				
+					<VisitDuration VisitDuration = {this.state.duration} onChange = {(event) => this.handleInputChange(event)}/>
+					
+					<form>
 					<div className = {classes.Btn}>
 						<button className="btn btn-dark" onClick={this.handleSubmit}>Submit</button>
 					</div>
+					</form>
 			
 				
 			</div>
