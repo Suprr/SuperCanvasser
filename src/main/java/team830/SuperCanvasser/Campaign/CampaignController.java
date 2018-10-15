@@ -27,25 +27,27 @@ public class CampaignController {
     @RequestMapping(value = "/edit/", method = RequestMethod.POST)
     public Campaign editCampaign(@RequestBody Campaign campaign, BindingResult result) {
         if (result.hasErrors()) {
+            log.info("Edit campaign failed");
             return null;
         } else {
+            log.info("Edit campaign successful");
+
             return (campaignService.editCampaign(campaign));
         }
     }
 
     @RequestMapping(value = "/create/", method = RequestMethod.POST)
     public Campaign createCampaign(@Valid @RequestBody Campaign campaign, BindingResult result) {
-        log.debug("Creating campaign");
         if (result.hasErrors()) {
-            log.debug("Creating failed");
+            log.info("Creating campaign failed");
             return null;
         } else {
-            log.debug("Campaign Created");
+            log.info("Campaign Created");
             return (campaignService.addCampaign(campaign));
         }
     }
 
-    @RequestMapping(value = "/campaigns/", method = RequestMethod.GET)
+    @RequestMapping(value = "/all/", method = RequestMethod.GET)
         public List<Campaign> getAllCampaigns(){
         return (campaignService.findAll());
         }

@@ -25,9 +25,9 @@ public class CampaignTest {
         repository.deleteAll();
         Manager manager = new Manager();
         Campaign var1 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Canvasser>(),
-                new ArrayList<Location>(), new ArrayList<String>(), "testName", 5, "notes");
+                new ArrayList<Location>(), new ArrayList<String>(), "tesstName", 5, "notes");
         Campaign var2 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Canvasser>(),
-                new ArrayList<Location>(), new ArrayList<String>(), "testName", 6, "notes");
+                new ArrayList<Location>(), new ArrayList<String>(), "testaName", 6, "notes");
         repository.save(var1);
         repository.save(var2);
 
@@ -36,14 +36,14 @@ public class CampaignTest {
         System.out.println(var1);
         System.out.println(var2);
         System.out.println("Objects Retrieved from Database\n============");
-        System.out.println("Variables found with findAll():");
+        System.out.println("aka Variables found with findAll():");
         System.out.println("-------------------------------");
         for (Campaign var : repository.findAll()) {
             System.out.println(var);
         }
         System.out.println();
 
-        repository.deleteAll();
+//        repository.deleteAll();
     }
 
 

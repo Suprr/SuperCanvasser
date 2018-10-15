@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //@Data
-@Document(collection = "User")
+@Document(collection = "users")
 public class Manager extends User {
     @DBRef
     private List<Campaign> campaigns;
