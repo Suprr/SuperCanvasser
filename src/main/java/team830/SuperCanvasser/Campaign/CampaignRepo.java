@@ -9,8 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface CampaignRepo extends MongoRepository<Campaign, String> {
-    //        Campaign getFromManagersId(String _id);
     Campaign findBy_id(String id);
-//        Campaign findbyIds(String id);
 }
 

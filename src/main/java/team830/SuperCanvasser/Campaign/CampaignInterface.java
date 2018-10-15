@@ -15,6 +15,4 @@ public interface CampaignInterface {
 
     Campaign findBy_Id(String id);
 
-//    @Query ("{ 'id' : ?0 }")
-//    Campaign findByIds(String id);
 }

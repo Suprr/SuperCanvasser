@@ -10,8 +10,6 @@ import team830.SuperCanvasser.Campaign.CampaignRepo;
 import team830.SuperCanvasser.Task.Location;
 import team830.SuperCanvasser.User.Canvasser;
 import team830.SuperCanvasser.User.Manager;
-import team830.SuperCanvasser.Variable.Variable;
-import team830.SuperCanvasser.Variable.VariableRepo;
 
 import java.util.ArrayList;
 import java.util.Date;
