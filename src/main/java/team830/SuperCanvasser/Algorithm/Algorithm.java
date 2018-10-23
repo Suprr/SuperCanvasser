@@ -184,20 +184,54 @@ public class Algorithm extends Application {
             lowestNeighborDist = Double.MAX_VALUE;
             for (locIndexFrom = 0; locIndexFrom < visits.size(); locIndexFrom++) {
                 locFrom = visits.get(locIndexFrom);
-                for (int j = 1; j < locFrom.size() - 1; j++) {
+                for (int j = 0; j < locFrom.size(); j++) {
                     for (locIndexTo =0; locIndexTo < visits.size(); locIndexTo++) {
                         locTo = visits.get(locIndexTo); 
-                        for(int k = 0; k < locTo.size() - 1; k++) {
+                        for(int k = -1; k < locTo.size(); k++) {
                             
                             // Check if the route will change and change it if the total change is net negative distance
                             if (((locIndexTo == locIndexFrom) && ((k == j) || (k == j - 1))) == false) {
-                                double subtractDist1 = distMatrix[locFrom.get(j - 1).id][locFrom.get(j).id];
-                                double subtractDist2 = distMatrix[locFrom.get(j).id][locFrom.get(j+1).id];
-                                double subtractDist3 = distMatrix[locTo.get(k).id][locTo.get(k+1).id];
+                                double subtractDist1, subtractDist2, subtractDist3, addDist1, addDist2, addDist3;
                                 
-                                double addDist1 = distMatrix[locFrom.get(j-1).id][locFrom.get(j+1).id];
-                                double addDist2 = distMatrix[locTo.get(k).id][locFrom.get(j).id];
-                                double addDist3 = distMatrix[locFrom.get(j).id][locTo.get(k + 1).id];
+                                if (j == 0) {
+                                    subtractDist1 = 0;
+                                }
+                                else {
+                                    subtractDist1 = distMatrix[locFrom.get(j - 1).id][locFrom.get(j).id];
+                                }
+                                
+                                if (j == locFrom.size() - 1) {
+                                    subtractDist2 = 0;
+                                }
+                                else {
+                                    subtractDist2 = distMatrix[locFrom.get(j).id][locFrom.get(j+1).id];
+                                }
+                                
+                                if (k == locTo.size() - 1 || k == -1) {
+                                    subtractDist3 = 0;
+                                }
+                                else {
+                                    subtractDist3 = distMatrix[locTo.get(k).id][locTo.get(k+1).id];
+                                }
+                                
+                                if (j == 0 || j == locFrom.size() - 1) {
+                                    addDist1 = 0;
+                                }
+                                else {
+                                    addDist1 = distMatrix[locFrom.get(j-1).id][locFrom.get(j+1).id];
+                                }
+                                if (k == -1) {
+                                    addDist2 = 0;
+                                }
+                                else {
+                                    addDist2 = distMatrix[locTo.get(k).id][locFrom.get(j).id];
+                                }
+                                if (k == locTo.size() - 1) {
+                                    addDist3 = 0;
+                                }
+                                else {
+                                    addDist3 = distMatrix[locFrom.get(j).id][locTo.get(k + 1).id];
+                                }
                                 
                                 if (totalDistOfCanvasser(visits.get(locIndexTo))+ TIME_PER_VISIT + (addDist1 + addDist2 + addDist3)/CANVASSER_SPEED <= CANVASSER_WORKDAY) {
                                     neighborDist = (addDist1 + addDist2 + addDist3 - subtractDist1 - subtractDist2 - subtractDist3);
