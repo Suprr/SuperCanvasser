@@ -37,7 +37,6 @@ class Manager extends Component{
 
 	componentDidUpdate(){
 		console.log(['Manager componentDidUpdate'], this.state.campaignList);
-		
 	}
 
 

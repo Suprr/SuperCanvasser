@@ -23,6 +23,7 @@ class CampaignList extends Component {
   getDerivedStateFromProps(props, state){
     console.log('[List getDerivedStateFromProps', this.props.campaignList)
   }
+  
   componentDidMount(){
     console.log(['List componentDidMount '], this.props.campaignList);
 
