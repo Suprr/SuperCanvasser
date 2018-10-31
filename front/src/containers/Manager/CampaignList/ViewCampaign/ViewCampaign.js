@@ -41,7 +41,7 @@ class ViewCampaign extends Component {
           let x= response.data
           let newCampaign = x;
           // let newCampaigns = [];
-          console.log(['ViewCmp componentDidMount'], newCampaign);
+          //console.log(['ViewCmp componentDidMount'], newCampaign);
           // for(let c in campaignIndexes){
           //   if(x[c]){
           //     newCampaigns.push(x[c]);
@@ -52,7 +52,8 @@ class ViewCampaign extends Component {
           // this.props.campaignSet(newCampaigns);
           //this.setState({campaigns : response.data.campaigns})
       });     
-    
+      
+     // console.log(['View Task'], this.props);
 
    }
   
@@ -60,7 +61,8 @@ class ViewCampaign extends Component {
   
 
   render() {
-    console.log('[Veiw Campaign]', this.state.campaign)
+    //console.log('[Veiw Campaign]', this.state.campaign)
+    console.log(['View Campaign Props'], this.props);
    // let campaign = this.props.campaign[parseInt(this.props.match.params.index)];
   	let cmpaign = this.state.campaign ? (<div className={[classes.ViewCampaign].join(" ")}>
         <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
@@ -93,7 +95,7 @@ class ViewCampaign extends Component {
             <VisitDurationSection duration={this.state.campaign.duration} id={this.state.campaign.id}/>
           </div>
           <div className="row justify-content-center">
-            <TasksSection tasks={this.state.campaign.task} id={this.state.campaign.id}/>
+            <TasksSection tasks={this.state.campaign.tasks} id={this.state.campaign.id} url = {this.props.match.url} history ={this.props.history}/>
           </div>
         </div>
       </div>) : null;

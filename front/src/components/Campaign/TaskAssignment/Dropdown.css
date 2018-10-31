@@ -1,0 +1,30 @@
+.Dropdown-root{
+	width:100%;
+	border-bottom: 1px solid black;
+	text-align: center;
+}
+
+.Dropdown-menu{
+  height: 100px;
+  overflow-y: scroll;
+  border:1px solid black;
+  width : 100%;
+}
+
+.Dropdown-option{
+	border-bottom: 1px solid black;
+	padding : 10px;
+}
+
+.Dropdown-option:hover {
+	background: #cb4d58;
+	color : white;
+}
+.dropdown-toggle::after{
+	color : #cb4d58;
+	width:10px;
+	float: right;
+	margin-top:10px;
+}
+
+

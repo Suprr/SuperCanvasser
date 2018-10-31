@@ -3,7 +3,7 @@ import classes from '../ViewCampaign.module.css'
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-
+import moment from 'moment'
 class EditDate extends Component{
 	state={
 		...this.props

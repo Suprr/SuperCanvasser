@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react'
 import moment from 'moment'
 
@@ -19,6 +18,7 @@ import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDura
 
 import axios from '../../../axios'
 import Modal from '../../../components/UI/Modal/Modal'
+
 class CreateCampaign extends Component{
 	state = {
 		campaignTitle : '',
@@ -28,6 +28,8 @@ class CreateCampaign extends Component{
 		talkingPoint : '',
 		questionnaire : [],
 		locations : [],
+		visitHour : '',
+		visitMin : '',
 		duration : '',
 		newManager : '',
 		newQuestionnaire :'',
@@ -142,7 +144,7 @@ class CreateCampaign extends Component{
 				talkingPoint : this.state.talkingPoint,
 				questionnaire : this.state.questionnaire,
 				locations : this.state.locations,
-				duration : this.state.duration,
+				duration : this.state.visitHour+"H "+this.state.visitMin+"M",
 				id : this.state.id 
 			}
 
@@ -221,7 +223,7 @@ class CreateCampaign extends Component{
 					<AddLocation location={this.state.newLocation} onChange={this.handleInputChange}
 							onClick = {(event)=>this.addLocationHandler(event)}/>
 					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
-					<VisitDuration VisitDuration = {this.state.duration} onChange = {(event) => this.handleInputChange(event)}/>
+					<VisitDuration visitHour = {this.state.visitHour} visitMin = {this.state.visitMin} onChange = {(event) => this.handleInputChange(event)}/>
 					
 					<form>
 					<div className = {classes.Btn}>

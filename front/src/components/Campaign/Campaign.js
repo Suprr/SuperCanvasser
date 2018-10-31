@@ -7,7 +7,7 @@ class Campaign extends Component{
 	}
 
 	render(){
-		console.log('Campaign : url, '+this.props.url+ ' key : '+ this.props.id);
+
 		return(
 
 			<div className = {["card", classes.Campaign].join(' ')}>

@@ -1,0 +1,39 @@
+.TaskDate{
+	text-align: center;
+	color : #cb4d58;
+}
+
+.Section{
+	margin-bottom : 40px;
+}
+
+.ListSection{
+	text-align: center;
+}
+.ListHeader{
+	text-align: center;
+	color : #cb4d58;
+	margin: 30px 0;
+}
+.singleCanvasser{
+	margin-bottom:20px;
+	border-bottom: 1px solid black;
+	width : 60%;
+	text-align: center;
+}
+
+.singleCanvasser button{
+	background: #ffffff;
+	border : none;
+	width:100%;
+}
+
+.CanvasserName{
+	text-align: center;
+	color : #cb4d58;
+}
+
+.SearchBtn{
+	background: #ffffff;
+	border : 1px solid black;
+}
