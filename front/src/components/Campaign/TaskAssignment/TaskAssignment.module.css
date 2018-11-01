@@ -6,3 +6,26 @@
 	text-align: center;
 	font-size:14px;
 }
+
+.Item div{
+	text-align: center;
+	font-size:15px;
+}
+.Item{
+	padding-top:20px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #999
+}
+
+.DetailBtn{
+	border:1px solid #cb4d58;
+	color:#cb4d58;
+	background: white;
+	height: 40px;
+	margin-top:-10px;
+}
+
+.DetailBtn:hover{
+	color:white;
+	background: #cb4d58;
+}

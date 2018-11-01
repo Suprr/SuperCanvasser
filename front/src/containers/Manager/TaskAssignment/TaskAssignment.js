@@ -6,6 +6,7 @@ import TaskAssignmentHead from '../../../components/Campaign/TaskAssignment/Task
 import TaskAssignmentList from '../../../components/Campaign/TaskAssignment/TaskAssignmentList'
 import classes from './TaskAssignment.module.css'
 import axios from '../../../axios'
+import TaskDetail from './TaskDetail/TaskDetail'
 class TaskAssignment extends Component{
 	state ={
 		selectedCampaign: null,
@@ -72,15 +73,16 @@ class TaskAssignment extends Component{
   }
 
 	render(){
-		//console.log(['Task Assignment'],this.state.campaigns)
+		console.log(['Task Assignment'],this.props)
 		return <div>
 					<PageHead title='View Task Assignment'/>
 					<div className={classes.TaskAssignmentHead}>
 						<TaskAssignmentHead campaigns = {this.state.campaigns} selectedCampaign={this.selectedCampaignHandler}/>
 					</div>
 					<div className={classes.ListComponent}>
-						<TaskAssignmentList campaign = {this.state.selectedCampaign} tasks = {this.state.tasks} updateHandler = {this.tasksUpdate} load = {this.state.loadTasks}/>
+						<TaskAssignmentList url = {this.props.match.url}campaign = {this.state.selectedCampaign} tasks = {this.state.tasks} updateHandler = {this.tasksUpdate} load = {this.state.loadTasks}/>
 					</div>
+					
 				</div>
 	}
 }

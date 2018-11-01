@@ -41,12 +41,12 @@ class TaskAssignmentList extends Component{
 	render(){
 
 		let tasks =  this.state.tasks&&this.state.tasks.length>0? this.state.tasks.map(tsk =>{
-			let task = <TaskAssignmentItem key= {tsk.id} task={tsk}/> 
+			let task = <TaskAssignmentItem url={this.props.url} key= {tsk.id} task={tsk}/> 
 		    return task;
 		  }) : <h1>No Task</h1>;
 		//console.log(this.state.tasks)
 		const comp = this.props.campaign? (<div>
-			<div className='col-11'>
+			<div>
 				<TaskAssignmentListHead />
 				{tasks}
 			</div>

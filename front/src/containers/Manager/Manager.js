@@ -10,6 +10,7 @@ import ViewCampaign from './CampaignList/ViewCampaign/ViewCampaign'
 import CreateCampaign from './CreateCampaign/CreateCampaign'
 import AssignTask from './CampaignList/ViewCampaign/AssignTask/AssignTask'
 import TaskAssignment from './TaskAssignment/TaskAssignment'
+import TaskDetail from './TaskAssignment/TaskDetail/TaskDetail'
 import axios from '../../axios'
 class Manager extends Component{
 	
@@ -58,6 +59,7 @@ class Manager extends Component{
 							render = {() => <AssignTask/>}/>
 						<Route path={this.props.match.url+'/campaign-list/:id/:index'} 
                          render={()=> <ViewCampaign campaign = {this.state.campaigns}/>}/>
+                         <Route path={this.props.match.url+'/task-assignment/:tid'} render = {()=><TaskDetail/>}/>
                          <Route path={this.props.match.url+'/task-assignment/'} render = {()=><TaskAssignment campaignList={this.state.campaignList}/>}/>
 
 						<Redirect from={this.props.match.url} to = {this.props.match.url+'/campaign-list'}/>
