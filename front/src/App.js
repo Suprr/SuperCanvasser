@@ -4,11 +4,14 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Base from "./containers/Base/Base";
 import SignIn from "./containers/SignIn/SignIn";
+import SignInRole from "./containers/SignIn/SignInRole"
+
 
 import Manager from "./containers/Manager/Manager";
 import Canvasser from "./containers/Canvasser/Canvasser";
 import SysAdmin from "./containers/SysAdmin/SysAdmin";
 import ManagerData from './containers/Manager/ManagerData'
+
 
 class App extends Component {
   state = {
@@ -83,6 +86,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route path="/login" exact component={SignIn} />
+          <Route path="/login/choose-role" exact component={SignInRole} />
           <Route path='/:role/:id' component={Base} />
           {page}
         </Switch>

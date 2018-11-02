@@ -1,15 +1,13 @@
 import React,{Component} from 'react';
 import Dropdown from 'react-dropdown';
-import classes from './SignInBody.module.css';
+import classes from './SignInBody_n.module.css';
 import axios from '../../axios'
 import {Redirect, withRouter} from 'react-router-dom'
-class SignInBody extends Component{
+class SignInBody_n extends Component{
 	
 	state={
-		options : ['Manager', 'Canvasser', 'System Admin'],
 		userID : null,
 		password : null,
-		role : null,
 		loading:true
 	}
 	
@@ -20,21 +18,12 @@ class SignInBody extends Component{
         const loginInfo = {
             userID : this.state.userID,
             password: this.state.password,
-            role: this.state.role
         }
         
         axios.post( '/login.json', loginInfo )
             .then( response => {
-           		let role = null;
-		        if(this.state.role=='Manager'){
-		        	role = 'manager';
-		        }else if(this.state.role=='Canvasser'){
-		        	role = 'canvasser';
-		        } else{
-		        	role = 'sys-admin';
-		        }
 
-       			this.props.history.push('/'+role+'/'+this.state.userID);
+       			this.props.history.push('/login/choose-role/');
 
             } )
             .catch( error => {
@@ -43,6 +32,7 @@ class SignInBody extends Component{
 	}
 
 	render(){
+		//console.log('[SignInBody]',this.props);
 		return (
 			<div className={[classes.SignInBody, "container", "text-center"].join(' ')}> 
 				
@@ -63,16 +53,6 @@ class SignInBody extends Component{
 							onChange={(event) => this.setState({password: event.target.value})}/>
 					</div>
 					
-					<div className = {"form-group"}>
-						<Dropdown 
-						 placeholderClassName ="dropdown-toggle"
-						 className = {[classes.Dropdown].join(' ')}
-					     options = {this.state.options}
-					     placeholder="Role"
-					     value={this.state.role?this.state.role:'Role'}
-						 onChange={(event) => this.setState({role:event.value})}/>
-					 </div>
-					
 					<input className = {["btn","btn-dark", classes.SignInBtn].join(' ')} type="submit" value = "Sign In"/>
 				</form>
 			</div>
@@ -81,4 +61,4 @@ class SignInBody extends Component{
 	}
 }
 
-export default withRouter(SignInBody);
+export default withRouter(SignInBody_n);

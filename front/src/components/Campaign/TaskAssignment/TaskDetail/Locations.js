@@ -37,7 +37,7 @@ class Locations extends Component{
 						    {markers}
 					  	</Map>		
 				</div>
-				<div classNAme={[classes.LocationList,'row'].join(' ')}>
+				<div className={[classes.LocationList].join(' ')}>
 					<div className={classes.LocationListHeader}>
 						<h6>List</h6>
 					</div>

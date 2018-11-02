@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import Aux from '../../hoc/Auxx';
 import MainImage from '../../assets/images/background.jpg'
-import SignInBody from '../../components/SignIn/SignInBody'
-
-import SignInBody_n from '../../components/SignIn/SignInBody_n'
+import Role from '../../components/SignIn/Role'
 import classes from './SignIn.module.css';
 
 
-class SignIn extends Component {
-  //<SignInBody_n signedIn = {this.props.signedIn}/>
+class SignInRole extends Component {
+
   render() {
-    console.log("SignIn render", this.props);
+    console.log("Role render", this.props);
     return (
       <Aux>
         <div className={[classes.SignIn].join(" ")}>
@@ -21,7 +19,7 @@ class SignIn extends Component {
             </div>
           </div>
           <div>
-            <SignInBody signedIn = {this.props.signedIn}/>
+            <Role signedIn = {this.props.signedIn}/>
           </div>
         </div>
       </Aux>
@@ -29,4 +27,4 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+export default SignInRole;
