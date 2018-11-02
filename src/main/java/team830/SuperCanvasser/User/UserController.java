@@ -18,7 +18,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
     public static User loggedInUser;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -34,6 +33,12 @@ public class UserController {
                 "Email: " + user.getEmail() + " Pwd: " + user.getPwd());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
     }
+
+    @GetMapping(value = "/login/role")
+    public void selectRole(@RequestBody Role role, HttpServletRequest request) throws IOException {
+        request.getSession().setAttribute("role", role);
+    }
+
     @GetMapping(value = "/logout")
     public void logout(HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession();
@@ -43,8 +48,7 @@ public class UserController {
     // system admin user control functionality
     @RequestMapping(value = "/sysad/edit", method = RequestMethod.POST)
     public ResponseEntity editUser(@RequestBody User user, HttpServletRequest request){
-        loggedInUser = getUserInSession(request);
-        if(loggedInUser.hasRole(Role.ADMIN)){
+        if(getRoleInSession(request).equals(Role.ADMIN)){
             log.info("UserController : User has been edited");
             return ResponseEntity.ok(userService.editUser(loggedInUser));
         }
@@ -55,8 +59,7 @@ public class UserController {
 
     @RequestMapping(value = "/sysad/add", method = RequestMethod.POST)
     public ResponseEntity addUser(@RequestBody User user, HttpServletRequest request){
-        loggedInUser = getUserInSession(request);
-        if(loggedInUser.hasRole(Role.ADMIN)){
+        if(getRoleInSession(request).equals(Role.ADMIN)){
             log.info("UserController : User has been added");
             return ResponseEntity.ok(userService.addUser(user));
         }
@@ -68,8 +71,7 @@ public class UserController {
 
     @RequestMapping(value = "/sysad/view" , method = RequestMethod.GET)
     public ResponseEntity viewUser(@RequestParam("email") String email, HttpServletRequest request) {
-        loggedInUser = getUserInSession(request);
-        if (loggedInUser.hasRole(Role.ADMIN)) {
+        if (getRoleInSession(request).equals(Role.ADMIN)) {
             log.info("UserController : Got user information");
             return ResponseEntity.ok(userService.getUserByEmail(email));
         }
@@ -79,7 +81,12 @@ public class UserController {
 
     public static User getUserInSession(HttpServletRequest request){
         HttpSession session= request.getSession();
-        return loggedInUser = (User) session.getAttribute("user");
+        return (User) session.getAttribute("user");
+    }
+
+    public static Role getRoleInSession(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        return (Role)session.getAttribute("role");
     }
 
 }

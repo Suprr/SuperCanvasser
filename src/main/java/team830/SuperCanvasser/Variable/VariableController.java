@@ -24,7 +24,7 @@ public class VariableController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ResponseEntity editVar(@RequestBody Variable var, HttpServletRequest request) {
-        if (UserController.getUserInSession(request).hasRole(Role.ADMIN)) {
+        if (UserController.getRoleInSession(request).equals(Role.ADMIN)) {
             log.info("VarController :: Variable has been edited");
             return ResponseEntity.ok(variableService.editVariable(var));
         }
