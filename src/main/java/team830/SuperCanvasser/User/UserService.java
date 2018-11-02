@@ -10,10 +10,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Optional;
+
 
 @Component
 @Service
-public class UserService implements UserDetailsService, UserInterface{
+public class UserService implements UserInterface{
 
     @Autowired
     private UserRepo userRepo;
@@ -38,14 +41,16 @@ public class UserService implements UserDetailsService, UserInterface{
         return userRepo.findByEmail(email);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(username);
-        if(user == null){
-            throw new UsernameNotFoundException(username);
-        }else{
-            UserDetails details = new CustomizedUserDetails(user);
-            return details;
+    public User loginUser(User user) throws UnsupportedEncodingException {
+        User repoUser = userRepo.findByEmail(user.getEmail());
+        log.info("UserService :: repoUser Info :: email: " + repoUser.getEmail() + " pwd: " + repoUser.getPwd());
+        if (repoUser != null) {
+            if(User.validatePwd(user.getPwd(), repoUser.getPwd())) {
+                log.info("UserController :: Successfully Logged In");
+                return repoUser;
+            }
         }
+        return null;
     }
+
 }

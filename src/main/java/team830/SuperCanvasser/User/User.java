@@ -8,9 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "users")
 public class User {
-    @Id
     private String _id;
     @Indexed(unique=true)
+    @Id
     private String email;
     private String pwd;
     private String firstName;
@@ -20,8 +20,13 @@ public class User {
 
     public User(){}
 
-    public User(String _id, String email, String pwd, String firstName, String lastName, String zipcode, Role[] role) {
-        this._id = _id;
+    public User(String email, String pwd){
+        this.email = email;
+        this.pwd = pwd;
+    }
+
+    public User(String id, String email, String pwd, String firstName, String lastName, String zipcode, Role[] role) {
+        this._id = id;
         this.email = email;
         this.pwd = pwd;
         this.firstName = firstName;
@@ -83,4 +88,6 @@ public class User {
     public void setRole(Role[] role) {
         this.role = role;
     }
+
+    public static boolean validatePwd(String requestedPwd, String pwd){ return requestedPwd.equals(pwd); }
 }
