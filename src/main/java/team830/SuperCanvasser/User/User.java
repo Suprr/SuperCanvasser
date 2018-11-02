@@ -1,5 +1,6 @@
 package team830.SuperCanvasser.User;
 
+import lombok.Data;
 import org.bson.types.ObjectId;
 
 import org.springframework.data.annotation.Id;
