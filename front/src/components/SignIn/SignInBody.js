@@ -25,8 +25,6 @@ class SignInBody extends Component{
         
         axios.post( '/login.json', loginInfo )
             .then( response => {
-           		console.log("Loginned", loginInfo);
-           		//this.props.signedIn(loginInfo);
            		let role = null;
 		        if(this.state.role=='Manager'){
 		        	role = 'manager';
@@ -45,7 +43,6 @@ class SignInBody extends Component{
 	}
 
 	render(){
-		//console.log('[SignInBody]',this.props);
 		return (
 			<div className={[classes.SignInBody, "container", "text-center"].join(' ')}> 
 				

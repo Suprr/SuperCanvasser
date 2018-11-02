@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import Aux from '../../hoc/Auxx';
 import MainImage from '../../assets/images/background.jpg'
-import SignInBody from '../../components/SignIn/SignInBody';
+import SignInBody from '../../components/SignIn/SignInBody'
+
+import SignInBody_n from '../../components/SignIn/SignInBody_n'
 import classes from './SignIn.module.css';
 
 
 class SignIn extends Component {
-
+  //<SignInBody_n signedIn = {this.props.signedIn}/>
   render() {
     console.log("SignIn render", this.props);
     return (
