@@ -90,4 +90,11 @@ public class User {
     }
 
     public static boolean validatePwd(String requestedPwd, String pwd){ return requestedPwd.equals(pwd); }
+
+    public boolean hasRole(Role tempRole){
+        for (Role r: getRole()) {
+            if(r.equals(tempRole)) return true;
+        }
+        return false;
+    }
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import java.util.List;
-@RequestMapping("/var")
+@RequestMapping("/sysad/var")
 @RestController
 public class VariableController {
     @Autowired
@@ -16,7 +16,7 @@ public class VariableController {
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
 
-    @RequestMapping(value = "/edit/", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public Variable editVar(@RequestBody Variable var, BindingResult result) {
         if (result.hasErrors()) {
             log.info("Editing variable failed");
@@ -27,7 +27,7 @@ public class VariableController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
     public List<Variable> getAllVariables(){
         log.info("Getting all variables");
         return(variableService.findAll());
