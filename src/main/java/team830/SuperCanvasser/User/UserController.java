@@ -34,12 +34,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
     }
 
-    @GetMapping(value = "/login/role")
+    @RequestMapping(value = "/login/role", method = RequestMethod.POST)
     public void selectRole(@RequestBody Role role, HttpServletRequest request) throws IOException {
         request.getSession().setAttribute("role", role);
+
     }
 
-    @GetMapping(value = "/logout")
+    @RequestMapping(value = "/login/role", method = RequestMethod.GET)
     public void logout(HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
@@ -79,10 +80,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
-    public static User getUserInSession(HttpServletRequest request){
-        HttpSession session= request.getSession();
-        return (User) session.getAttribute("user");
-    }
+//    public static User getUserInSession(HttpServletRequest request){
+//        HttpSession session= request.getSession();
+//        return (User) session.getAttribute("user");
+//    }
 
     public static Role getRoleInSession(HttpServletRequest request){
         HttpSession session = request.getSession();
