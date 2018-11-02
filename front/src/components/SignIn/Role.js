@@ -6,7 +6,7 @@ class Role extends Component{
 	//0 : M, 1 : C, 2 : SA
 
 	state={
-		options :[0,1,2],
+		options :null,
 		selectedRole : null,
 		loading:true
 	}
@@ -24,7 +24,8 @@ class Role extends Component{
 			roleName='sys-admin'
 
 		//Real Login
-		axios.post('/login/role.json', this.state.selectedRole)
+		//axios.post('/login/role.json', this.state.selectedRole)
+		axios.post('/login/role', this.state.selectedRole)
 				.then(response => {
 						console.log(roleName)
 						//12 is placeholder for URL ID, I will fix it
@@ -42,15 +43,19 @@ class Role extends Component{
 
 	componentDidMount(){
 		//get roles from the server.
+		const data = JSON.parse(sessionStorage.getItem('userInfo'));
+		//const data = sessionStorage.getItem('userInfo');
+		console.log(['Role ComponentDidmonut'], data);
+		this.setState({options:data.role});
 	}
 
 	render(){
 		//console.log('[SignInBody]',this.props);
 		const roles = this.state.options? this.state.options.map(role=>{
 			let roleName = null;
-			if(role==0)
+			if(role=='MANAGER')
 				roleName='Manager'
-			else if(role==1)
+			else if(role=='CANVASSER')
 				roleName='Canvasser'
 			else
 				roleName='System Admin'

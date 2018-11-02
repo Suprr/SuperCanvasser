@@ -23,8 +23,9 @@ class SignInBody extends Component{
             role: this.state.role
         }
         
-        axios.post( '/login.json', loginInfo )
+        axios.post( '/login', loginInfo )
             .then( response => {
+            	
            		let role = null;
 		        if(this.state.role=='Manager'){
 		        	role = 'manager';

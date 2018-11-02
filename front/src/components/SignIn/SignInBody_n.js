@@ -16,18 +16,19 @@ class SignInBody_n extends Component{
         const formData = {};
 
         const loginInfo = {
-            userID : this.state.userID,
-            password: this.state.password,
+            email : this.state.userID,
+            pwd: this.state.password,
         }
         
-        axios.post( '/login.json', loginInfo )
+        axios.post( '/login', loginInfo)
             .then( response => {
-
-       			this.props.history.push('/login/choose-role/');
-
+            	sessionStorage.setItem('userInfo', JSON.stringify(response.data));
+       			console.log(['SignInBody_n'],response.data);
+       			this.props.history.push('/login/role/');
+       			
             } )
             .catch( error => {
-                console.log("Error", error);
+                //console.log("Error", response.data);
             });
 	}
 
