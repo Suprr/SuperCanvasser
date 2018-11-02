@@ -11,7 +11,6 @@ import team830.SuperCanvasser.SuperCanvasserApplication;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -20,22 +19,25 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private HttpSession session;
-    User loggedInUser;
+    public static User loggedInUser;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody User user, HttpServletRequest request) throws IOException {
         log.info("UserController :: Process Login");
-        session = request.getSession();
         loggedInUser = userService.loginUser(user);
         if (loggedInUser != null) {
-            session.setAttribute("user",loggedInUser);
+            request.getSession().setAttribute("user",loggedInUser);
             return ResponseEntity.ok(loggedInUser);
         }
 
         log.info("UserController :: Invalid Credentials :: " +
                 "Email: " + user.getEmail() + " Pwd: " + user.getPwd());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+    }
+    @GetMapping(value = "/logout")
+    public void logout(HttpServletRequest request) throws IOException {
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
     }
 
     // system admin user control functionality
@@ -75,8 +77,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
-    public User getUserInSession(HttpServletRequest request){
-        session = request.getSession();
+    public static User getUserInSession(HttpServletRequest request){
+        HttpSession session= request.getSession();
         return loggedInUser = (User) session.getAttribute("user");
     }
 
