@@ -3,15 +3,11 @@ package team830.SuperCanvasser.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Optional;
 
 
 @Component
