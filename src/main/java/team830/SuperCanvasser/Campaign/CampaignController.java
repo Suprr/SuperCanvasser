@@ -20,6 +20,7 @@ public class CampaignController {
     @Autowired
         private CampaignService campaignService;
 
+    //id = campaignId
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     public ResponseEntity getCampaign(@RequestParam String id, HttpServletRequest request) {
         Campaign campaign = campaignService.findBy_Id(id);
@@ -29,37 +30,41 @@ public class CampaignController {
             log.info("CampaignController :: Campaign Found");
             return ResponseEntity.ok(campaign);
         }
+        log.info("CampaignController :: Campaign Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Campaign Not Found");
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editCampaign(@RequestBody Campaign campaign, HttpServletRequest request) {
+    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, HttpServletRequest request) {
             if(campaign.equals((request.getSession().getAttribute("currentCampaign")))){
                 log.info("CampaignController :: Campaign Edited");
                 return ResponseEntity.ok(campaignService.editCampaign(campaign));
             }
+            log.info("CampaignController :: Campaign Not Found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity createCampaign(@Valid @RequestBody Campaign campaign, HttpServletRequest request) {
-//            if(request.getSession().getAttribute(""))
-            log.info("CampaignController :: Campaign has been created");
-            return ResponseEntity.ok(campaignService.addCampaign(campaign));
+            if(campaignService.findAll().contains(campaign)){
+                log.info("CampaignController :: Campaign has been created");
+                return ResponseEntity.ok(campaignService.addCampaign(campaign));
+            }
+            log.info("CampaignController :: Campaign Not Found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create campaign");
     }
 
     //campaign array(list) will be passed to the front as a responseEntity
+    // _id = managerID
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity getAllCampaigns(@RequestParam String _id, HttpServletRequest request){
-        log.info("CampaignController :: !!!!"+_id);
         if(campaignService.findAllbyManager(_id) != null){
             log.info("CampaignController :: Campaign is returning all the list found by manager");
             return ResponseEntity.ok(campaignService.findAllbyManager(_id));
         }
 
-        log.info("CampaignController :: Campaign could not be found");
+        log.info("CampaignController :: Campaign Not Found");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign");
-
     }
 
 }

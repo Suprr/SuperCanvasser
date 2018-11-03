@@ -31,20 +31,24 @@ public class CampaignService implements CampaignInterface {
     }
 
     @Override
+    public List<Campaign> findAll(){
+        return  campaignRepo.findAll();
+    }
+
+    @Override
     public List<Campaign> findAllbyManager(String managerId){
         List<Campaign> campaigns = campaignRepo.findAll();
         List<Campaign> foundCampaigns = new ArrayList<>();
+
         for (Campaign c : campaigns) {
-            log.info(c.getManagers().get(0) + " " + managerId);
-            if(c.getManagers().contains(managerId)){
+            if(c.getManagers().contains(managerId))
                 foundCampaigns.add(c);
-            }
         }
+
         if(!foundCampaigns.isEmpty()){
             log.info("CampaignService :: returning campaigns from service");
             return foundCampaigns;
         }
-
         return null;
     }
 }
