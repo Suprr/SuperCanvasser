@@ -1,5 +1,6 @@
 package team830.SuperCanvasser.User;
 
+import lombok.Data;
 import org.bson.types.ObjectId;
 
 import org.springframework.data.annotation.Id;
@@ -16,7 +17,6 @@ public class User {
     private String pwd;
     private String firstName;
     private String lastName;
-    private String zipcode;
     private Role[] role;
 
     public User(){}
@@ -26,13 +26,12 @@ public class User {
         this.pwd = pwd;
     }
 
-    public User(String id, String email, String pwd, String firstName, String lastName, String zipcode, Role[] role) {
+    public User(String id, String email, String pwd, String firstName, String lastName, Role[] role) {
         this._id = id;
         this.email = email;
         this.pwd = pwd;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.zipcode = zipcode;
         this.role = role;
     }
 
@@ -72,14 +71,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
     }
 
     public Role[] getRole() {

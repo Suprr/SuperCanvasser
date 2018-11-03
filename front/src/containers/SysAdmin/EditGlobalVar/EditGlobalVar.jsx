@@ -3,41 +3,52 @@ import Variable from "./Variable";
 import axios from "../../../axios";
 class EditGlobalVar extends Component {
   state = {
-    variables: [],
-    variablesFromServer: []
+    variables: null,
+    variablesFromServer: [],
+    isMounted: false
   };
 
   handleEdit = (newValue, id) => {
-    const tempVariables = { ...this.state.variables };
-    for (let i = 0; i < this.state.variables.length; i++) {
-      if (this.state.variables[i].id === id) {
-        tempVariables[i].value = newValue;
-        break;
-      }
-    }
-
-    this.setState({ variables: tempVariables });
+    // const tempVariables = { ...this.state.variables };
+    // for (let i = 0; i < this.state.variables.length; i++) {
+    //   if (this.state.variables[i].id === id) {
+    //     tempVariables[i].value = newValue;
+    //     break;
+    //   }
+    // }
+    // this.setState({ variables: tempVariables });
   };
 
   componentDidMount() {
-    console.log("componentDidMount EditGlobalVar");
+    console.log(["EditGlobalVar componentDidMount"]);
+    //for avoiding update error, I use isMounted value
+    this.setState({ isMounted: true }, () => {
+      axios
+        .get("/sysad/var/view")
+        .then(response => {
+          const data = response.data;
+          const length = data.length;
 
-    let x = null;
-    axios
-      .get("https://cse308-de3df.firebaseio.com/global-variable.json")
-      .then(response => {
-        x = response.data;
-
-        if (x != null) {
-          console.log(x);
           let newVariables = [];
-          for (let i in response.data) {
-            newVariables.push(x[i]);
+          console.log("EditGlobalVar data", data);
+          for (let i = 0; i < length; i++) {
+            newVariables.push(data[i]);
           }
-          console.log("variablesFromServer", newVariables);
-          this.setState({ variablesFromServer: newVariables });
-        }
-      });
+
+          console.log("EditGlobalVar newVariables", newVariables);
+          if (this.state.isMounted) {
+            console.log("EditGlobalVar newVariables", "UPLOADED");
+            this.setState({ variables: newVariables });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
+  }
+
+  componentWillUnMount() {
+    this.setState({ isMounted: false });
   }
 
   render() {
@@ -55,13 +66,15 @@ class EditGlobalVar extends Component {
             <div className="col-sm" />
           </div>
         </div>
-        {this.state.variablesFromServer.map(variable => (
-          <Variable
-            key={variable.id}
-            variable={variable}
-            onEdit={this.handleEdit}
-          />
-        ))}
+        {this.state.variables
+          ? this.state.variables.map(variable => (
+              <Variable
+                key={variable._id}
+                variable={variable}
+                onEdit={this.handleEdit}
+              />
+            ))
+          : null}
       </div>
     );
   }

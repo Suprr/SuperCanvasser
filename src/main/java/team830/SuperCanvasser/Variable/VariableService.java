@@ -16,13 +16,11 @@ public class VariableService implements VariableInterface {
 
     @Override
     public Variable editVariable(Variable variable) {
-        log.info("Edit Variable - Service");
         return variableRepo.save(variable);
     }
 
     @Override
     public List<Variable> findAll() {
-        log.info("Find all Users - Service");
         return variableRepo.findAll();
     }
 

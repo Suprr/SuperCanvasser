@@ -39,9 +39,9 @@ public class UserService implements UserInterface{
 
     public User loginUser(User user) throws UnsupportedEncodingException {
         User repoUser = userRepo.findByEmail(user.getEmail());
-        log.info("UserService :: repoUser Info :: email: " + repoUser.getEmail() + " pwd: " + repoUser.getPwd());
         if (repoUser != null) {
             if(User.validatePwd(user.getPwd(), repoUser.getPwd())) {
+                log.info("UserService :: repoUser Info :: email: " + repoUser.getEmail() + " pwd: " + repoUser.getPwd());
                 log.info("UserController :: Successfully Logged In");
                 return repoUser;
             }
