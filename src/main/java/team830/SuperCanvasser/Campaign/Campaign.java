@@ -24,9 +24,9 @@ public class Campaign {
     @NotNull(message = "Must enter at least one manager.")
     private List<String> managers; // objectId of managers
     @NotNull(message = "A start and end date must be provided.")
-    private Date startDate;
+    private String startDate;
     @NotNull
-    private Date endDate;
+    private String endDate;
     @DBRef
     @NotNull(message = "At least one canvasser must work on this campaign.")
     private List<String> canvassers;
@@ -47,7 +47,7 @@ public class Campaign {
     private String talkingPoints;
     private Status status;
 
-    public Campaign(List<String> managersList, Date start, Date end,
+    public Campaign(List<String> managersList, String start, String end,
                     List<String> canvassersList, List<Location> locationsList,
                     List<String> questionsList, String campaignName, int avgVisitDuration, String notes) {
 
@@ -81,19 +81,19 @@ public class Campaign {
         this.managers = managers;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
