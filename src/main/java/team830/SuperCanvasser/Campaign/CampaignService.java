@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,7 +32,16 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public List<Campaign> findAllbyManager(String managerId){
-        return campaignRepo.findAllByManagersContains(managerId);
+        List<Campaign> campaigns = campaignRepo.findAll();
+        List<Campaign> foundCampaigns = new ArrayList<>();
+        for (Campaign c : campaigns) {
+            if(c.getManagers().contains(managerId)){
+                foundCampaigns.add(c);
+            }
+        }
+        if(!foundCampaigns.isEmpty())
+            return foundCampaigns;
+        return null;
     }
 
 }

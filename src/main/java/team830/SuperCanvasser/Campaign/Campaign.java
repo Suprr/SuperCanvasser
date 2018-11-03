@@ -47,7 +47,6 @@ public class Campaign {
     private String talkingPoints;
     private Status status;
 
-
     public Campaign(List<String> managersList, Date start, Date end,
                     List<String> canvassersList, List<Location> locationsList,
                     List<String> questionsList, String campaignName, int avgVisitDuration, String notes) {
@@ -64,5 +63,117 @@ public class Campaign {
         this.avgDuration = avgVisitDuration;
         this.talkingPoints = notes;
         this.status = Status.INACTIVE;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public List<String> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(List<String> managers) {
+        this.managers = managers;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<String> getCanvassers() {
+        return canvassers;
+    }
+
+    public void setCanvassers(List<String> canvassers) {
+        this.canvassers = canvassers;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<String> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<String> questions) {
+        this.questions = questions;
+    }
+
+    public List<String> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<String> tasks) {
+        this.tasks = tasks;
+    }
+
+    public List<Questionnaire> getQuestionnaires() {
+        return questionnaires;
+    }
+
+    public void setQuestionnaires(List<Questionnaire> questionnaires) {
+        this.questionnaires = questionnaires;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getAvgDuration() {
+        return avgDuration;
+    }
+
+    public void setAvgDuration(double avgDuration) {
+        this.avgDuration = avgDuration;
+    }
+
+    public int getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(int averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public String getTalkingPoints() {
+        return talkingPoints;
+    }
+
+    public void setTalkingPoints(String talkingPoints) {
+        this.talkingPoints = talkingPoints;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

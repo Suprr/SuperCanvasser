@@ -10,7 +10,6 @@ import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 
 @RequestMapping("/manager/campaign")
@@ -52,8 +51,12 @@ public class CampaignController {
     //campaign array(list) will be passed to the front as a responseEntity
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public ResponseEntity getAllCampaigns(@RequestBody String _id, HttpServletRequest request){
-        log.info("CampaignController :: Campaign is returning all the list found by manager");
-        return ResponseEntity.ok(campaignService.findAllbyManager(_id));
+        if(campaignService.findAllbyManager(_id) != null){
+            log.info("CampaignController :: Campaign is returning all the list found by manager");
+            return ResponseEntity.ok(campaignService.findAllbyManager(_id));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign");
+
     }
 
 }
