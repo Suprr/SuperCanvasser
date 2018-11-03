@@ -49,12 +49,15 @@ public class CampaignController {
     }
 
     //campaign array(list) will be passed to the front as a responseEntity
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ResponseEntity getAllCampaigns(@RequestBody String _id, HttpServletRequest request){
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ResponseEntity getAllCampaigns(@RequestParam String _id, HttpServletRequest request){
+        log.info("CampaignController :: !!!!"+_id);
         if(campaignService.findAllbyManager(_id) != null){
             log.info("CampaignController :: Campaign is returning all the list found by manager");
             return ResponseEntity.ok(campaignService.findAllbyManager(_id));
         }
+
+        log.info("CampaignController :: Campaign could not be found");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign");
 
     }

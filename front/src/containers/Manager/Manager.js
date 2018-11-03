@@ -32,24 +32,26 @@ class Manager extends Component{
 		 console.log('USER ID', userID);
 		 //const userID = getSessionStore.
 		 this.setState( { isMounted: true }, () => {
-          axios.post('/manager/campaign/list', userID).then(response=>{
-          
-          const data = response.data;
-          const length = data.length;
-          console.log(['Manager Recieved Campaigns Data'],data);
+         console.log('USER ID2', userID);
+         axios.get('/manager/campaign/list/?_id='+userID).then(response=>{
+	          
+	          const data = response.data;
+	          console.log(['Manager Recieved Campaigns Data'],data);
+	          
+	          const length = data.length;
+	          let newCampaigns = []
+	          for(let i=0; i<length; i++){
+	            newCampaigns.push(data[i]);
+	          }
 
-          let newCampaigns = []
-          for(let i=0; i<length; i++){
-            newCampaigns.push(data[i]);
-          }
+	          console.log('CampaignList', newCampaigns);
+	          if(this.state.isMounted){
 
-          console.log('CampaignList', newCampaigns);
-          if(this.state.isMounted){
-
-          console.log('CampaignList', 'UPLOADED');
-            this.setState({campaigns:newCampaigns});
-          }
+	          console.log('CampaignList', 'UPLOADED');
+	            this.setState({campaigns:newCampaigns});
+	          }
         }).catch(error=>{
+          console.log('USER ID Error', userID);
           console.log(error)
         })
     } );
@@ -86,7 +88,7 @@ class Manager extends Component{
 				
 				<div className={["col-10", "fixed-center", classes.Manager].join(' ')}>
 					<Switch>
-						<Route path={this.props.match.url+'/campaign-list'} exact render = {() =><CampaignList campaignList={this.state.campaigns}/>}/>
+						<Route path={this.props.match.url+'/campaign/list'} exact render = {() =><CampaignList campaignList={this.state.campaigns}/>}/>
 						<Route path={this.props.match.url+'/create-campaign'} component = {CreateCampaign}/>
 						<Route path={this.props.match.url+'/assign-task/:cid/:tid'} 
 							render = {() => <AssignTask/>}/>
@@ -95,7 +97,7 @@ class Manager extends Component{
                          <Route path={this.props.match.url+'/task-assignment/:tid'} render = {()=><TaskDetail/>}/>
                          <Route path={this.props.match.url+'/task-assignment/'} render = {()=><TaskAssignment campaignList={this.state.campaigns}/>}/>
 
-						<Redirect from={this.props.match.url} to = {this.props.match.url+'/campaign-list'}/>
+						<Redirect from={this.props.match.url} to = {this.props.match.url+'/campaign/list'}/>
 					</Switch>
 				</div>
 		)
