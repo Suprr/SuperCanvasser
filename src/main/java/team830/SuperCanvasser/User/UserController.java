@@ -28,7 +28,6 @@ public class UserController {
             request.getSession().setAttribute("user",loggedInUser);
             return ResponseEntity.ok(loggedInUser);
         }
-
         log.info("UserController :: Invalid Credentials :: " +
                 "Email: " + user.getEmail() + " Pwd: " + user.getPwd());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
@@ -36,24 +35,24 @@ public class UserController {
 
     @RequestMapping(value = "/login/role", method = RequestMethod.GET)
     public void selectRole(@RequestParam Role role, HttpServletRequest request) throws IOException {
+        log.info("UserController :: Role has been selected.");
         request.getSession().setAttribute("role", role);
-        log.info("UserController :: Role has been set in session");
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public void logout(HttpServletRequest request) throws IOException {
-        HttpSession session = request.getSession();
-        session.removeAttribute("user");
+        request.getSession().removeAttribute("user");
+        log.info("UserController :: User logged out");
     }
 
-    // system admin user control functionality
+    // system admin user control functionalities
+
     @RequestMapping(value = "/sysad/edit", method = RequestMethod.POST)
     public ResponseEntity editUser(@RequestBody User user, HttpServletRequest request){
         if(getRoleInSession(request).equals(Role.ADMIN)){
             log.info("UserController : User has been edited");
             return ResponseEntity.ok(userService.editUser(loggedInUser));
         }
-
         log.info("UserController :: Does not have authority to edit the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }

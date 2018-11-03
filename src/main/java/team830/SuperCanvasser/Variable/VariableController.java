@@ -13,9 +13,8 @@ import team830.SuperCanvasser.User.UserController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
-@RequestMapping("/sysad/var")
 
+@RequestMapping("/sysad/var")
 @RestController
 public class VariableController {
 
@@ -23,7 +22,6 @@ public class VariableController {
     private VariableService variableService;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
-    public static HttpSession session;
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ResponseEntity editVar(@RequestBody Variable var, HttpServletRequest request) {
@@ -35,10 +33,12 @@ public class VariableController {
     }
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-
-    public List<Variable> getAllVariables(){
-        log.info("Getting all variables");
-        return(variableService.findAll());
+    public ResponseEntity getAllVariables(HttpServletRequest request){
+        if (UserController.getRoleInSession(request).equals(Role.ADMIN)) {
+            log.info("VarController :: Getting all variables");
+            return ResponseEntity.ok(variableService.findAll());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
 }
