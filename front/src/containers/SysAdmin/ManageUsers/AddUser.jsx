@@ -27,13 +27,16 @@ class AddUser extends Component {
      this.setState({[name]: value });
   }
 
+
+
   handleSubmit =(event) =>{
+
     const userInfo = {
             email : this.state.email,
             pwd: this.state.password,
             firstName : this.state.firstName,
             lastName : this.state.lastName,
-            role : this.state.role
+            role : [this.state.role]
     }
     
     axios.post( '/sysad/add', userInfo)
