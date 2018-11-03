@@ -37,6 +37,12 @@ public class UserService implements UserInterface{
         return userRepo.findByEmail(email);
     }
 
+    @Override
+    public User getUserBy_id(String _id) {
+        log.debug("Get User - Service");
+        return userRepo.findBy_id(_id);
+    }
+
     public User loginUser(User user) throws UnsupportedEncodingException {
         User repoUser = userRepo.findByEmail(user.getEmail());
         if (repoUser != null) {

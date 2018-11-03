@@ -7,9 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
+import team830.SuperCanvasser.User.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RequestMapping("/manager/campaign")
@@ -18,17 +21,25 @@ public class CampaignController {
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     @Autowired
-        private CampaignService campaignService;
+    private CampaignService campaignService;
+    @Autowired
+    private UserService userService;
 
     //id = campaignId
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public ResponseEntity getCampaign(@RequestParam String id, HttpServletRequest request) {
-        Campaign campaign = campaignService.findBy_Id(id);
+    public ResponseEntity getCampaign(@RequestParam String _id, HttpServletRequest request) {
+        Campaign campaign = campaignService.findBy_Id(_id);
         log.info("CampaignController :: Getting Campaign");
         if(campaign != null){
             request.getSession().setAttribute("currentCampaign", campaign);
             log.info("CampaignController :: Campaign Found");
-            return ResponseEntity.ok(campaign);
+            List<Object> returnList = new ArrayList<>();
+            returnList.add(campaign);
+            // getting the users for managers to display information
+            for(String s: campaign.getManagers()){
+                returnList.add(userService.getUserBy_id(s));
+            }
+            return ResponseEntity.ok(returnList);
         }
         log.info("CampaignController :: Campaign Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Campaign Not Found");
