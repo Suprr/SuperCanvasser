@@ -26,8 +26,8 @@ public class CampaignService implements CampaignInterface {
     }
 
     @Override
-    public Campaign findBy_Id(String id) {
-        return campaignRepo.findBy_id(id);
+    public Campaign findBy_Id(String _id) {
+        return campaignRepo.findBy_id(_id);
     }
 
     @Override
