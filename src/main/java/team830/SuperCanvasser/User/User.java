@@ -1,45 +1,61 @@
 package team830.SuperCanvasser.User;
 
-
 import org.bson.types.ObjectId;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.Collection;
-
+@Data
 @Document(collection = "users")
-public class User{
+public class User {
+    private String _id;
+    @Indexed(unique=true)
     @Id
-    private ObjectId id;
-
-    @NotEmpty(message = "Please type first name")
+    private String email;
+    private String pwd;
     private String firstName;
-
-    @NotEmpty(message = "Please type last name")
     private String lastName;
-    private String zipCode;
-    @NotEmpty(message = "Please type email")
-    private static String email;
-    private String pwdHash;
+    private String zipcode;
+    private Role[] role;
 
-    @NotEmpty(message = "Please select role(s)")
-    private Role[] roles;
+    public User(){}
 
-    public User(String username, String password, Role[] roles) {
-        this.setEmail(username);
-        this.setPwdHash(password);
-        this.setRoles(roles);
+    public User(String email, String pwd){
+        this.email = email;
+        this.pwd = pwd;
     }
 
-    public ObjectId getId() {
-        return id;
+    public User(String id, String email, String pwd, String firstName, String lastName, String zipcode, Role[] role) {
+        this._id = id;
+        this.email = email;
+        this.pwd = pwd;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.zipcode = zipcode;
+        this.role = role;
     }
 
-    public void setId(ObjectId id) {
-        this.id = id;
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
     public String getFirstName() {
@@ -58,35 +74,29 @@ public class User{
         this.lastName = lastName;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
-    public static String getEmail() {
-        return email;
+    public Role[] getRole() {
+        return role;
     }
 
-    public static void setEmail(String email) {
-        User.email = email;
+    public void setRole(Role[] role) {
+        this.role = role;
     }
 
-    public String getPwdHash() {
-        return pwdHash;
+    public static boolean validatePwd(String requestedPwd, String pwd){ return requestedPwd.equals(pwd); }
+
+    public boolean hasRole(Role tempRole){
+        for (Role r: getRole()) {
+            if(r.equals(tempRole)) return true;
+        }
+        return false;
     }
 
-    public void setPwdHash(String pwdHash) {
-        this.pwdHash = pwdHash;
-    }
-
-    public Role[] getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Role[] roles) {
-        this.roles = roles;
-    }
 }

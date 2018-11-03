@@ -3,46 +3,90 @@ package team830.SuperCanvasser.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
 @RestController
-@RequestMapping("/user")
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     @Autowired
     private UserService userService;
+    public static User loggedInUser;
 
-    @RequestMapping(value = "/edit/", method = RequestMethod.POST)
-    public User editUser(@RequestBody User user, BindingResult result){
-        if(result.hasErrors()){
-            log.info("User Error: Failed to edit User");
-            return null;
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity login(@RequestBody User user, HttpServletRequest request) throws IOException {
+        log.info("UserController :: Process Login");
+        loggedInUser = userService.loginUser(user);
+        if (loggedInUser != null) {
+            request.getSession().setAttribute("user",loggedInUser);
+            return ResponseEntity.ok(loggedInUser);
         }
-        else{
-            log.info("User : User has been edited");
-            return(userService.editUser(user));
-        }
+
+        log.info("UserController :: Invalid Credentials :: " +
+                "Email: " + user.getEmail() + " Pwd: " + user.getPwd());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
     }
 
-    @RequestMapping(value = "/add/", method = RequestMethod.POST)
-    public User addUser(@RequestBody User user, BindingResult result){
-        if(result.hasErrors()) {
-            log.info("User Error: Failed to add User");
-            return null;
-        }
-        else {
-            log.info("User : User has been added");
-            return (userService.addUser(user));
-        }
+    @GetMapping(value = "/login/role")
+    public void selectRole(@RequestBody Role role, HttpServletRequest request) throws IOException {
+        request.getSession().setAttribute("role", role);
     }
 
-    @RequestMapping(value = "/view/" , method = RequestMethod.GET)
-    public User viewUser(@RequestParam("email") String email) {
-            log.info("User : Got user information");
-            return userService.getUserByEmail(email);
+    @GetMapping(value = "/logout")
+    public void logout(HttpServletRequest request) throws IOException {
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+    }
+
+    // system admin user control functionality
+    @RequestMapping(value = "/sysad/edit", method = RequestMethod.POST)
+    public ResponseEntity editUser(@RequestBody User user, HttpServletRequest request){
+        if(getRoleInSession(request).equals(Role.ADMIN)){
+            log.info("UserController : User has been edited");
+            return ResponseEntity.ok(userService.editUser(loggedInUser));
         }
+
+        log.info("UserController :: Does not have authority to edit the users");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
+    }
+
+    @RequestMapping(value = "/sysad/add", method = RequestMethod.POST)
+    public ResponseEntity addUser(@RequestBody User user, HttpServletRequest request){
+        if(getRoleInSession(request).equals(Role.ADMIN)){
+            log.info("UserController : User has been added");
+            return ResponseEntity.ok(userService.addUser(user));
+        }
+
+        log.info("UserController :: Does not have authority to add the users");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
+
+    }
+
+    @RequestMapping(value = "/sysad/view" , method = RequestMethod.GET)
+    public ResponseEntity viewUser(@RequestParam("email") String email, HttpServletRequest request) {
+        if (getRoleInSession(request).equals(Role.ADMIN)) {
+            log.info("UserController : Got user information");
+            return ResponseEntity.ok(userService.getUserByEmail(email));
+        }
+        log.info("UserController :: Does not have authority to view the users");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
+    }
+
+    public static User getUserInSession(HttpServletRequest request){
+        HttpSession session= request.getSession();
+        return (User) session.getAttribute("user");
+    }
+
+    public static Role getRoleInSession(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        return (Role)session.getAttribute("role");
+    }
 
 }

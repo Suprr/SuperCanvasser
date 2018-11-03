@@ -1,3 +1,4 @@
+
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -23,6 +24,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-=======
+
 # Add any directories, files, or patterns you don't want to be tracked by version control
 .DS_STORE
+
