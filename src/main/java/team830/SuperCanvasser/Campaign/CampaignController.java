@@ -5,15 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestBody;
-import team830.SuperCanvasser.CurrentObject;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RequestMapping("/manager/campaign")
@@ -24,12 +22,12 @@ public class CampaignController {
     @Autowired
         private CampaignService campaignService;
 
-    @RequestMapping("/view")
-    public ResponseEntity getCampaign(@RequestParam String id) {
+    @GetMapping("/view")
+    public ResponseEntity getCampaign(@RequestParam String id, HttpServletRequest request) {
         Campaign campaign = campaignService.findBy_Id(id);
         log.info("CampaignController :: Getting Campaign");
         if(campaign != null){
-            CurrentObject.setCurrentCamp(campaign);
+            request.getSession().setAttribute("currentCampaign", campaign);
             log.info("CampaignController :: Campaign Found");
             return ResponseEntity.ok(campaign);
         }
@@ -37,8 +35,8 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editCampaign(@RequestBody Campaign campaign) {
-            if(campaign.equals(CurrentObject.getCurrentCamp())){
+    public ResponseEntity editCampaign(@RequestBody Campaign campaign, HttpServletRequest request) {
+            if(campaign.equals((request.getSession().getAttribute("currentCampaign")))){
                 log.info("CampaignController :: Campaign Edited");
                 return ResponseEntity.ok(campaignService.editCampaign(campaign));
             }
@@ -46,7 +44,7 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity createCampaign(@Valid @RequestBody Campaign campaign) {
+    public ResponseEntity createCampaign(@Valid @RequestBody Campaign campaign, HttpServletRequest request) {
 //            if(request.getSession().getAttribute(""))
             log.info("CampaignController :: Campaign has been created");
             return ResponseEntity.ok(campaignService.addCampaign(campaign));

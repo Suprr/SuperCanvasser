@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestBody;
-import team830.SuperCanvasser.CurrentObject;
+import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 import team830.SuperCanvasser.User.Role;
+import team830.SuperCanvasser.User.UserController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RequestMapping("/sysad/var")
 @RestController
@@ -24,8 +24,8 @@ public class VariableController {
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editVar(@RequestBody Variable var) {
-        if (CurrentObject.getCurrentRole().equals(Role.ADMIN)) {
+    public ResponseEntity editVar(@RequestBody Variable var, HttpServletRequest request) {
+        if (UserController.getRoleInSession(request).equals(Role.ADMIN)) {
             log.info("VarController :: Variable has been edited");
             return ResponseEntity.ok(variableService.editVariable(var));
         }
@@ -33,8 +33,8 @@ public class VariableController {
     }
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public ResponseEntity getAllVariables(){
-        if (CurrentObject.getCurrentRole().equals(Role.ADMIN)) {
+    public ResponseEntity getAllVariables(HttpServletRequest request){
+        if (UserController.getRoleInSession(request).equals(Role.ADMIN)) {
             log.info("VarController :: Getting all variables");
             return ResponseEntity.ok(variableService.findAll());
         }
