@@ -12,4 +12,5 @@ public interface UserInterface {
     User getUserByEmail(String email);
     User loginUser(User user) throws UnsupportedEncodingException;
 
+
 }

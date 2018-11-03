@@ -8,8 +8,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import team830.SuperCanvasser.Campaign.Campaign;
 import team830.SuperCanvasser.Campaign.CampaignRepo;
 import team830.SuperCanvasser.Task.Location;
-import team830.SuperCanvasser.User.Canvasser;
-import team830.SuperCanvasser.User.Manager;
 
 import java.util.ArrayList;
 import java.util.Date;

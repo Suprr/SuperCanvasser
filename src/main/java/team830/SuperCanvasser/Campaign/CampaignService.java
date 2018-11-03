@@ -16,26 +16,22 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public Campaign editCampaign(Campaign campaign) {
-        log.debug("Executing edit campaign - service");
         return campaignRepo.save(campaign);
     }
 
     @Override
-    public List<Campaign> findAll() {
-        log.debug("Executing find all campaign - service");
-        return campaignRepo.findAll();
-    }
-
-    @Override
     public Campaign addCampaign(Campaign campaign) {
-        log.debug("Executing add campaign - service");
         return campaignRepo.save(campaign);
     }
 
     @Override
     public Campaign findBy_Id(String id) {
-        log.debug("Executing find campaign by id - service");
         return campaignRepo.findBy_id(id);
+    }
+
+    @Override
+    public List<Campaign> findAllbyManager(String managerId){
+        return campaignRepo.findAllByManagersContains(managerId);
     }
 
 }

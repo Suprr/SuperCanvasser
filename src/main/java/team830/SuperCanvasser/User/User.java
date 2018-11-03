@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "users")
 public class User {
+    @Id
     private String _id;
     @Indexed(unique=true)
-    @Id
     private String email;
     private String pwd;
     private String firstName;

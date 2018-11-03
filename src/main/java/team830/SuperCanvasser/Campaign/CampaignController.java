@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
@@ -22,7 +21,7 @@ public class CampaignController {
     @Autowired
         private CampaignService campaignService;
 
-    @GetMapping("/view")
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
     public ResponseEntity getCampaign(@RequestParam String id, HttpServletRequest request) {
         Campaign campaign = campaignService.findBy_Id(id);
         log.info("CampaignController :: Getting Campaign");
@@ -51,9 +50,10 @@ public class CampaignController {
     }
 
     //campaign array(list) will be passed to the front as a responseEntity
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity getAllCampaigns(){
-        return ResponseEntity.ok(campaignService.findAll());
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public ResponseEntity getAllCampaigns(@RequestBody String _id, HttpServletRequest request){
+        log.info("CampaignController :: Campaign is returning all the list found by manager");
+        return ResponseEntity.ok(campaignService.findAllbyManager(_id));
     }
 
 }
