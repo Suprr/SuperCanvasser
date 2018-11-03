@@ -23,13 +23,16 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody User user, HttpServletRequest request) throws IOException {
         log.info("UserController :: Process Login");
+
         loggedInUser = userService.loginUser(user);
         if (loggedInUser != null) {
             request.getSession().setAttribute("user",loggedInUser);
             return ResponseEntity.ok(loggedInUser);
         }
+
         log.info("UserController :: Invalid Credentials :: " +
                 "Email: " + user.getEmail() + " Pwd: " + user.getPwd());
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
     }
 
