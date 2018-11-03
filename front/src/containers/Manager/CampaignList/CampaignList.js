@@ -7,8 +7,8 @@ import {withRouter, Route, Switch} from 'react-router-dom'
 import axios from '../../../axios'
 class CampaignList extends Component {
   state = {
-    campaignList : this.props.campaignList,
-    campaigns:null,
+    //campaignList : this.props.campaignList,
+    campaigns: this.props.campaignList,
     clicked : false, 
     index : '',
   };
@@ -20,60 +20,60 @@ class CampaignList extends Component {
   		this.setState({index : count});
   		this.setState({clicked:true});
   }
-  getDerivedStateFromProps(props, state){
-    console.log('[List getDerivedStateFromProps', this.props.campaignList)
-  }
+  // getDerivedStateFromProps(props, state){
+  //   console.log('[List getDerivedStateFromProps', this.props.campaignList)
+  // }
   
-  componentDidMount(){
-    console.log(['List componentDidMount '], this.props.campaignList);
+  // componentDidMount(){
+  //   console.log(['List componentDidMount '], this.props.campaignList);
 
-    if(!this.state.campaigns&&this.props.campaignList){
+  //   if(!this.state.campaigns&&this.props.campaignList){
       
-      axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
-          let x= response.data 
-          let campaignIndexes = this.props.campaignList;
-          let newCampaigns = [];
-          for(let c in campaignIndexes){
-            if(x){
-              newCampaigns.push(x[campaignIndexes[c]]);
-            }
-          }
+  //     axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
+  //         let x= response.data 
+  //         let campaignIndexes = this.props.campaignList;
+  //         let newCampaigns = [];
+  //         for(let c in campaignIndexes){
+  //           if(x){
+  //             newCampaigns.push(x[campaignIndexes[c]]);
+  //           }
+  //         }
 
-          this.setState((prevState)=>({campaigns : newCampaigns}));
-          this.props.campaignSet(newCampaigns);
-      });     
-    }
+  //         this.setState((prevState)=>({campaigns : newCampaigns}));
+  //         this.props.campaignSet(newCampaigns);
+  //     });     
+  //   }
     
-  }
+  // }
 
-  componentDidUpdate(){
-    console.log(['List componentDidUpdate'], this.props);
-    if(!this.state.campaigns&&this.state.campaignList){
-      axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
-          let x= response.data 
-          let campaignIndexes = this.state.campaignList;
-          let newCampaigns = [];
-          for(let c in campaignIndexes){
-            if(x){
-              newCampaigns.push(x[campaignIndexes[c]]);
-            }
-          }
+  // componentDidUpdate(){
+  //   console.log(['List componentDidUpdate'], this.props);
+  //   if(!this.state.campaigns&&this.state.campaignList){
+  //     axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
+  //         let x= response.data 
+  //         let campaignIndexes = this.state.campaignList;
+  //         let newCampaigns = [];
+  //         for(let c in campaignIndexes){
+  //           if(x){
+  //             newCampaigns.push(x[campaignIndexes[c]]);
+  //           }
+  //         }
 
-          this.setState((prevState)=>({campaigns : newCampaigns}));
-          this.props.campaignSet(newCampaigns);
-      });     
-    }
+  //         this.setState((prevState)=>({campaigns : newCampaigns}));
+  //         this.props.campaignSet(newCampaigns);
+  //     });     
+  //   }
     
-  }
+  // }
 
-  componentWillReceiveProps(nextProps){
+  // componentWillReceiveProps(nextProps){
 
-    console.log(['componentWillReceiveProps List'], nextProps.campaignList);
+  //   console.log(['componentWillReceiveProps List'], nextProps.campaignList);
 
-    if(!this.state.campaignList){
-      this.setState({campaignList : nextProps.campaignList});
-    }
-  }
+  //   if(!this.state.campaignList){
+  //     this.setState({campaignList : nextProps.campaignList});
+  //   }
+  // }
 
   
 

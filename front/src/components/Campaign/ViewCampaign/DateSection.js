@@ -42,7 +42,7 @@ class DateSection extends Component{
 			}));
 		}
 
-		
+		//Have to change
 		axios.put('/campaigns/'+this.props.id+'/startDate.json/', JSON.stringify(this.state.editedStartDate.format('MM DD YYYY'))).then( response => {  
 	              console.log("Success", this.state.startDate);
 	      })

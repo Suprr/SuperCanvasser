@@ -34,7 +34,9 @@ public class CampaignService implements CampaignInterface {
     public List<Campaign> findAllbyManager(String managerId){
         List<Campaign> campaigns = campaignRepo.findAll();
         List<Campaign> foundCampaigns = new ArrayList<>();
+
         for (Campaign c : campaigns) {
+
             if(c.getManagers().contains(managerId)){
                 foundCampaigns.add(c);
             }

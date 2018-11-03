@@ -1,18 +1,25 @@
 import React, {Component} from 'react'
 import classes from './Campaign.module.css'
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 class Campaign extends Component{
 	state ={
 		...this.props.campaign
 	}
+	viewClickHandler=(event)=>{
+		const target = event.target;
+		const campaign_id = target.name;
+
+		this.sessionsessionStorage.setItem('campaignID', campaign_id);
+		this.props.history.push('/manager/campaign/view');
+	}
 
 	render(){
-
+						//<Link className={classes.Link} to={this.props.url+'/view'}>
 		return(
 
 			<div className = {["card", classes.Campaign].join(' ')}>
 				<div className={["card-body"].join(' ')}>
-					<h5 className="card-title">{this.state.campaignTitle}</h5>
+					<h5 className="card-title">{this.state.name}</h5>
 					
 					<div className={["container-fluid", classes.CampaignBody].join(' ')}>
 						<div className="row">
@@ -28,13 +35,10 @@ class Campaign extends Component{
 					</div>
 
 					<div>
-						<Link className={classes.Link} to={this.props.url+'/'+this.props.campaign.id+'/'+this.props.name}>
-						<button name = {this.props.name} className = {["btn btn-danger"].join(' ')}>
-								
+						<button name = {this.props.name} className = {["btn btn-danger"].join(' ')} name={this.state._id} onClick={this.viewClickHandler}>
 									View
-								
 						</button>
-						</Link>
+				
 					</div>
 				</div>
 			</div>
@@ -42,4 +46,4 @@ class Campaign extends Component{
 	}
 }
 
-export default Campaign;
+export default withRouter(Campaign);
