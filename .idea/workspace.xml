@@ -2,25 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="059e0c9e-bde7-4bf2-9d7f-ba61d9ca32bb" name="Default Changelist" comment="">
-<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/Layout/MenuData.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/Layout/MenuData.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/components/SignIn/Role.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/SignIn/Role.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/components/SignIn/SignInBody.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/SignIn/SignInBody.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/components/SignIn/SignInBody_n.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/SignIn/SignInBody_n.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/containers/SignIn/SignIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/containers/SignIn/SignIn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java" afterDir="false" />
-||||||| merged common ancestors
-      <change beforePath="$PROJECT_DIR$/front/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-=======
-      <change beforePath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/DataAccessLayer/CampaignRepo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/DataAccessLayer/UserRepo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/containers/Base/Base.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/containers/Base/Base.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/containers/SysAdmin/ManageUsers/AddUser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/containers/SysAdmin/ManageUsers/AddUser.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/containers/SysAdmin/SysAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/containers/SysAdmin/SysAdmin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Role.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java" afterDir="false" />
->>>>>>> Stashed changes
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -58,9 +48,9 @@
           <entry key="SuperCanvasser/test/variable" value="1" />
           <entry key="SuperCanvasser/test/variables" value="2" />
           <entry key="class" value="1" />
-          <entry key="java" value="163" />
+          <entry key="java" value="159" />
           <entry key="orig" value="3" />
-          <entry key="properties" value="3" />
+          <entry key="properties" value="2" />
           <entry key="users" value="2" />
           <entry key="version" value="2" />
           <entry key="xml" value="6" />
@@ -69,24 +59,24 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="1" />
-          <entry key="JAVA" value="163" />
+          <entry key="JAVA" value="159" />
           <entry key="MONGO" value="67" />
           <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Properties" value="3" />
+          <entry key="Properties" value="2" />
           <entry key="XML" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7306" />
-          <entry key="properties" value="20" />
+          <entry key="java" value="7269" />
+          <entry key="properties" value="14" />
           <entry key="xml" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7306" />
-          <entry key="Properties" value="20" />
+          <entry key="JAVA" value="7269" />
+          <entry key="Properties" value="14" />
           <entry key="XML" value="4" />
         </counts>
       </usages-collector>
@@ -104,95 +94,47 @@
     <session id="353812580">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="properties" value="1" />
+          <entry key="java" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Properties" value="1" />
+          <entry key="JAVA" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7" />
-          <entry key="properties" value="7" />
+          <entry key="java" value="187" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7" />
-          <entry key="Properties" value="7" />
+          <entry key="JAVA" value="187" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-<<<<<<< Updated upstream
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
-||||||| merged common ancestors
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java">
-=======
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java">
->>>>>>> Stashed changes
           <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
             <state relative-caret-position="105">
               <caret line="7" column="12" lean-forward="true" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
-||||||| merged common ancestors
-            <state relative-caret-position="-229">
-              <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-=======
-            <state relative-caret-position="289">
-              <caret line="20" column="36" lean-forward="true" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
->>>>>>> Stashed changes
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-<<<<<<< Updated upstream
         <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
           <provider selected="true" editor-type-id="text-editor" />
-||||||| merged common ancestors
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Role.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-            </state>
-          </provider>
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Role.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="18" lean-forward="true" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
-            </state>
-          </provider>
->>>>>>> Stashed changes
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/VariableController.java">
           <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-            <state relative-caret-position="210">
-              <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
-||||||| merged common ancestors
-            <state relative-caret-position="150">
-              <caret line="10" column="42" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="42" />
-=======
-            <state relative-caret-position="120">
-              <caret line="8" column="25" lean-forward="true" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
->>>>>>> Stashed changes
+            <state relative-caret-position="1">
+              <caret line="4" column="62" lean-forward="true" selection-start-line="4" selection-start-column="62" selection-end-line="4" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -200,34 +142,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java">
           <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-            <state relative-caret-position="229">
+            <state relative-caret-position="750">
               <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
-||||||| merged common ancestors
-            <state relative-caret-position="229">
-              <caret line="219" column="16" selection-start-line="219" selection-start-column="16" selection-end-line="219" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/VariableController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10">
-              <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-=======
-            <state relative-caret-position="1707">
-              <caret line="224" column="19" lean-forward="true" selection-start-line="224" selection-start-column="19" selection-end-line="224" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/VariableController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="383">
-              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
->>>>>>> Stashed changes
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -236,27 +152,15 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Manager.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserRepo.java">
           <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
             <state relative-caret-position="135">
               <caret line="10" selection-start-line="10" selection-end-line="10" />
-||||||| merged common ancestors
-            <state relative-caret-position="150">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-=======
-            <state relative-caret-position="90">
-              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
->>>>>>> Stashed changes
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-<<<<<<< Updated upstream
         <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserInterface.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="150">
@@ -271,8 +175,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="136">
+              <caret line="37" column="54" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -282,58 +186,13 @@
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-||||||| merged common ancestors
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Canvasser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
+            <state relative-caret-position="288">
+              <caret line="886" column="10" selection-start-line="886" selection-start-column="10" selection-end-line="886" selection-end-column="10" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="48" column="18" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java">
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java">
->>>>>>> Stashed changes
-          <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-            <state relative-caret-position="152">
-              <caret line="37" column="16" lean-forward="true" selection-start-line="37" selection-start-column="16" selection-end-line="37" selection-end-column="16" />
-||||||| merged common ancestors
-            <state relative-caret-position="120">
-              <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#887#888#0" expanded="true" />
-                <element signature="e#913#914#0" expanded="true" />
-              </folding>
-=======
-            <state relative-caret-position="135">
-              <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#887#888#0" expanded="true" />
-                <element signature="e#913#914#0" expanded="true" />
-              </folding>
->>>>>>> Stashed changes
-            </state>
-          </provider>
-        </entry>
-      </file>
-<<<<<<< Updated upstream
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
@@ -343,21 +202,6 @@
           </provider>
         </entry>
       </file>
-||||||| merged common ancestors
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserInterface.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-=======
->>>>>>> Stashed changes
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -378,7 +222,6 @@
       <find>ok</find>
       <find>log</find>
       <find>securi</find>
-      <find>l</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -405,31 +248,17 @@
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/CustomizedUserDetails.java" />
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Campaign/CampaignController.java" />
         <option value="$PROJECT_DIR$/src/main/java/Auth/SecurityConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserInterface.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/SuperCanvasserApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/Variable.java" />
-<<<<<<< Updated upstream
-        <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Role.java" />
-        <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java" />
-||||||| merged common ancestors
+        <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Role.java" />
-        <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java" />
-=======
-        <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java" />
->>>>>>> Stashed changes
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/VariableController.java" />
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserRepo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java" />
-<<<<<<< Updated upstream
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java" />
-||||||| merged common ancestors
-=======
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Role.java" />
         <option value="$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java" />
->>>>>>> Stashed changes
       </list>
     </option>
   </component>
@@ -439,18 +268,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/front/node_modules" />
-  </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths>
-      <path value="$PROJECT_DIR$/front/package.json" />
-    </packageJsonPaths>
-  </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="y" value="23" />
+  <component name="ProjectFrameBounds">
     <option name="width" value="1440" />
-    <option name="height" value="827" />
+    <option name="height" value="852" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -490,6 +310,23 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="supercanvasser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="supercanvasser" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="SuperCanvasser" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="supercanvasser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="supercanvasser" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="SuperCanvasser" type="462c0819:PsiDirectoryNode" />
+              <item name="User" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -501,17 +338,11 @@
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
-<<<<<<< Updated upstream
-    <property name="SearchEverywhereHistoryKey" value="app&#9;FILE&#9;file:///Users/wongeun/Desktop/2018Fall/supercanvasser/src/main/resources/application.properties&#10;userrepo&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserRepo.java&#10;User&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/User.java&#10;userr&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserRepo.java" />
-||||||| merged common ancestors
-    <property name="SearchEverywhereHistoryKey" value="app&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/resources/application.properties&#10;userrepo&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserRepo.java&#10;User&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/User.java&#10;userr&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserRepo.java" />
-=======
-    <property name="SearchEverywhereHistoryKey" value="usercont&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserController.java&#10;app&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/resources/application.properties&#10;userrepo&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserRepo.java&#10;User&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/User.java&#10;userr&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserRepo.java" />
->>>>>>> Stashed changes
+    <property name="SearchEverywhereHistoryKey" value="user&#9;FILE&#9;file:///Users/wongeun/Desktop/2018Fall/supercanvasser/src/main/java/team830/SuperCanvasser/User/User.java&#10;usercon&#9;FILE&#9;file:///Users/wongeun/Desktop/2018Fall/supercanvasser/src/main/java/team830/SuperCanvasser/User/UserController.java&#10;userrepo&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserRepo.java&#10;User&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/User.java&#10;userr&#9;FILE&#9;file:///Users/katchoi/Projects/SuperCanvasser/src/main/java/team830/SuperCanvasser/User/UserRepo.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541199059405" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541205150887" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -530,7 +361,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.SuperCanvasserApplication">
+  <component name="RunManager" selected="Spring Boot.SuperCanvasserApplication (1)">
     <configuration name="CampaignTest.testCampaignFunctions" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SuperCanvasser" />
       <extension name="coverage">
@@ -577,23 +408,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserTest.testServiceGetUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="SuperCanvasser" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="team830.SuperCanvasser.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="team830.SuperCanvasser" />
-      <option name="MAIN_CLASS_NAME" value="team830.SuperCanvasser.UserTest" />
-      <option name="METHOD_NAME" value="testServiceGetUser" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SuperCanvasserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+    <configuration name="SuperCanvasserApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="supercanvasser" />
       <extension name="coverage">
         <pattern>
@@ -602,25 +417,37 @@
         </pattern>
       </extension>
       <option name="SPRING_BOOT_MAIN_CLASS" value="team830.SuperCanvasser.SuperCanvasserApplication" />
-      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SuperCanvasserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="SuperCanvasser" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="team830.SuperCanvasser.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="team830.SuperCanvasser.SuperCanvasserApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.UserTest.testServiceGetUser" />
       <item itemvalue="JUnit.UserTest" />
       <item itemvalue="JUnit.UserTest.testServiceEditException" />
-      <item itemvalue="JUnit.CampaignTest.testCampaignFunctions" />
       <item itemvalue="Spring Boot.SuperCanvasserApplication" />
+      <item itemvalue="JUnit.CampaignTest.testCampaignFunctions" />
+      <item itemvalue="Spring Boot.SuperCanvasserApplication (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.SuperCanvasserApplication (1)" />
         <item itemvalue="Spring Boot.SuperCanvasserApplication" />
         <item itemvalue="JUnit.CampaignTest.testCampaignFunctions" />
         <item itemvalue="JUnit.UserTest" />
         <item itemvalue="JUnit.UserTest.testServiceEditException" />
-        <item itemvalue="JUnit.UserTest.testServiceGetUser" />
       </list>
     </recent_temporary>
   </component>
@@ -684,19 +511,12 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-<<<<<<< Updated upstream
-    <option name="totallyTimeSpent" value="53092000" />
-||||||| merged common ancestors
-    <option name="totallyTimeSpent" value="49295000" />
-=======
-    <option name="totallyTimeSpent" value="51502000" />
->>>>>>> Stashed changes
+    <option name="totallyTimeSpent" value="53307000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22532189" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22532189" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24964234" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -707,22 +527,14 @@
       <window_info id="Persistence" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32882273" />
-<<<<<<< Updated upstream
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.83476394" visible="true" weight="0.526506" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4985694" weight="0.3987952" />
-||||||| merged common ancestors
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5729614" weight="0.27815467" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.760372" visible="true" weight="0.526506" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39891452" />
-=======
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5729614" visible="true" weight="0.32971507" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39891452" />
->>>>>>> Stashed changes
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Spring" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32882273" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.16523606" side_tool="true" visible="true" weight="0.526506" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.23962805" side_tool="true" weight="0.526506" />
       <window_info anchor="bottom" id="Java Enterprise" order="10" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="12" show_stripe_button="false" />
@@ -801,10 +613,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-<<<<<<< Updated upstream
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.5.34/tomcat-embed-core-8.5.34-sources.jar!/org/apache/tomcat/util/threads/TaskThread.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/LogIN.java" />
-||||||| merged common ancestors
     <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/VariableInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -814,8 +622,6 @@
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.5.34/tomcat-embed-core-8.5.34-sources.jar!/org/apache/tomcat/util/threads/TaskThread.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LogIN.java" />
-=======
->>>>>>> Stashed changes
     <entry file="file://$PROJECT_DIR$/src/main/java/Auth/LogIn.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/VariableRepo.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -885,6 +691,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="855">
           <caret line="71" column="1" selection-start-line="71" selection-start-column="1" selection-end-line="71" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -932,6 +741,13 @@
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.9.RELEASE/spring-web-5.0.9.RELEASE-sources.jar!/org/springframework/web/bind/annotation/RequestBody.java" />
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.0.9.RELEASE/spring-web-5.0.9.RELEASE-sources.jar!/org/springframework/web/bind/annotation/RequestAttribute.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/util/Optional.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="226">
@@ -941,6 +757,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Auth/SecurityConfig.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/CustomizedUserDetails.java" />
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="39" column="54" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/SuperCanvasserApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -977,21 +800,14 @@
         </state>
       </provider>
     </entry>
-<<<<<<< Updated upstream
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Manager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-||||||| merged common ancestors
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="48" column="18" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
+        <state relative-caret-position="206">
+          <caret line="78" lean-forward="true" selection-start-line="78" selection-end-line="78" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#887#888#0" expanded="true" />
+            <element signature="e#913#914#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1003,22 +819,10 @@
         </state>
       </provider>
     </entry>
-=======
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="48" column="18" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
->>>>>>> Stashed changes
     <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Canvasser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
     </entry>
@@ -1029,17 +833,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.5.34/tomcat-embed-core-8.5.34-sources.jar!/javax/servlet/http/HttpSession.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserRepo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="14" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
+        <state relative-caret-position="135">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/LogInConfig.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+        <state relative-caret-position="750">
+          <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/VariableController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1">
+          <caret line="4" column="62" lean-forward="true" selection-start-line="4" selection-start-column="62" selection-end-line="4" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="37" column="54" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1049,170 +871,14 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Role.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
-          <caret line="2" column="18" lean-forward="true" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/DataAccessLayer/UserRepo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/DataAccessLayer/CampaignRepo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/Variable/VariableController.java">
-      <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-        <state relative-caret-position="210">
-          <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.5.34/tomcat-embed-core-8.5.34-sources.jar!/javax/servlet/http/HttpSession.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-||||||| merged common ancestors
-        <state relative-caret-position="10">
-          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-=======
-        <state relative-caret-position="383">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
->>>>>>> Stashed changes
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserRepo.java">
-      <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-        <state relative-caret-position="135">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-||||||| merged common ancestors
-        <state relative-caret-position="229">
-          <caret line="219" column="16" selection-start-line="219" selection-start-column="16" selection-end-line="219" selection-end-column="16" />
-=======
-        <state relative-caret-position="1707">
-          <caret line="224" column="19" lean-forward="true" selection-start-line="224" selection-start-column="19" selection-end-line="224" selection-end-column="19" />
->>>>>>> Stashed changes
-        </state>
-      </provider>
-    </entry>
-<<<<<<< Updated upstream
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java">
-||||||| merged common ancestors
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java">
-=======
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
->>>>>>> Stashed changes
-      <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-        <state relative-caret-position="120">
-          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#887#888#0" expanded="true" />
-            <element signature="e#913#914#0" expanded="true" />
-          </folding>
-||||||| merged common ancestors
-        <state relative-caret-position="-229">
-          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-=======
-        <state relative-caret-position="120">
-          <caret line="8" column="25" lean-forward="true" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
->>>>>>> Stashed changes
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="76" column="65" lean-forward="true" selection-start-line="76" selection-start-column="65" selection-end-line="78" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-<<<<<<< Updated upstream
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-||||||| merged common ancestors
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-=======
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/Manager.java">
->>>>>>> Stashed changes
-      <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-        <state relative-caret-position="105">
-          <caret line="7" column="12" lean-forward="true" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
-||||||| merged common ancestors
-        <state relative-caret-position="390">
-          <caret line="26" column="14" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
-=======
-        <state relative-caret-position="90">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
->>>>>>> Stashed changes
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-        <state relative-caret-position="30">
-          <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
-||||||| merged common ancestors
-        <state relative-caret-position="150">
-          <caret line="10" column="42" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="42" />
-=======
-        <state relative-caret-position="135">
-          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#887#888#0" expanded="true" />
-            <element signature="e#913#914#0" expanded="true" />
-          </folding>
->>>>>>> Stashed changes
-        </state>
-      </provider>
-    </entry>
-<<<<<<< Updated upstream
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserService.java">
-||||||| merged common ancestors
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/User.java">
-=======
-    <entry file="file://$PROJECT_DIR$/src/main/java/team830/SuperCanvasser/User/UserController.java">
->>>>>>> Stashed changes
-      <provider selected="true" editor-type-id="text-editor">
-<<<<<<< Updated upstream
-        <state relative-caret-position="229">
-          <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
-||||||| merged common ancestors
-        <state relative-caret-position="120">
-          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-=======
-        <state relative-caret-position="289">
-          <caret line="20" column="36" lean-forward="true" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
->>>>>>> Stashed changes
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="2" column="49" lean-forward="true" selection-start-line="2" selection-start-column="49" selection-end-line="2" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="37" column="16" lean-forward="true" selection-start-line="37" selection-start-column="16" selection-end-line="37" selection-end-column="16" />
+        <state relative-caret-position="288">
+          <caret line="886" column="10" selection-start-line="886" selection-start-column="10" selection-end-line="886" selection-end-column="10" />
         </state>
       </provider>
     </entry>

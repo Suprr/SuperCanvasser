@@ -10,29 +10,43 @@ class Role extends Component{
 		selectedRole : null,
 		loading:true
 	}
+
+	
 	
 	onSubmitHandler = (event) =>{
 		console.log(['onSubmitHandler']);
 		let roleName = null
 		let role = this.state.selectedRole;
 		
-		if(role==0)
+		if(role=='MANAGER')
 			roleName = 'manager'
-		else if(role==1)
+		else if(role=='CANVASSER')
 			roleName='canvasser'
 		else
-			roleName='sys-admin'
-
+			roleName='sysad'
+		
+		const selectedRole = {
+        	role : this.state.selectedRole,
+    	}
 		//Real Login
 		//axios.post('/login/role.json', this.state.selectedRole)
-		axios.post('/login/role', this.state.selectedRole)
-				.then(response => {
-						console.log(roleName)
+		// axios.post('/login/role', selectedRole)
+		// 		.then(response => {
+		// 				console.log(roleName)
+		// 				//12 is placeholder for URL ID, I will fix it
+		// 				this.props.history.push('/'+roleName+'/'+'12')
+		// 		}).catch(error=>{
+		// 			console.log('Error',selectedRole);
+		// 			console.log("Error", error);
+		// 		});
+		axios.get('/login/role/?role='+this.state.selectedRole).then(response=>{
+				console.log(role, roleName)
 						//12 is placeholder for URL ID, I will fix it
-						this.props.history.push('/'+roleName+'/'+'12')
-				}).catch(error=>{
-					console.log("Error", error);
-				});
+				this.props.history.push('/'+roleName)
+		}).catch(error=>{
+			console.log('Error',this.state.selectedRole);
+			console.log("Error", error);
+		})
 		
 	}
 

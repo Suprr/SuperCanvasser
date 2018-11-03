@@ -44,12 +44,12 @@ const menuData = {
 			sysAdmin : [
 				{
 					title: 'Manage User',
-					path : 'manage-user',
+					path : 'view',
 					id : 'caaa'
 				},
 				{
 					title : 'Global Variable',
-					path : 'global-variable',
+					path : 'var/view',
 					id : 'cbbb'
 				}
 			]

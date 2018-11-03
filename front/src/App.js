@@ -87,7 +87,7 @@ class App extends Component {
         <Switch>
           <Route path="/login" exact component={SignIn} />
           <Route path="/login/role" exact component={SignInRole} />
-          <Route path='/:role/:id' component={Base} />
+          <Route path='/:role/' component={Base} />
           {page}
         </Switch>
         

@@ -34,13 +34,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
     }
 
-    @RequestMapping(value = "/login/role", method = RequestMethod.POST)
-    public void selectRole(@RequestBody Role role, HttpServletRequest request) throws IOException {
+    @RequestMapping(value = "/login/role", method = RequestMethod.GET)
+    public void selectRole(@RequestParam Role role, HttpServletRequest request) throws IOException {
         request.getSession().setAttribute("role", role);
-
+        log.info("UserController :: Role has been set in session");
     }
 
-    @RequestMapping(value = "/login/role", method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public void logout(HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
