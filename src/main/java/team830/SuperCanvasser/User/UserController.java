@@ -5,11 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestBody;
+import team830.SuperCanvasser.CurrentObject;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RestController
@@ -18,15 +22,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    public static User loggedInUser;
+    private User loggedInUser;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody User user, HttpServletRequest request) throws IOException {
         log.info("UserController :: Process Login");
-
         loggedInUser = userService.loginUser(user);
         if (loggedInUser != null) {
-            request.getSession().setAttribute("user",loggedInUser);
+            CurrentObject.setCurrentUser(loggedInUser);
+            request.getSession().setAttribute("email", loggedInUser.getEmail());
             return ResponseEntity.ok(loggedInUser);
         }
 
@@ -37,32 +41,32 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login/role", method = RequestMethod.GET)
-    public void selectRole(@RequestParam Role role, HttpServletRequest request) throws IOException {
+    public void selectRole(@RequestParam Role role){
         log.info("UserController :: Role has been selected.");
-        request.getSession().setAttribute("role", role);
+        CurrentObject.setCurrentRole(role);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public void logout(HttpServletRequest request) throws IOException {
-        request.getSession().removeAttribute("user");
+    public void logout() {
+        CurrentObject.setCurrentUser(null);
         log.info("UserController :: User logged out");
     }
 
     // system admin user control functionalities
 
     @RequestMapping(value = "/sysad/edit", method = RequestMethod.POST)
-    public ResponseEntity editUser(@RequestBody User user, HttpServletRequest request){
-        if(getRoleInSession(request).equals(Role.ADMIN)){
+    public ResponseEntity editUser(@RequestBody User user){
+        if(CurrentObject.getCurrentRole().equals(Role.ADMIN)){
             log.info("UserController : User has been edited");
-            return ResponseEntity.ok(userService.editUser(loggedInUser));
+            return ResponseEntity.ok(userService.editUser(user));
         }
         log.info("UserController :: Does not have authority to edit the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
     @RequestMapping(value = "/sysad/add", method = RequestMethod.POST)
-    public ResponseEntity addUser(@RequestBody User user, HttpServletRequest request){
-        if(getRoleInSession(request).equals(Role.ADMIN)){
+    public ResponseEntity addUser(@RequestBody User user){
+        if(CurrentObject.getCurrentRole().equals(Role.ADMIN)){
             log.info("UserController : User has been added");
             return ResponseEntity.ok(userService.addUser(user));
         }
@@ -73,23 +77,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/sysad/view" , method = RequestMethod.GET)
-    public ResponseEntity viewUser(@RequestParam("email") String email, HttpServletRequest request) {
-        if (getRoleInSession(request).equals(Role.ADMIN)) {
+    public ResponseEntity viewUser(@RequestParam("email") String email) {
+        if (CurrentObject.getCurrentRole().equals(Role.ADMIN)) {
             log.info("UserController : Got user information");
             return ResponseEntity.ok(userService.getUserByEmail(email));
         }
         log.info("UserController :: Does not have authority to view the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
-    }
-
-//    public static User getUserInSession(HttpServletRequest request){
-//        HttpSession session= request.getSession();
-//        return (User) session.getAttribute("user");
-//    }
-
-    public static Role getRoleInSession(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        return (Role)session.getAttribute("role");
     }
 
 }
