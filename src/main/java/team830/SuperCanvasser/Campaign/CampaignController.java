@@ -22,8 +22,8 @@ public class CampaignController {
 
     //id = campaignId
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public ResponseEntity getCampaign(@RequestParam String id, HttpServletRequest request) {
-        Campaign campaign = campaignService.findBy_Id(id);
+    public ResponseEntity getCampaign(@RequestParam String _id, HttpServletRequest request) {
+        Campaign campaign = campaignService.findBy_Id(_id);
         log.info("CampaignController :: Getting Campaign");
         if(campaign != null){
             request.getSession().setAttribute("currentCampaign", campaign);

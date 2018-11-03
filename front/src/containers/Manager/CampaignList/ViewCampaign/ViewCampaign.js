@@ -37,11 +37,11 @@ class ViewCampaign extends Component {
   };
 
   componentDidMount(){
-    const cmpId = sessionStorage.get('campaignID')
+    const cmpId = sessionStorage.getItem('campaignID')
     console.log(['View Campaign did mount'], cmpId);
 
     this.setState( { isMounted: true }, () => {
-          axios.get('/manager/campaign/view').then(response=>{
+          axios.get('/manager/campaign/view/?_id='+cmpId).then(response=>{
           
           const newCampaign = response.data
           console.log(['ViewCampaign Data'],newCampaign);
@@ -53,6 +53,9 @@ class ViewCampaign extends Component {
           console.log(error)
         })
     });
+
+
+    ////////
      // let cmpIndex = this.props.match.params.id;
      // axios.get('https://cse308-de3df.firebaseio.com/campaigns/'+cmpIndex+'.json').then(response=>{
      //      let x= response.data

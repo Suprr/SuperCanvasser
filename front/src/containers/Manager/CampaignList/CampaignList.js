@@ -24,27 +24,27 @@ class CampaignList extends Component {
   //   console.log('[List getDerivedStateFromProps', this.props.campaignList)
   // }
   
-  // componentDidMount(){
-  //   console.log(['List componentDidMount '], this.props.campaignList);
+  componentDidMount(){
+    console.log(['List componentDidMount '], this.props.campaignList);
 
-  //   if(!this.state.campaigns&&this.props.campaignList){
+    // if(!this.state.campaigns&&this.props.campaignList){
       
-  //     axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
-  //         let x= response.data 
-  //         let campaignIndexes = this.props.campaignList;
-  //         let newCampaigns = [];
-  //         for(let c in campaignIndexes){
-  //           if(x){
-  //             newCampaigns.push(x[campaignIndexes[c]]);
-  //           }
-  //         }
+    //   axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
+    //       let x= response.data 
+    //       let campaignIndexes = this.props.campaignList;
+    //       let newCampaigns = [];
+    //       for(let c in campaignIndexes){
+    //         if(x){
+    //           newCampaigns.push(x[campaignIndexes[c]]);
+    //         }
+    //       }
 
-  //         this.setState((prevState)=>({campaigns : newCampaigns}));
-  //         this.props.campaignSet(newCampaigns);
-  //     });     
-  //   }
+    //       this.setState((prevState)=>({campaigns : newCampaigns}));
+    //       this.props.campaignSet(newCampaigns);
+    //   });     
+    // }
     
-  // }
+  }
 
   // componentDidUpdate(){
   //   console.log(['List componentDidUpdate'], this.props);
@@ -80,15 +80,15 @@ class CampaignList extends Component {
 
 
   render() {
-    console.log('[List, RENDER] campaigns : ',this.state.campaigns);
+    console.log('[List, RENDER] campaigns : ',this.props.campaignList);
   	let campaigns = null
   	//if(!this.state.clicked){
-  	if(this.state.campaigns&&this.state.campaigns.length!=0){
+  	if(this.props.campaignList&&this.props.campaignList.length!=0){
       console.log('[List Render] HEre');
 	  		let count = 0;
-		    campaigns = this.state.campaigns.map(cpg => {
+		    campaigns = this.props.campaignList.map(cpg => {
 		      let campaign = null;
-		      campaign = <Campaign key={cpg.id} id={cpg.id} url={this.props.match.url} name = {count++} campaign={cpg} onClick={this.campaignViewClickHandler}/>;
+		      campaign = <Campaign key={cpg._id} id={cpg._id} url={this.props.match.url} name = {count++} campaign={cpg} onClick={this.campaignViewClickHandler}/>;
 
 		      return campaign;
 		    });  
