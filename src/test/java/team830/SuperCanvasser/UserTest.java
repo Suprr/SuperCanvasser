@@ -27,7 +27,6 @@ public class UserTest {
                         "aaa",
                         "Richy",
                         "Risdell",
-                        "11111",
                             new Role[]{});
 
     User user1 = new User("5bc0d1b4fc13ae64f7000001",
@@ -35,7 +34,6 @@ public class UserTest {
             "bbb",
             "Joan",
             "Risdell",
-            "22222",
             new Role[]{Role.ADMIN});
     @Test
     public void testRepoFindByEmail(){
@@ -63,7 +61,6 @@ public class UserTest {
                 "bbb",
                 "Joan",
                 "Risdell",
-                "00000",
                 new Role[]{Role.ADMIN});
         userService.editUser(user1);
         Assert.assertEquals(user1, userRepo.findByEmail("b@gmail.com"));

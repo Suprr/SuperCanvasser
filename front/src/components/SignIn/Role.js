@@ -6,32 +6,47 @@ class Role extends Component{
 	//0 : M, 1 : C, 2 : SA
 
 	state={
-		options :[0,1,2],
+		options :null,
 		selectedRole : null,
 		loading:true
 	}
+
+	
 	
 	onSubmitHandler = (event) =>{
 		console.log(['onSubmitHandler']);
 		let roleName = null
 		let role = this.state.selectedRole;
 		
-		if(role==0)
+		if(role=='MANAGER')
 			roleName = 'manager'
-		else if(role==1)
+		else if(role=='CANVASSER')
 			roleName='canvasser'
 		else
-			roleName='sys-admin'
-
+			roleName='sysad'
+		
+		const selectedRole = {
+        	role : this.state.selectedRole,
+    	}
 		//Real Login
-		axios.post('/login/role.json', this.state.selectedRole)
-				.then(response => {
-						console.log(roleName)
+		//axios.post('/login/role.json', this.state.selectedRole)
+		// axios.post('/login/role', selectedRole)
+		// 		.then(response => {
+		// 				console.log(roleName)
+		// 				//12 is placeholder for URL ID, I will fix it
+		// 				this.props.history.push('/'+roleName+'/'+'12')
+		// 		}).catch(error=>{
+		// 			console.log('Error',selectedRole);
+		// 			console.log("Error", error);
+		// 		});
+		axios.get('/login/role/?role='+this.state.selectedRole).then(response=>{
+				console.log(role, roleName)
 						//12 is placeholder for URL ID, I will fix it
-						this.props.history.push('/'+roleName+'/'+'12')
-				}).catch(error=>{
-					console.log("Error", error);
-				});
+				this.props.history.push('/'+roleName)
+		}).catch(error=>{
+			console.log('Error',this.state.selectedRole);
+			console.log("Error", error);
+		})
 		
 	}
 
@@ -42,15 +57,19 @@ class Role extends Component{
 
 	componentDidMount(){
 		//get roles from the server.
+		const data = JSON.parse(sessionStorage.getItem('userInfo'));
+		//const data = sessionStorage.getItem('userInfo');
+		console.log(['Role ComponentDidmonut'], data);
+		this.setState({options:data.role});
 	}
 
 	render(){
 		//console.log('[SignInBody]',this.props);
 		const roles = this.state.options? this.state.options.map(role=>{
 			let roleName = null;
-			if(role==0)
+			if(role=='MANAGER')
 				roleName='Manager'
-			else if(role==1)
+			else if(role=='CANVASSER')
 				roleName='Canvasser'
 			else
 				roleName='System Admin'

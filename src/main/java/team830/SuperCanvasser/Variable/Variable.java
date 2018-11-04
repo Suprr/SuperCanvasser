@@ -11,7 +11,6 @@ import org.springframework.lang.NonNull;
 public class Variable{
     @Id
     private String _id;
-    @Indexed(unique = true)
     @NonNull
     private String type;
     @NonNull

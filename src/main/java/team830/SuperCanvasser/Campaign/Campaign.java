@@ -1,6 +1,6 @@
 package team830.SuperCanvasser.Campaign;
 
-import team830.SuperCanvasser.Task.Status;
+import team830.SuperCanvasser.Status;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -8,9 +8,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import team830.SuperCanvasser.Task.Location;
 import team830.SuperCanvasser.Task.Questionnaire;
-import team830.SuperCanvasser.Task.Task;
-import team830.SuperCanvasser.Canvasser.Availability;
-import team830.SuperCanvasser.User.Manager;
 
 
 import javax.validation.constraints.NotNull;
@@ -25,14 +22,14 @@ public class Campaign {
     private String _id;
     @DBRef
     @NotNull(message = "Must enter at least one manager.")
-    private List<Manager> managers;
+    private List<String> managers; // objectId of managers
     @NotNull(message = "A start and end date must be provided.")
-    private Date startDate;
+    private String startDate;
     @NotNull
-    private Date endDate;
+    private String endDate;
     @DBRef
     @NotNull(message = "At least one canvasser must work on this campaign.")
-    private List<Availability> availabilitySlots;
+    private List<String> canvassers;
     @DBRef
     @NotNull(message = "At least one location must be set.")
     private List<Location> locations;
@@ -40,7 +37,7 @@ public class Campaign {
     @NotNull(message = "At least one question must be added.")
     private List<String> questions;
     @DBRef
-    private List<Task> tasks;
+    private List<String> tasks;
     @DBRef
     private List<Questionnaire> questionnaires;
     @Indexed(unique = true)
@@ -50,22 +47,133 @@ public class Campaign {
     private String talkingPoints;
     private Status status;
 
-
-    public Campaign(List<Manager> managersList, Date start, Date end,
-                    List<Availability> canvassersList, List<Location> locationsList,
+    public Campaign(List<String> managersList, String start, String end,
+                    List<String> canvassersList, List<Location> locationsList,
                     List<String> questionsList, String campaignName, int avgVisitDuration, String notes) {
 
-        this.managers = new ArrayList<Manager>(managersList);
+        this.managers = new ArrayList<String>(managersList);
         this.startDate = start;
         this.endDate = end;
-        this.availabilitySlots = new ArrayList<Availability>(canvassersList);
+        this.canvassers = new ArrayList<String>(canvassersList);
         this.locations = new ArrayList<Location>(locationsList);
         this.questions = new ArrayList<String>(questionsList);
-        this.tasks = new ArrayList<Task>();
+        this.tasks = new ArrayList<String>();
         this.questionnaires = new ArrayList<Questionnaire>();
         this.name = campaignName;
         this.avgDuration = avgVisitDuration;
         this.talkingPoints = notes;
         this.status = Status.INACTIVE;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public List<String> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(List<String> managers) {
+        this.managers = managers;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<String> getCanvassers() {
+        return canvassers;
+    }
+
+    public void setCanvassers(List<String> canvassers) {
+        this.canvassers = canvassers;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<String> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<String> questions) {
+        this.questions = questions;
+    }
+
+    public List<String> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<String> tasks) {
+        this.tasks = tasks;
+    }
+
+    public List<Questionnaire> getQuestionnaires() {
+        return questionnaires;
+    }
+
+    public void setQuestionnaires(List<Questionnaire> questionnaires) {
+        this.questionnaires = questionnaires;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getAvgDuration() {
+        return avgDuration;
+    }
+
+    public void setAvgDuration(double avgDuration) {
+        this.avgDuration = avgDuration;
+    }
+
+    public int getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(int averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public String getTalkingPoints() {
+        return talkingPoints;
+    }
+
+    public void setTalkingPoints(String talkingPoints) {
+        this.talkingPoints = talkingPoints;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
