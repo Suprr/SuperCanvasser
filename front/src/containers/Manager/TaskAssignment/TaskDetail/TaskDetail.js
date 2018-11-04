@@ -10,6 +10,7 @@ class TaskDetail extends Component{
 	state= {
 		task: null,
 		show:false,
+		isMounted:false,
 	}
 
 	componentDidMount(){
@@ -20,6 +21,28 @@ class TaskDetail extends Component{
 				this.setState({task:newTasks})
 			});
 		}
+
+
+		const taskId = sessionStorage.getItem('taskID')
+	    console.log(['View Campaign did mount'], taskId);
+
+	    this.setState( { isMounted: true }, () => {
+	    	  //change this url
+	          axios.get('/manager/campaign/view/?_id='+taskId).then(response=>{
+	           
+	          const responseData = response.data;
+	          const newTask = responseData[0];
+
+
+	          console.log(['View Task Data'],newTask);
+	          if(this.state.isMounted){
+	            console.log('View Task', 'UPLOADED');
+	            this.setState({task:newTask});
+	          }
+	        }).catch(error=>{
+	          console.log(error)
+	        })
+	    });
 
 	}
 

@@ -30,7 +30,7 @@ public class Campaign {
     @DBRef
     @NotNull(message = "At least one location must be set.")
     private List<Location> locations;
-    @DBRef
+
     @NotNull(message = "At least one question must be added.")
     private List<String> questions;
     private List<String> tasks;

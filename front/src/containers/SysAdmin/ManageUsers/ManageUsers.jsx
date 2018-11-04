@@ -1,19 +1,13 @@
 import React, { Component } from "react";
 import AddUser from "./AddUser";
 import Users from "./Users";
+import axios from "../../../axios"
 class ManageUsers extends Component {
   state = {
-    users: [
-      { id: 1, identity: 0, name: "man" },
-      { id: 2, identity: 0, name: "a" },
-      { id: 3, identity: 0, name: "ger" },
-      { id: 4, identity: 1, name: "can" },
-      { id: 5, identity: 1, name: "vass" },
-      { id: 6, identity: 1, name: "er" },
-      { id: 7, identity: 2, name: "sys" },
-      { id: 8, identity: 2, name: "ad" },
-      { id: 9, identity: 2, name: "min" }
-    ]
+    managers:[],
+    canvassers:[],
+    sysAdmins :[],
+    isMounted : false,
   };
 
   handleDelete = userID => {
@@ -38,6 +32,46 @@ class ManageUsers extends Component {
     this.setState({ users: this.state.users.concat([user]) });
   };
 
+  componentDidMount(){
+    
+    this.setState( { isMounted: true }, () => {
+          axios.get('/sysad/view').then(response=>{
+           
+          const responseData = response.data
+
+          console.log(['ManagerUSer'], responseData);
+
+          let localManager=[];
+          let localCanvasser = [];
+          let localSysAdmin = []; 
+
+          for(let i =0; i<responseData.length; i++){
+            if(responseData[i].role=='MANAGER')
+              localManager.push(responseData[i]);
+            else if(responseData[i].role=='CANVASSER')
+              localCanvasser.push(responseData[i]);
+            else
+              localSysAdmin.push(responseData[i]);
+          }
+
+
+          if(this.state.isMounted){
+            console.log('ViewCampaign', 'UPLOADED');
+             this.setState({managers:localManager,
+                            canvassers:localCanvasser,
+                            sysAdmins:localSysAdmin});
+          }
+
+        }).catch(error=>{
+          console.log(error)
+        })
+    });
+  }
+
+  componentWillUnMount(){
+    this.setState({isMounted:false});
+  }
+
   newUniqueId(users) {
     let highestNum = 0;
     for (let i = 0; i < users.length; i++) {
@@ -49,15 +83,20 @@ class ManageUsers extends Component {
   }
 
   handleEdit = () => {};
+
+
   render() {
+
     return (
       <div>
         <h1>Manage Users</h1>
         <div className="spacing" />
         <AddUser onAdd={this.handleAdd} />
         <div className="spacing" />
-        <Users
-          users={this.state.users}
+          <Users
+          managers={this.state.users}
+          canvassers = {this.state.canvassers}
+          sysAdmins = {this.state.sysAdmins}
           onDelete={this.handleDelete}
           onEdit={this.handleEdit}
         />

@@ -13,6 +13,9 @@ import team830.SuperCanvasser.User.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RequestMapping("/manager/campaign")
@@ -25,29 +28,35 @@ public class CampaignController {
     @Autowired
     private UserService userService;
     @Autowired
-
-
     private LocationService locationService;
 
     //id = campaignId. this returns the list that has campaign and managers(User)
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public ResponseEntity getCampaign(@RequestParam String id, HttpServletRequest request) {
-        Campaign campaign = campaignService.findBy_Id(id);
+    public ResponseEntity getCampaign(@RequestParam String _id, HttpServletRequest request) {
+        Campaign campaign = campaignService.findBy_Id(_id);
         log.info("CampaignController :: Getting Campaign");
         if(campaign != null){
             request.getSession().setAttribute("currentCampaign", campaign);
             log.info("CampaignController :: Campaign Found");
-            return ResponseEntity.ok(campaign);
+            List<Object> returnList = new ArrayList<>();
+            returnList.add(campaign);
+            // getting the users for managers to display information
+            for(String s: campaign.getManagers()){
+                returnList.add(userService.getUserBy_id(s));
+            }
+            return ResponseEntity.ok(returnList);
         }
+        log.info("CampaignController :: Campaign Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Campaign Not Found");
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editCampaign(@RequestBody Campaign campaign, HttpServletRequest request) {
+    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, HttpServletRequest request) {
             if(campaign.equals((request.getSession().getAttribute("currentCampaign")))){
                 log.info("CampaignController :: Campaign Edited");
                 return ResponseEntity.ok(campaignService.editCampaign(campaign));
             }
+            log.info("CampaignController :: Campaign Not Found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
     }
 
@@ -70,10 +79,16 @@ public class CampaignController {
     }
 
     //campaign array(list) will be passed to the front as a responseEntity
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ResponseEntity getAllCampaigns(@RequestBody String _id, HttpServletRequest request){
-        log.info("CampaignController :: Campaign is returning all the list found by manager");
-        return ResponseEntity.ok(campaignService.findAllbyManager(_id));
+    // _id = managerID
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ResponseEntity getAllCampaigns(@RequestParam String _id, HttpServletRequest request){
+        if(campaignService.findAllbyManager(_id) != null){
+            log.info("CampaignController :: Campaign is returning all the list found by manager");
+            return ResponseEntity.ok(campaignService.findAllbyManager(_id));
+        }
+
+        log.info("CampaignController :: No Campaign exist under this manager");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign.");
     }
 
 }

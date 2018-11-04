@@ -11,7 +11,7 @@ class TaskSection extends Component{
 		let count = 1;
 		let tasks = this.state.tasks ? this.state.tasks.map(task=>{
 
-			return <TaskCard key={task.id} id = {task.id}
+			return <TaskCard key={task._id} id = {task._id}
 					campaign_id = {this.props.id} history = {this.props.history} task={task} number={count++} url = {this.state.url}/>;
 
 		}) : null;

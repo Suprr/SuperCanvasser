@@ -25,6 +25,7 @@ class ViewCampaign extends Component {
     ...this.props,
     show: false,
     campaign : null,
+    managers : null,
     isMounted : false,
   };
 
@@ -42,12 +43,22 @@ class ViewCampaign extends Component {
 
     this.setState( { isMounted: true }, () => {
           axios.get('/manager/campaign/view/?_id='+cmpId).then(response=>{
-          
-          const newCampaign = response.data
+           
+          const responseData = response.data
+          const dataLength = responseData.length;
+          const newCampaign = responseData[0];
+
+          let managerArray = [];
+          for(let i=1; i<dataLength; i++){
+            managerArray.push(responseData[i]);
+          }
+
           console.log(['ViewCampaign Data'],newCampaign);
+          console.log(['ViewCampaign Manager'], managerArray)
           if(this.state.isMounted){
             console.log('ViewCampaign', 'UPLOADED');
-            this.setState({campaign:newCampaign});
+            this.setState({campaign:newCampaign,
+                           managers:managerArray});
           }
         }).catch(error=>{
           console.log(error)
@@ -77,7 +88,9 @@ class ViewCampaign extends Component {
 
    }
   
-
+componentWillUnMount(){
+    this.setState({isMounted:false});
+  }
   
 
   render() {
