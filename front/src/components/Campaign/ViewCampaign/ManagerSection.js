@@ -6,6 +6,7 @@ class ManagerSection extends Component{
 		...this.props
 	}
 
+	//should create a method for getting managers info from user.
 
 	render(){
 		let managers =  this.state.managers ? this.state.managers.map(mng=>{

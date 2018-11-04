@@ -50,6 +50,7 @@ class EditGlobalVar extends Component {
   //       }
   //     });
   // } 
+  
   componentDidMount(){
     console.log(['EditGlobalVar componentDidMount']);
       //for avoiding update error, I use isMounted value

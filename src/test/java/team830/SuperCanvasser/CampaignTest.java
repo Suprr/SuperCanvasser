@@ -15,26 +15,26 @@ public class CampaignTest {
 
     @Test
     public void contextLoads() {
-        repository.deleteAll();
-        Manager manager = new Manager();
-        Campaign var1 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Canvasser>(),
-                new ArrayList<Location>(), new ArrayList<String>(), "tesstName", 5, "notes");
-        Campaign var2 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Canvasser>(),
-                new ArrayList<Location>(), new ArrayList<String>(), "testaName", 6, "notes");
-        repository.save(var1);
-        repository.save(var2);
-
-//            System.out.println(repository.findAll());
-        System.out.println("Objects Inserted\n============");
-        System.out.println(var1);
-        System.out.println(var2);
-        System.out.println("Objects Retrieved from Database\n============");
-        System.out.println("aka Variables found with findAll():");
-        System.out.println("-------------------------------");
-        for (Campaign var : repository.findAll()) {
-            System.out.println(var);
-        }
-        System.out.println();
+//        repository.deleteAll();
+//        Manager manager = new Manager();
+//        Campaign var1 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Canvasser>(),
+//                new ArrayList<Location>(), new ArrayList<String>(), "tesstName", 5, "notes");
+//        Campaign var2 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Canvasser>(),
+//                new ArrayList<Location>(), new ArrayList<String>(), "testaName", 6, "notes");
+//        repository.save(var1);
+//        repository.save(var2);
+//
+////            System.out.println(repository.findAll());
+//        System.out.println("Objects Inserted\n============");
+//        System.out.println(var1);
+//        System.out.println(var2);
+//        System.out.println("Objects Retrieved from Database\n============");
+//        System.out.println("aka Variables found with findAll():");
+//        System.out.println("-------------------------------");
+//        for (Campaign var : repository.findAll()) {
+//            System.out.println(var);
+//        }
+//        System.out.println();
 
 //        repository.deleteAll();
     }

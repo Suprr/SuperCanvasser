@@ -13,6 +13,6 @@ public interface UserInterface {
     User getUserByEmail(String email);
     User getUserBy_id(String id);
     User loginUser(User user) throws UnsupportedEncodingException;
-
+    User getUserBy_id(String _id);
 
 }
