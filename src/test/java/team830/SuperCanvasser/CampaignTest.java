@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import team830.SuperCanvasser.Campaign.Campaign;
 import team830.SuperCanvasser.Campaign.CampaignRepo;
 import team830.SuperCanvasser.Task.Location;
-import team830.SuperCanvasser.User.Canvasser;
+import team830.SuperCanvasser.Canvasser.Availability;
 import team830.SuperCanvasser.User.Manager;
 
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ public class CampaignTest {
     public void contextLoads() {
         repository.deleteAll();
         Manager manager = new Manager();
-        Campaign var1 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Canvasser>(),
+        Campaign var1 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Availability>(),
                 new ArrayList<Location>(), new ArrayList<String>(), "tesstName", 5, "notes");
-        Campaign var2 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Canvasser>(),
+        Campaign var2 = new Campaign(new ArrayList<Manager>(), new Date(), new Date(), new ArrayList<Availability>(),
                 new ArrayList<Location>(), new ArrayList<String>(), "testaName", 6, "notes");
         repository.save(var1);
         repository.save(var2);

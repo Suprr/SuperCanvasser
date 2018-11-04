@@ -1,8 +1,7 @@
 package team830.SuperCanvasser.Campaign;
 
-import team830.SuperCanvasser.Status;
+import team830.SuperCanvasser.Task.Status;
 import lombok.Data;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -10,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import team830.SuperCanvasser.Task.Location;
 import team830.SuperCanvasser.Task.Questionnaire;
 import team830.SuperCanvasser.Task.Task;
-import team830.SuperCanvasser.User.Canvasser;
+import team830.SuperCanvasser.Canvasser.Availability;
 import team830.SuperCanvasser.User.Manager;
 
 
@@ -33,7 +32,7 @@ public class Campaign {
     private Date endDate;
     @DBRef
     @NotNull(message = "At least one canvasser must work on this campaign.")
-    private List<Canvasser> canvassers;
+    private List<Availability> availabilitySlots;
     @DBRef
     @NotNull(message = "At least one location must be set.")
     private List<Location> locations;
@@ -53,13 +52,13 @@ public class Campaign {
 
 
     public Campaign(List<Manager> managersList, Date start, Date end,
-                    List<Canvasser> canvassersList, List<Location> locationsList,
+                    List<Availability> canvassersList, List<Location> locationsList,
                     List<String> questionsList, String campaignName, int avgVisitDuration, String notes) {
 
         this.managers = new ArrayList<Manager>(managersList);
         this.startDate = start;
         this.endDate = end;
-        this.canvassers = new ArrayList<Canvasser>(canvassersList);
+        this.availabilitySlots = new ArrayList<Availability>(canvassersList);
         this.locations = new ArrayList<Location>(locationsList);
         this.questions = new ArrayList<String>(questionsList);
         this.tasks = new ArrayList<Task>();

@@ -25,7 +25,7 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/edit/", method = RequestMethod.POST)
-    public Campaign editCampaign(@RequestBody Campaign campaign, BindingResult result) {
+    public Campaign editCampaign(@Valid @RequestBody Campaign campaign, BindingResult result) {
         if (result.hasErrors()) {
             log.info("Edit campaign failed");
             return null;
