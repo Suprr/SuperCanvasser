@@ -31,7 +31,6 @@ public class CampaignController {
             return null;
         } else {
             log.info("Edit campaign successful");
-
             return (campaignService.editCampaign(campaign));
         }
     }
