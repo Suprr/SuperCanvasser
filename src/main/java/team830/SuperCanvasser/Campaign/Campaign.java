@@ -19,14 +19,12 @@ import java.util.List;
 public class Campaign {
     @Id
     private String _id;
-    @DBRef
     @NotNull(message = "Must enter at least one manager.")
     private List<String> managers; // objectId of managers
     @NotNull(message = "A start and end date must be provided.")
     private String startDate;
     @NotNull
     private String endDate;
-    @DBRef
     @NotNull(message = "At least one canvasser must work on this campaign.")
     private List<String> canvassers;
     @DBRef

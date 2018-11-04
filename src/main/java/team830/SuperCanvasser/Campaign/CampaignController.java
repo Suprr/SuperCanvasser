@@ -25,6 +25,8 @@ public class CampaignController {
     @Autowired
     private UserService userService;
     @Autowired
+
+
     private LocationService locationService;
 
     //id = campaignId. this returns the list that has campaign and managers(User)

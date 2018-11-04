@@ -36,7 +36,8 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public List<Campaign> findAllbyManager(String managerId){
-        return campaignRepo.findAllByManagersContains(managerId);
+//        return campaignRepo.findAllByManagersContains(managerId);
+        return null;
     }
 
 }
