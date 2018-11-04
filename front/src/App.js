@@ -4,14 +4,12 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Base from "./containers/Base/Base";
 import SignIn from "./containers/SignIn/SignIn";
-import SignInRole from "./containers/SignIn/SignInRole"
-
+import SignInRole from "./containers/SignIn/SignInRole";
 
 import Manager from "./containers/Manager/Manager";
 import Canvasser from "./containers/Canvasser/Canvasser";
 import SysAdmin from "./containers/SysAdmin/SysAdmin";
-import ManagerData from './containers/Manager/ManagerData'
-
+import ManagerData from "./containers/Manager/ManagerData";
 
 class App extends Component {
   state = {
@@ -49,10 +47,10 @@ class App extends Component {
     //let page = <Route path="/sign-in" exact component={SignIn} />
     //let page = <SignIn user = {this.state.user} />
     let page = null;
-    if(this.state.user.authenticated){
-      page = <Redirect to='/'/>;
-    } else{
-      page = <Redirect to='/login'/>;
+    if (this.state.user.authenticated) {
+      page = <Redirect to="/" />;
+    } else {
+      page = <Redirect to="/login" />;
     }
     // console.log("[Render]", this.state.user.role);
     // if (this.state.user.authenticated) {
@@ -81,8 +79,14 @@ class App extends Component {
     // } else {
     //   page = <SignIn user={this.state.user} signedIn={this.signInHandler} />;
     // }
-
+    let info = { userID: "email", passwords: "pass", role: "Canvasser" };
+    this.signInHandler(info);
     return (
+      <BrowserRouter>
+        <Canvasser />
+      </BrowserRouter>
+
+      /*
       <BrowserRouter>
         <Switch>
           <Route path="/login" exact component={SignIn} />
@@ -92,6 +96,7 @@ class App extends Component {
         </Switch>
         
       </BrowserRouter>
+      */
     );
   }
 }

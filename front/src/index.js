@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.module.css";
 import App from "./App";
+import ViewTask from "./containers/Canvasser/ViewTask/ViewTask";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(<App />, document.getElementById("root"));
