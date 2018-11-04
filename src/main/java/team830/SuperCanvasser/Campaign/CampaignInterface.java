@@ -11,6 +11,5 @@ public interface CampaignInterface {
     List<Campaign> findAllbyManager(String managerId);
     Campaign addCampaign(Campaign campaign);
     Campaign findBy_Id(String id);
-
-
+    List<Campaign> findAll();
 }

@@ -21,20 +21,26 @@ public class UserService implements UserInterface{
 
     @Override
     public User editUser(User user) {
-        log.debug("Edit User - Service");
+        log.debug("UserService :: Edit User");
         return userRepo.save(user);
     }
 
     @Override
     public User addUser(User user) {
-        log.debug("Add User - Service");
+        log.debug("UserService :: Add User");
         return userRepo.insert(user);
     }
 
     @Override
     public User getUserByEmail(String email) {
-        log.debug("Get User - Service");
+        log.debug("UserService :: Get User");
         return userRepo.findByEmail(email);
+    }
+
+    @Override
+    public User getUserBy_id(String _id) {
+        log.debug("UserService :: Get User by ID");
+        return userRepo.findBy_id(_id);
     }
 
     public User loginUser(User user) throws UnsupportedEncodingException {

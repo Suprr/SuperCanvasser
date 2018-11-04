@@ -1,5 +1,7 @@
 package team830.SuperCanvasser.Task;
 
+import team830.SuperCanvasser.Location.Location;
+
 import java.util.ArrayList;
 import java.util.Date;
 

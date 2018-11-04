@@ -14,7 +14,7 @@ public class Questionnaire {
     private String _id;
     @DBRef
     private HashMap<String, Boolean> qNa;
-    private boolean anon;
+    private boolean anonymous;
     private int rating;
     private String notes;
 
@@ -28,9 +28,43 @@ public class Questionnaire {
     public Questionnaire() {
     }
 
-    public Questionnaire addQuestion(String question) {
-        this.qNa.put(question, null);
-        return this;
+    public HashMap<String, Boolean> getqNa() {
+        return qNa;
     }
 
+    public void setqNa(HashMap<String, Boolean> qNa) {
+        this.qNa = qNa;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+
+    public void setAonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }

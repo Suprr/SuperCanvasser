@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team830.SuperCanvasser.Location.Location;
+import team830.SuperCanvasser.Location.LocationService;
 import team830.SuperCanvasser.SuperCanvasserApplication;
+import team830.SuperCanvasser.User.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
+import java.util.HashMap;
 
 
 @RequestMapping("/manager/campaign")
@@ -19,8 +21,13 @@ public class CampaignController {
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     @Autowired
-        private CampaignService campaignService;
+    private CampaignService campaignService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private LocationService locationService;
 
+    //id = campaignId. this returns the list that has campaign and managers(User)
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     public ResponseEntity getCampaign(@RequestParam String id, HttpServletRequest request) {
         Campaign campaign = campaignService.findBy_Id(id);
@@ -43,10 +50,21 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity createCampaign(@Valid @RequestBody Campaign campaign, HttpServletRequest request) {
-//            if(request.getSession().getAttribute(""))
-            log.info("CampaignController :: Campaign has been created");
-            return ResponseEntity.ok(campaignService.addCampaign(campaign));
+    public ResponseEntity createCampaign(@RequestBody Campaign campaign, HttpServletRequest request) {
+            if(!campaignService.findAll().contains(campaign)){
+                log.info("CampaignController :: Campaign has been created");
+                campaign.getLocations();
+                for(Location location : campaign.getLocations()){
+                    HashMap<String, Boolean> qNa = new HashMap<>();
+//                    qNa.put()
+
+                    locationService.addLocation(location);
+                }
+
+                return ResponseEntity.ok(campaignService.addCampaign(campaign));
+            }
+            log.info("CampaignController :: Campaign Not Found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create campaign");
     }
 
     //campaign array(list) will be passed to the front as a responseEntity

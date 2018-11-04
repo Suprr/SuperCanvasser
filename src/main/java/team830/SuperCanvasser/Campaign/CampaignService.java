@@ -21,12 +21,17 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public Campaign addCampaign(Campaign campaign) {
-        return campaignRepo.save(campaign);
+        return campaignRepo.insert(campaign);
     }
 
     @Override
     public Campaign findBy_Id(String id) {
         return campaignRepo.findBy_id(id);
+    }
+
+    @Override
+    public List<Campaign> findAll(){
+        return campaignRepo.findAll();
     }
 
     @Override
