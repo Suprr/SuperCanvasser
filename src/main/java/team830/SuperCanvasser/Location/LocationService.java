@@ -22,5 +22,4 @@ public class LocationService implements LocationInterface {
         return locationRepo.save(location);
     }
 
-    
 }

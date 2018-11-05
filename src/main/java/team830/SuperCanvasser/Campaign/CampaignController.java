@@ -61,17 +61,19 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity createCampaign(@RequestBody Campaign campaign, HttpServletRequest request) {
+    public ResponseEntity createCampaign(@RequestBody Campaign campaign) {
             if(!campaignService.findAll().contains(campaign)){
-                log.info("CampaignController :: Campaign has been created");
-                campaign.getLocations();
+
+                // Create Locations
+
+
                 for(Location location : campaign.getLocations()){
                     HashMap<String, Boolean> qNa = new HashMap<>();
 //                    qNa.put()
 
                     locationService.addLocation(location);
                 }
-
+                log.info("CampaignController :: Campaign has been created");
                 return ResponseEntity.ok(campaignService.addCampaign(campaign));
             }
             log.info("CampaignController :: Campaign Not Found");

@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import team830.SuperCanvasser.Location.Location;
-import team830.SuperCanvasser.Task.Questionnaire;
 
 
 import javax.validation.constraints.NotNull;
@@ -30,7 +29,6 @@ public class Campaign {
     @DBRef
     @NotNull(message = "At least one location must be set.")
     private List<Location> locations;
-
     @NotNull(message = "At least one question must be added.")
     private List<String> questions;
     private List<String> tasks;

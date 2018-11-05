@@ -83,7 +83,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
-    @RequestMapping(value = "/sysad/view" , method = RequestMethod.GET)
+    @RequestMapping(value = "/sysad/viewAll" , method = RequestMethod.GET)
     public ResponseEntity viewAllUser(HttpServletRequest request) {
         if (getRoleInSession(request).equals(Role.ADMIN)) {
             return ResponseEntity.ok(userService.getAllUSer());
