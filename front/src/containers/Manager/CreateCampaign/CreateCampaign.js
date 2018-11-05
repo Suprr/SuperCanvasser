@@ -32,7 +32,6 @@ class CreateCampaign extends Component{
 		questionnaire : [],
 		questions: [],
 		locations : [],
-		
 		visitMin : '',
 		newManager : '',
 		newQuestionnaire :'',
@@ -109,7 +108,7 @@ class CreateCampaign extends Component{
 		  			const newLocation = {
 		  				lat : lat,
 			  			long : long,
-		  				location : loc,
+		  				address : loc,
 		  				id : this.state.locations.length,
 		  			}
 			  		
@@ -171,12 +170,14 @@ class CreateCampaign extends Component{
 	  		
 	  		for(let i=0; i<locs.length; i++){
 	  			let loc = {
-	  				lat : locs[i].lat,
-	  				long : locs[i].long,
+	  				latitude : locs[i].lat,
+	  				longitude : locs[i].long,
 	  				address : locs[i].address,
-	  				questionnaire : {},
+	  				qNa : {},
 	  				visited : false,
-	  				_id :""
+	  				_id :"",
+	  				anonymous : false,
+	  				index : -1,
 
 	  			}
 

@@ -44,6 +44,7 @@ public class CampaignService implements CampaignInterface {
     // Create Locations
         List<Location> locations = new ArrayList<>();
         for(Location location : campaign.getLocations()){
+            log.info("Campaign Service :: putting the loction" + location.isVisited());
             HashMap<String, Boolean> qNa = new HashMap<>();
             // default answer for questionnaire is FALSE
             for(String s: campaign.getQuestions()){
@@ -51,7 +52,7 @@ public class CampaignService implements CampaignInterface {
             }
             location.set_id(ObjectId.get().toHexString());
             location.setqNa(qNa);
-            locationRepo.insert(location);
+            locations.add(locationRepo.insert(location));
         }
         campaign.setLocations(locations);
         return campaignRepo.insert(campaign);
