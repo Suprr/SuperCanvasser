@@ -39,6 +39,7 @@ public class TaskController {
             return null;
         } else {
             log.info("TaskController : Tagit statusk has been added");
+            //I made comment because it causes error by Wongeun
             //task.setTaskStatus(Status.INACTIVE);
             return (taskService.addTask(task));
         }
