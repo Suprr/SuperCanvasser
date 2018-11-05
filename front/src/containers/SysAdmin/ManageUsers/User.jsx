@@ -7,7 +7,7 @@ class User extends Component {
         <span>{this.props.user.name}</span>
         <div className="ml-auto">
           <button
-            onClick={() => this.props.onDelete(this.props.user.id)}
+            onClick={() => this.props.onDelete(this.props.user)}
             className="btn-circle"
           >
             -

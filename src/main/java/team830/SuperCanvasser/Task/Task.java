@@ -1,18 +1,30 @@
 package team830.SuperCanvasser.Task;
 
-import team830.SuperCanvasser.Location.Location;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import team830.SuperCanvasser.Status;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+@Document(collection = "tasks")
+@Data
 public class Task {
-    private ArrayList<Location> locations;
+    @Id
+    private String _id;
+    private List<String> locations;
     private Date date;
-    private boolean taskStatus;
-    private Location recommendedLoc;
-    private ArrayList<Location> recommendedList;
+    private Status taskStatus;
+    private String recommendedLoc;
+    private String canvasserId;
 
-    public Task() {
+    public Task(List<String> locations, String rec) {
+        this.locations = new ArrayList<String>(locations);
+        this.recommendedLoc = rec;
+        this.taskStatus = Status.INACTIVE;
+        this.date = new Date();
     }
 
 }

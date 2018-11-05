@@ -11,25 +11,41 @@ class ManageUsers extends Component {
   };
 
   handleDelete = userID => {
-    const users = this.state.users.filter(c => c.id !== userID);
-    this.setState({ users });
+    console.log(userID);
+    axios
+      .delete("/users/" + userID.id + ".json/", userID)
+      .then(response => {
+        this.handleUpdateUsers();
+        console.log("delete user success");
+      })
+      .catch(error => {
+        console.log("Error", error);
+      });
   };
 
   handleAdd = (role, name) => {
     const user = {
       id: this.newUniqueId(this.state.users),
-      identity: -1,
+      value: -1,
       name: ""
     };
     if (role === "Manager") {
-      user.identity = 0;
+      user.value = 0;
     } else if (role === "Canvasser") {
-      user.identity = 1;
+      user.value = 1;
     } else if (role === "SysAdmin") {
-      user.identity = 2;
+      user.value = 2;
     }
     user.name = name;
-    this.setState({ users: this.state.users.concat([user]) });
+    axios
+      .put("/users/" + user.id + ".json/", user)
+      .then(response => {
+        this.handleUpdateUsers();
+        console.log("delete user success");
+      })
+      .catch(error => {
+        console.log("Error", error);
+      });
   };
 
   componentDidMount(){
@@ -74,9 +90,9 @@ class ManageUsers extends Component {
 
   newUniqueId(users) {
     let highestNum = 0;
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].id > highestNum) {
-        highestNum = users[i].id;
+    for (let i = 0; i < this.state.variablesFromServer.length; i++) {
+      if (this.state.variablesFromServer[i].id > highestNum) {
+        highestNum = this.state.variablesFromServer[i].id;
       }
     }
     return ++highestNum;
@@ -93,12 +109,18 @@ class ManageUsers extends Component {
         <div className="spacing" />
         <AddUser onAdd={this.handleAdd} />
         <div className="spacing" />
+<<<<<<< HEAD
+        <Users
+          users={this.state.variablesFromServer}
+=======
           <Users
           managers={this.state.users}
           canvassers = {this.state.canvassers}
           sysAdmins = {this.state.sysAdmins}
+>>>>>>> master
           onDelete={this.handleDelete}
           onEdit={this.handleEdit}
+          onUpdate={this.handleUpdateUsers}
         />
       </div>
     );
