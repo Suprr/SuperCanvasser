@@ -1,6 +1,6 @@
 package team830.SuperCanvasser.Campaign;
 
-import team830.SuperCanvasser.Status;
+import team830.SuperCanvasser.Task.Status;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
