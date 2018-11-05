@@ -11,7 +11,6 @@ class EditDate extends Component{
 
 	render(){
 		return(
-			
 			<div className = {[classes.DateSection, 'text-center'].join(' ')}>
 
 				<div className = 'row justify-content-center'>

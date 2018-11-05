@@ -8,6 +8,7 @@ import classes from './Manager.module.css'
 import CampaignModel from './CampaignList/CampaignModel'
 import ViewCampaign from './CampaignList/ViewCampaign/ViewCampaign'
 import CreateCampaign from './CreateCampaign/CreateCampaign'
+import EditCampaign from './EditCampaign/EditCampaign'
 import AssignTask from './CampaignList/ViewCampaign/AssignTask/AssignTask'
 import TaskAssignment from './TaskAssignment/TaskAssignment'
 import TaskDetail from './TaskAssignment/TaskDetail/TaskDetail'
@@ -90,6 +91,7 @@ class Manager extends Component{
 					<Switch>
 						<Route path={this.props.match.url+'/campaign/list'} exact render = {() =><CampaignList campaignList={this.state.campaigns}/>}/>
 						<Route path={this.props.match.url+'/campaign/create'} component = {CreateCampaign}/>
+						<Route path={this.props.match.url+'/campaign/edit'} component = {EditCampaign}/>
 						<Route path={this.props.match.url+'/assign-task/:cid/:tid'} 
 							render = {() => <AssignTask/>}/>
 						<Route path={this.props.match.url+'/campaign/view'} 

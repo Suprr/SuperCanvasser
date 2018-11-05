@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 
-import classes from './CreateCampaign.module.css'
+import classes from '../CreateCampaign/CreateCampaign.module.css'
 
 import PageHead from '../../../components/Layout/PageHead/PageHead'
 import CampaignTitle from '../../../components/Campaign/CreateCampaign/CampaignTitle'
@@ -22,7 +22,9 @@ import Modal from '../../../components/UI/Modal/Modal'
 import Geocode from 'react-geocode'
 
 import NodeGeocoder from 'node-geocoder'
-class CreateCampaign extends Component{
+
+class EditCampaign extends Component{
+	
 	state = {
 		campaignTitle : '',
 		managers : [],
@@ -32,7 +34,6 @@ class CreateCampaign extends Component{
 		questionnaire : [],
 		questions: [],
 		locations : [],
-		
 		visitMin : '',
 		newManager : '',
 		newQuestionnaire :'',
@@ -93,7 +94,10 @@ class CreateCampaign extends Component{
 		  		let lat = null;
 		  		let long = null;
 
-		  		
+		  		const newLocation = {
+		  			location : loc,
+		  			id : this.state.locations.length
+		  		}
 
 		  		const addressx = address.number+'+'+address.street.split(' ').join('+')+'%2C+'+address.unit.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
 		  		console.log(['ADdress'],addressx)
@@ -106,18 +110,18 @@ class CreateCampaign extends Component{
 		  			lat =  addressMatch.coordinates.y;
 
 
-		  			const newLocation = {
-		  				lat : lat,
+			  		const realLocation = {
+			  			lat : lat,
 			  			long : long,
-		  				location : loc,
-		  				id : this.state.locations.length,
-		  			}
-			  		
+			  			address : loc,
+			  			questionnaire : {}
+			  		}
 
-			  		console.log('Add Location', newLocation)
+			  		console.log('Add Location', realLocation)
 
 			  		this.setState((prevState)=>({
 			  			locations : [...prevState.locations, newLocation],
+			  			realLocs : [...prevState.realLocs, realLocation],
 			  			newLocation : ''
 		  			}))
 
@@ -166,8 +170,10 @@ class CreateCampaign extends Component{
 
 	  handleSubmit = (event) =>{
 	  		//console.log(['SUbmit'], this.state.startDate.)
-	  		let realLocs=[]
-	  		const locs = this.state.locations
+	  		let realLocs=[];
+	  		const locs = this.state.locations;
+	  		let realQuestions = [];
+	  		const questions = this.state.questionnaire;
 	  		
 	  		for(let i=0; i<locs.length; i++){
 	  			let loc = {
@@ -175,12 +181,15 @@ class CreateCampaign extends Component{
 	  				long : locs[i].long,
 	  				address : locs[i].address,
 	  				questionnaire : {},
-	  				visited : false,
-	  				_id :""
-
+	  				visited:false,
+	  				_id : ""
 	  			}
 
 	  			realLocs.push(loc);
+	  		}
+
+	  		for(let i=0; i<questions.length; i++){
+	  			realQuestions.push(questions[i].question);
 	  		}
 
 	  		const campaign = {
@@ -189,41 +198,66 @@ class CreateCampaign extends Component{
 				startDate : this.state.startDate.format('YYYY-MM-DD'),
 				endDate : this.state.endDate.format('YYYY-MM-DD'),
 				talkingPoints : this.state.talkingPoint,
-				questions : this.state.questions,
-				locations : realLocs,
+				questions : realQuestions,
+				locations : this.state.realLocs,
 				avgDuration : this.state.visitMin,
 				status : "INACTIVE",
 				tasks : [],
-				canvassers : []
+				canvassers : [],
+				questionnaire : [],
 			}
-
-
 
 	  		//If I use push it generates auto key
 	  		//axios.push ('/campaigns.json', campaign).then( response => {
-	  		console.log('[[Hi]',campaign);
-	  		axios.post('/manager/campaign/create', campaign).then(response=>{
-	  			console.log(['Create Campaign'], "Campaign is Created ", campaign);
+	  		console.log('[[EDITED]',campaign);
+	  		axios.post('/manager/campaign/edit', campaign).then(response=>{
+	  			console.log(['Edit Campaign'], campaign);
 	  		})
 
 	  }
 
 	  componentDidMount(){
-	  	
-	  	
 	  	let x = null;
 
 	  	const userInfoData= JSON.parse(sessionStorage.getItem('userInfo'));
 		const userID = userInfoData._id;
-
-		console.log(['Create Campaign Did Mount'], userID);
+		const cmpId = sessionStorage.getItem('campaignID')
 
 		this.setState( { isMounted: true }, () => {
-          
-	          if(this.state.isMounted){
-	            this.setState({manager_id:userID, managers : [userID]});
-	          }
 
+			  axios.get('/manager/campaign/view/?_id='+cmpId).then(response=>{
+           
+		          const responseData = response.data
+		          const dataLength = responseData.length;
+		          const newCampaign = responseData[0];
+
+		          let managerArray = [];
+		          
+		          for(let i=1; i<dataLength; i++){
+		            managerArray.push(responseData[i]);
+		          }
+		          let newQuestionnaire = [];
+		          for(let i=0; i<newCampaign.questions.length; i++){
+		          	const qnr ={question: newCampaign.questions[i], id:i}
+		          	newQuestionnaire.push(qnr);
+		          }
+
+		          if(this.state.isMounted){
+		            console.log('ViewCampaign', 'UPLOADED', newCampaign);
+		            this.setState({campaignTitle:newCampaign.name,
+		                           managers:managerArray,
+		                           startDate : moment(newCampaign.startDate),
+		                           endDate : moment(newCampaign.endDate),
+		                           talkingPoint : newCampaign.talkingPoints,
+		                    	   questionnaire : newQuestionnaire,
+		                    	   locations : newCampaign.locations,
+		                    	   visitMin : newCampaign.avgDuration,
+		                           questions : newCampaign.questions,
+		                       	   manager_id:userID});
+		          }
+		        }).catch(error=>{
+		          console.log(error)
+		        })
         });
 	  }
 
@@ -232,11 +266,11 @@ class CreateCampaign extends Component{
 	  }
 
 	render(){
-		console.log(['Create Campaign Render']);
+		console.log(['Edit Campaign Render']);
 		return(
 			<div className='container'>
 					
-					<PageHead title='Create Campaign'/>
+					<PageHead title='Edit Campaign'/>
 					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
 						onChange = {(event) => this.handleInputChange(event)}/>
 					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)}  
@@ -266,4 +300,4 @@ class CreateCampaign extends Component{
 
 }
 
-export default CreateCampaign;
+export default EditCampaign;
