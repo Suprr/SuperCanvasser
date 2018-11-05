@@ -53,10 +53,7 @@ class ViewCampaign extends Component {
           for(let i=1; i<dataLength; i++){
             managerArray.push(responseData[i]);
           }
-
-          console.log(['ViewCampaign Data'],newCampaign);
-          console.log(['ViewCampaign Manager'], managerArray);
-
+          
           let newQuestionnaire = [];
           for(let i=0; i<newCampaign.questions.length; i++){
             let newQ = {question : newCampaign.questions[i], key : i};

@@ -2,26 +2,57 @@ import React, {Component} from 'react'
 import classes from './TaskDetail.module.css'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import './map.css'
+import axios from '../../../../axios'
 
 import LocationItem from './LocationItem'
 
 class Locations extends Component{
+	state = {
+		locations : null
+	}
 
+	componentDidMount(){
+		const locationsID = this.props.locations;
+	    console.log(['View Campaign did mount'], locationsID);
+
+	    this.setState( { isMounted: true }, () => {
+	    	  //change this url
+
+          axios.post('/task/locations', locationsID).then(response=>{
+           
+	          const responseData = response.data;
+	         
+	          console.log(['View Task Data'],responseData);
+
+	          if(this.state.isMounted){
+	            console.log('Locations Component Didmount', 'UPLOADED');
+	            this.setState({locations:responseData});
+	          }
+
+	        }).catch(error=>{
+	          console.log(error)
+	        })
+	    });
+	}
+
+	componentWillUnMount(){
+
+	}
 	
 	render(){
-		const position = this.props.locations&&this.props.locations.length>0?[this.props.locations[0].lat, this.props.locations[0].long]:null;
+		const position = this.state.locations&&this.state.locations.length>0?[this.state.locations[0].latitude, this.state.locations[0].longitude]:null;
 		let count=0;
 
-		const markers = this.props.locations&&this.props.locations.length>0? this.props.locations.map(loc=>{
-			let marker =  <Marker key={count++} position={[loc.lat, loc.long]}>
+		const markers = this.state.locations&&this.state.locations.length>0? this.state.locations.map(loc=>{
+			let marker =  <Marker key={count++} position={[loc.latitude, loc.longitude]}>
 						     <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
 						   </Marker>;
 		    return marker;
 		}) : null;
 
 		let num = 1;
-		const locations = this.props.locations&&this.props.locations.length>0? this.props.locations.map(loc =>{
-			let location = <LocationItem key= {loc.id} number = {num++} location={loc.location}/> 
+		const locations = this.state.locations&&this.state.locations.length>0? this.state.locations.map(loc =>{
+			let location = <LocationItem key= {loc._id} number = {num++} location={loc.address}/> 
 		    return location;
 		}): null;
 

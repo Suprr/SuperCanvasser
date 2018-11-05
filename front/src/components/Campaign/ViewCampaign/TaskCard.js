@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import classes from './ViewCampaign.module.css'
 import AssignTask from '../../../containers/Manager/CampaignList/ViewCampaign/AssignTask/AssignTask'
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 class TaskCard extends Component{
 	state ={
 		...this.props
@@ -21,7 +21,7 @@ class TaskCard extends Component{
 
 		sessionStorage.setItem('taskID', task_id);
 		//change this url
-		this.props.history.push('/manager/campaign/view');
+		this.props.history.push('/manager/view/task');
 	}
 	// if task is already assigned the assign button will disappear.
 
@@ -37,7 +37,7 @@ class TaskCard extends Component{
 						<div className="row">
 
 							<div className="col-5">
-								<button className = 'btn btn-light' name={this.props.task._id} onClick={this.viewClickHandler}>View</button>
+								<button className = 'btn btn-light' name={this.props.task} onClick={this.viewClickHandler}>View</button>
 							</div>
 							<div className="col-7">
 									<button className = 'btn btn-danger' onClick={this.handler}>Assign</button>
@@ -50,4 +50,4 @@ class TaskCard extends Component{
 	}
 }
 
-export default TaskCard;
+export default withRouter(TaskCard);

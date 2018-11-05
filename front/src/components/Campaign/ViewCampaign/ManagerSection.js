@@ -1,12 +1,35 @@
 import React, {Component} from 'react'
 import classes from './ViewCampaign.module.css'
-
+import axios from '../../../axios'
 class ManagerSection extends Component{
 	state = {
-		...this.props
+		...this.props,
+		managers  : null
 	}
 
 	//should create a method for getting managers info from user.
+	componentDidMount(){
+
+	    this.setState( { isMounted: true }, () => {
+	          axios.post('/manager/campaign/view/man',this.props.managers).then(response=>{
+	           
+	          const managerData = response.data
+	          
+
+	          if(this.state.isMounted){
+	            console.log('ViewCampaign', 'UPLOADED', managerData);
+	            this.setState({managers:managerData})                
+	          }
+	        }).catch(error=>{
+	          console.log(error)
+	        })
+	    });
+
+   }
+  
+  componentWillUnMount(){
+    this.setState({isMounted:false});
+  }
 
 	render(){
 		console.log(['ManagerSection'],this.props.managers)

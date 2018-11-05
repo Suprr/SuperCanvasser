@@ -96,7 +96,7 @@ class Manager extends Component{
 							render = {() => <AssignTask/>}/>
 						<Route path={this.props.match.url+'/campaign/view'} 
                          render={()=> <ViewCampaign/>}/>
-                         <Route path={this.props.match.url+'/task-assignment/:tid'} render = {()=><TaskDetail/>}/>
+                         <Route path={this.props.match.url+'/view/task'} render = {()=><TaskDetail/>}/>
                          <Route path={this.props.match.url+'/task-assignment/'} render = {()=><TaskAssignment campaignList={this.state.campaigns}/>}/>
 
 						<Redirect from={this.props.match.url} to = {this.props.match.url+'/campaign/list'}/>

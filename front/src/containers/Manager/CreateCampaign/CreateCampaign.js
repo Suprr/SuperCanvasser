@@ -30,7 +30,6 @@ class CreateCampaign extends Component{
 		endDate : moment(),
 		talkingPoint : '',
 		questionnaire : [],
-		questions: [],
 		locations : [],
 		visitMin : '',
 		newManager : '',
@@ -89,25 +88,21 @@ class CreateCampaign extends Component{
 	  		} else{
 		  		loc = address.number +", "+ address.street + ", "+ address.unit +", "+ address.city +", "+ address.state + ", "+ address.zipcode
 		  		
-		  		let lat = null;
-		  		let long = null;
-
 		  		
-
 		  		const addressx = address.number+'+'+address.street.split(' ').join('+')+'%2C+'+address.unit.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
-		  		console.log(['ADdress'],addressx)
+		  		console.log(['Address'],addressx)
 
 		  		//x is long, y is lat
 		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
 		  		then(res=>{
 		  			const addressMatch = res.data.result.addressMatches[0];
-		  			long = addressMatch.coordinates.x;
-		  			lat =  addressMatch.coordinates.y;
+		  			const long = addressMatch.coordinates.x;
+		  			const lat =  addressMatch.coordinates.y;
 
 
 		  			const newLocation = {
-		  				lat : lat,
-			  			long : long,
+		  				latitude : lat,
+			  			longitude : long,
 		  				address : loc,
 		  				id : this.state.locations.length,
 		  			}
@@ -141,7 +136,6 @@ class CreateCampaign extends Component{
 
 		  		this.setState((prevState)=>({
 		  			questionnaire : [...prevState.questionnaire, newQuestion],
-		  			questions : [...prevState.questions, this.state.newQuestionnaire],
 		  			newQuestionnaire : ''
 		  		}));
 	  		}
@@ -170,19 +164,26 @@ class CreateCampaign extends Component{
 	  		
 	  		for(let i=0; i<locs.length; i++){
 	  			let loc = {
-	  				latitude : locs[i].lat,
-	  				longitude : locs[i].long,
+	  				latitude : locs[i].latitude,
+	  				longitude : locs[i].longitude,
 	  				address : locs[i].address,
 	  				qNa : {},
 	  				visited : false,
 	  				_id :"",
 	  				anonymous : false,
 	  				index : -1,
-
 	  			}
 
 	  			realLocs.push(loc);
 	  		}
+
+	  		let questionsArray = [];
+	  		const questionnaire = this.state.questionnaire;
+
+	  		for(let i=0; i<questionnaire.length; i++){
+	  			questionsArray.push(questionnaire[i].question)
+	  		}
+
 
 	  		const campaign = {
 		  		name : this.state.campaignTitle,
@@ -190,7 +191,7 @@ class CreateCampaign extends Component{
 				startDate : this.state.startDate.format('YYYY-MM-DD'),
 				endDate : this.state.endDate.format('YYYY-MM-DD'),
 				talkingPoints : this.state.talkingPoint,
-				questions : this.state.questions,
+				questions : questionsArray,
 				locations : realLocs,
 				avgDuration : this.state.visitMin,
 				status : "INACTIVE",
@@ -220,7 +221,7 @@ class CreateCampaign extends Component{
 		console.log(['Create Campaign Did Mount'], userID);
 
 		this.setState( { isMounted: true }, () => {
-          
+          	  
 	          if(this.state.isMounted){
 	            this.setState({manager_id:userID, managers : [userID]});
 	          }

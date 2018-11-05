@@ -12,7 +12,7 @@ class TaskDetailBody extends Component{
 						Canvasser
 					</div>
 					<div className={['col-6', classes.Item].join(' ')}>
-						{this.props.task.canvasser}
+						{this.props.task.canvasserId}
 					</div>
 				</div>
 
@@ -34,14 +34,6 @@ class TaskDetailBody extends Component{
 					</div>
 				</div>
 
-				<div className={['row', 'col-9',classes.ItemSection].join(' ')}>
-					<div className={['col-6', classes.ItemTitle].join(' ')}>
-						Duration
-					</div>
-					<div className={['col-6', classes.Item].join(' ')}>
-						{this.props.task.duration}
-					</div>
-				</div>
 
 				<div className={['row', 'col-9',classes.ItemSection].join(' ')}>
 					<div className={['col-6', classes.ItemTitle].join(' ')}>
