@@ -55,6 +55,8 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findBy_Id(_id));
     }
 
+
+
     @RequestMapping(value = "getByCan", method = RequestMethod.GET)
     public ResponseEntity getByCanvasserId(@RequestParam String _id) {
         log.info("TaskController : Grabbing Tasks by canvasser: " + _id);

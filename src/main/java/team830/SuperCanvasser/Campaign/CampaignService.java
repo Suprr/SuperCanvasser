@@ -49,7 +49,6 @@ public class CampaignService implements CampaignInterface {
             }
         }
         return campaignRepo.save(campaign);
-
     }
 
     @Override
