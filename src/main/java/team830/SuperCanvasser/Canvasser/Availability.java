@@ -35,4 +35,28 @@ public class Availability {
         availabilityDates = new ArrayList<String>(dates);
         this.canvasserId = id;
     }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public List<String> getAvailabilityDates() {
+        return availabilityDates;
+    }
+
+    public void setAvailabilityDates(List<String> availabilityDates) {
+        this.availabilityDates = availabilityDates;
+    }
+
+    public String getCanvasserId() {
+        return canvasserId;
+    }
+
+    public void setCanvasserId(String canvasserId) {
+        this.canvasserId = canvasserId;
+    }
 }

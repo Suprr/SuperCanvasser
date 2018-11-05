@@ -30,13 +30,16 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public Campaign editCampaign(Campaign campaign) {
-        List<Location> locations = new ArrayList<>();
+        List<Location> locations = campaign.getLocations();
         for(Location location : campaign.getLocations()) {
             if(location.get_id()!=""){
-
+                // creating a location if there is new location added in
+                locations.add(createLocation(campaign.getQuestions(), location));
             }
-            else if(locationRepo.findLocationBy_id(location.get_id())!= null){
-
+        }
+        for(Location loc : locationRepo.findAll()){
+            if(!locations.contains(loc)){
+                locationRepo.delete(loc);
             }
         }
         return campaignRepo.save(campaign);
@@ -46,18 +49,7 @@ public class CampaignService implements CampaignInterface {
     @Override
     public Campaign addCampaign(Campaign campaign) {
     // Create Locations
-        List<Location> locations = new ArrayList<>();
-        for(Location location : campaign.getLocations()){
-            log.info("Campaign Service :: putting the loction" + location.isVisited());
-            HashMap<String, Boolean> qNa = new HashMap<>();
-            // default answer for questionnaire is FALSE
-            for(String s: campaign.getQuestions()){
-                qNa.put(s, false);
-            }
-            location.set_id(ObjectId.get().toHexString());
-            location.setqNa(qNa);
-            locations.add(locationRepo.insert(location));
-        }
+        List<Location> locations = createLocations(campaign, new ArrayList<Location>());
         campaign.setLocations(locations);
         return campaignRepo.insert(campaign);
     }
@@ -136,5 +128,22 @@ public class CampaignService implements CampaignInterface {
             return foundCampaigns;
         }
         return null;
+    }
+
+    private Location createLocation(List<String> questions, Location location){
+        HashMap<String, Boolean> qNa = new HashMap<>();
+        // default answer for questionnaire is FALSE
+        for(String s: questions){
+            qNa.put(s, false);
+        }
+        location.set_id(ObjectId.get().toHexString());
+        location.setqNa(qNa);
+        return locationRepo.insert(location);
+    }
+    private List<Location> createLocations(Campaign campaign, List<Location> locations){
+        for(Location location : campaign.getLocations()){
+            locations.add(createLocation(campaign.getQuestions(), location));
+        }
+        return locations;
     }
 }

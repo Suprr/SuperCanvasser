@@ -3,13 +3,18 @@ package team830.SuperCanvasser.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import team830.SuperCanvasser.Location.Location;
+import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequestMapping("/task")
 
@@ -45,15 +50,21 @@ public class TaskController {
 
     }
 
-    @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable("id") String id) {
-        return (taskService.findBy_Id(id));
+    @RequestMapping(value = "/getById", method = RequestMethod.GET)
+    public ResponseEntity getTaskById(@RequestParam String id) {
+        return ResponseEntity.ok(taskService.findBy_Id(id));
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity getByCanvasserId(@PathVariable("id") String id) {
+    @RequestMapping(value = "getByCan", method = RequestMethod.GET)
+    public ResponseEntity getByCanvasserId(@RequestParam("id") String id) {
         log.info("TaskController : Grabbing Tasks by canvasser: " + id);
         return ResponseEntity.ok(taskService.findByCanvasserIdAndTaskStatus(id, Status.INACTIVE));
+    }
+
+    @RequestMapping(value = "/locations", method = RequestMethod.POST)
+    public ResponseEntity getLocationsById(@RequestBody List<String> locs){
+        log.info("TaskController :: Grabbing locations by id");
+        return ResponseEntity.ok(taskService.findLocationsById(locs));
     }
 }
 
