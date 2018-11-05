@@ -1,9 +1,8 @@
 package team830.SuperCanvasser.Task;
 
 import org.springframework.stereotype.Service;
-import team830.SuperCanvasser.User.User;
+import team830.SuperCanvasser.Status;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Service

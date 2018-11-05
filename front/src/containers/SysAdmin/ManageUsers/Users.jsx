@@ -4,39 +4,45 @@ import "./ManageUsersCSS.css";
 
 class Users extends Component {
   state = {
-    userDisplay: -1
+    userDisplay: ""
   };
 
   switchDisplay = userDisplay => {
     this.setState({ userDisplay });
   };
-
+  componentDidMount(){
+    console.log(['USERS'],this.props)
+  }
   render() {
-    const { onDelete, onUpdate } = this.props;
+
+    console.log(['USERSRender'],this.props)
+    const { onDelete } = this.props;
     const buttonClass = "btn border border-danger btn-group";
+    const display = this.state.userDisplay == "MANAGER"? this.props.managers.map(user => (
+                <User key={user._id} user={user} onDelete={onDelete} />
+              ))
+            : this.state.userDisplay == "CANVASSER"? this.props.canvassers.map(user => (
+                <User key={user._id} user={user} onDelete={onDelete} />
+              )) : this.state.userDisplay == "ADMIN"? this.props.sysAdmins.map(user => (
+                <User key={user._id} user={user} onDelete={onDelete} />
+              )) : null;
+            
     return (
       <div className="nest">
         <h1>Users</h1>
-        <button onClick={() => this.switchDisplay(0)} className={buttonClass}>
+        <button onClick={() => this.switchDisplay("MANAGER")} className={buttonClass}>
           Managers
         </button>
-        <button onClick={() => this.switchDisplay(1)} className={buttonClass}>
+        <button onClick={() => this.switchDisplay("CANVASSER")} className={buttonClass}>
           Canvassers
         </button>
-        <button onClick={() => this.switchDisplay(2)} className={buttonClass}>
+        <button onClick={() => this.switchDisplay("ADMIN")} className={buttonClass}>
           System Admins
         </button>
         <div className="nest">
-          {this.props.users
-            .filter(c => c.value === this.state.userDisplay)
-            .map(user => (
-              <User
-                key={user.id}
-                user={user}
-                onDelete={onDelete}
-                onUpdate={onUpdate}
-              />
-            ))}
+          {
+            display
+          }
         </div>
       </div>
     );

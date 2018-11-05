@@ -79,14 +79,11 @@ class App extends Component {
     // } else {
     //   page = <SignIn user={this.state.user} signedIn={this.signInHandler} />;
     // }
-    let info = { userID: "email", passwords: "pass", role: "Canvasser" };
-    this.signInHandler(info);
+    //let info = { userID: "email", passwords: "pass", role: "Canvasser" };
+    //this.signInHandler(info);
     return (
-      <BrowserRouter>
-        <Canvasser />
-      </BrowserRouter>
-
-      /*
+    
+      
       <BrowserRouter>
         <Switch>
           <Route path="/login" exact component={SignIn} />
@@ -96,7 +93,7 @@ class App extends Component {
         </Switch>
         
       </BrowserRouter>
-      */
+      
     );
   }
 }

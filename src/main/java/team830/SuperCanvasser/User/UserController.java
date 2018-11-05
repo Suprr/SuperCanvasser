@@ -19,13 +19,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    public static User loggedInUser;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody User user, HttpServletRequest request) throws IOException {
         log.info("UserController :: Process Login");
 
-        loggedInUser = userService.loginUser(user);
+        User loggedInUser = userService.loginUser(user);
         if (loggedInUser != null) {
             request.getSession().setAttribute("user",loggedInUser);
             return ResponseEntity.ok(loggedInUser);
@@ -55,7 +54,7 @@ public class UserController {
     public ResponseEntity editUser(@RequestBody User user, HttpServletRequest request){
         if(getRoleInSession(request).equals(Role.ADMIN)){
             log.info("UserController : User has been edited");
-            return ResponseEntity.ok(userService.editUser(loggedInUser));
+            return ResponseEntity.ok(userService.editUser(user));
         }
         log.info("UserController :: Does not have authority to edit the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");

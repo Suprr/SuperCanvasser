@@ -28,7 +28,7 @@ class SignInBody_n extends Component{
        			
             } )
             .catch( error => {
-                //console.log("Error", response.data);
+                console.log("Error", error);
             });
 	}
 

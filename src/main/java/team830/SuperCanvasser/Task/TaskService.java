@@ -4,11 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
-import team830.SuperCanvasser.User.User;
-import team830.SuperCanvasser.Variable.Variable;
-import team830.SuperCanvasser.Variable.VariableInterface;
-import team830.SuperCanvasser.Variable.VariableRepo;
 
 import java.util.List;
 

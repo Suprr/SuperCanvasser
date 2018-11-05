@@ -27,6 +27,7 @@ class ViewCampaign extends Component {
     campaign : null,
     managers : null,
     isMounted : false,
+    questions : null,
   };
 
   openModalHandelr = () => {
@@ -54,11 +55,19 @@ class ViewCampaign extends Component {
           }
 
           console.log(['ViewCampaign Data'],newCampaign);
-          console.log(['ViewCampaign Manager'], managerArray)
+          console.log(['ViewCampaign Manager'], managerArray);
+
+          let newQuestionnaire = [];
+          for(let i=0; i<newCampaign.questions.length; i++){
+            let newQ = {question : newCampaign.questions[i], key : i};
+            newQuestionnaire.push(newQ);
+          }
+
           if(this.state.isMounted){
-            console.log('ViewCampaign', 'UPLOADED');
+            console.log('ViewCampaign', 'UPLOADED', newQuestionnaire);
             this.setState({campaign:newCampaign,
-                           managers:managerArray});
+                           managers:managerArray,
+                           questions : newQuestionnaire});
           }
         }).catch(error=>{
           console.log(error)
@@ -88,10 +97,16 @@ class ViewCampaign extends Component {
 
    }
   
-componentWillUnMount(){
+  componentWillUnMount(){
     this.setState({isMounted:false});
   }
   
+  editButtonClickHandler=(event)=>{
+    //console.log(['viewClickHandler'], campaign_id, 'props : ',this.props);
+    // const cmpId = sessionStorage.getItem('campaignID');
+    //sessionStorage.setItem('campaignID', cmpId);
+    this.props.history.push('/manager/campaign/edit');
+  }
 
   render() {
     //console.log('[Veiw Campaign]', this.state.campaign)
@@ -99,11 +114,14 @@ componentWillUnMount(){
    // let campaign = this.props.campaign[parseInt(this.props.match.params.index)];
   	let cmpaign = this.state.campaign ? (<div className={[classes.ViewCampaign].join(" ")}>
         <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
-          <QuestionnaireList questionnaire={this.state.campaign.questionnaires} id={this.state.campaign._id} />
+          <QuestionnaireList questionnaire={this.state.questions} id={this.state.campaign._id} />
         </Modal>
         <PageHead title="View Campaign" subtitle={this.state.campaign.name} />
 
         <div className={[classes.Components, "container"].join(" ")}>
+          <div className="row">
+            <button onClick={this.editButtonClickHandler}>Edit</button>
+          </div>
           <div className="row justify-content-center">
             <ManagerSection managers={this.state.campaign.managers} id={this.state.campaign._id}/>
           </div>

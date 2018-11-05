@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 
-import classes from './CreateCampaign.module.css'
+import classes from '../CreateCampaign/CreateCampaign.module.css'
 
 import PageHead from '../../../components/Layout/PageHead/PageHead'
 import CampaignTitle from '../../../components/Campaign/CreateCampaign/CampaignTitle'
@@ -22,7 +22,9 @@ import Modal from '../../../components/UI/Modal/Modal'
 import Geocode from 'react-geocode'
 
 import NodeGeocoder from 'node-geocoder'
-class CreateCampaign extends Component{
+
+class EditCampaign extends Component{
+	
 	state = {
 		campaignTitle : '',
 		managers : [],
@@ -30,7 +32,6 @@ class CreateCampaign extends Component{
 		endDate : moment(),
 		talkingPoint : '',
 		questionnaire : [],
-		questions: [],
 		locations : [],
 		visitMin : '',
 		newManager : '',
@@ -88,30 +89,28 @@ class CreateCampaign extends Component{
 	  				//show modal
 	  		} else{
 		  		loc = address.number +", "+ address.street + ", "+ address.unit +", "+ address.city +", "+ address.state + ", "+ address.zipcode
-		  		
-		  		let lat = null;
-		  		let long = null;
-
-		  		
-
+		  	
 		  		const addressx = address.number+'+'+address.street.split(' ').join('+')+'%2C+'+address.unit.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
-		  		console.log(['ADdress'],addressx)
+		  		console.log(['Address'],addressx)
 
 		  		//x is long, y is lat
 		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
 		  		then(res=>{
 		  			const addressMatch = res.data.result.addressMatches[0];
-		  			long = addressMatch.coordinates.x;
-		  			lat =  addressMatch.coordinates.y;
+		  			const long = addressMatch.coordinates.x;
+		  			const lat =  addressMatch.coordinates.y;
 
-
-		  			const newLocation = {
-		  				lat : lat,
-			  			long : long,
-		  				address : loc,
-		  				id : this.state.locations.length,
-		  			}
-			  		
+			  		const newLocation = {
+			  			latitude : lat,
+			  			longitude : long,
+			  			address : loc,
+			  			qNa : {},
+			  			id : this.state.locations.length,
+			  			_id:"",
+			  			index : -1,
+			  			anonymous:false,
+			  			visited : false
+			  		}
 
 			  		console.log('Add Location', newLocation)
 
@@ -141,7 +140,6 @@ class CreateCampaign extends Component{
 
 		  		this.setState((prevState)=>({
 		  			questionnaire : [...prevState.questionnaire, newQuestion],
-		  			questions : [...prevState.questions, this.state.newQuestionnaire],
 		  			newQuestionnaire : ''
 		  		}));
 	  		}
@@ -165,23 +163,29 @@ class CreateCampaign extends Component{
 
 	  handleSubmit = (event) =>{
 	  		//console.log(['SUbmit'], this.state.startDate.)
-	  		let realLocs=[]
-	  		const locs = this.state.locations
+	  		let realLocs=[];
+	  		const locs = this.state.locations;
+	  		let realQuestions = [];
+	  		const questions = this.state.questionnaire;
 	  		
 	  		for(let i=0; i<locs.length; i++){
+	  			//if(locs[i]._id!)
 	  			let loc = {
-	  				latitude : locs[i].lat,
-	  				longitude : locs[i].long,
+	  				latitude : locs[i].latitude,
+	  				longitude : locs[i].latitude,
 	  				address : locs[i].address,
-	  				qNa : {},
-	  				visited : false,
-	  				_id :"",
-	  				anonymous : false,
-	  				index : -1,
-
+	  				qNa : locs[i].qNa,
+	  				visited:locs[i].visited,
+	  				_id : locs[i]._id,
+	  				index : locs[i].index,
+	  				anonymous : locs[i].anonymous
 	  			}
 
 	  			realLocs.push(loc);
+	  		}
+
+	  		for(let i=0; i<questions.length; i++){
+	  			realQuestions.push(questions[i].question);
 	  		}
 
 	  		const campaign = {
@@ -190,41 +194,87 @@ class CreateCampaign extends Component{
 				startDate : this.state.startDate.format('YYYY-MM-DD'),
 				endDate : this.state.endDate.format('YYYY-MM-DD'),
 				talkingPoints : this.state.talkingPoint,
-				questions : this.state.questions,
-				locations : realLocs,
+				questions : realQuestions,
+				locations : this.state.realLocs,
 				avgDuration : this.state.visitMin,
 				status : "INACTIVE",
 				tasks : [],
-				canvassers : []
+				canvassers : [],
+				questionnaire : [],
 			}
-
-
 
 	  		//If I use push it generates auto key
 	  		//axios.push ('/campaigns.json', campaign).then( response => {
-	  		console.log('[[Hi]',campaign);
-	  		axios.post('/manager/campaign/create', campaign).then(response=>{
-	  			console.log(['Create Campaign'], "Campaign is Created ", campaign);
+	  		console.log('[[EDITED]',campaign);
+	  		axios.post('/manager/campaign/edit', campaign).then(response=>{
+	  			console.log(['Edit Campaign'], campaign);
 	  		})
 
 	  }
 
 	  componentDidMount(){
-	  	
-	  	
 	  	let x = null;
 
 	  	const userInfoData= JSON.parse(sessionStorage.getItem('userInfo'));
 		const userID = userInfoData._id;
-
-		console.log(['Create Campaign Did Mount'], userID);
+		const cmpId = sessionStorage.getItem('campaignID')
 
 		this.setState( { isMounted: true }, () => {
-          
-	          if(this.state.isMounted){
-	            this.setState({manager_id:userID, managers : [userID]});
-	          }
 
+			  axios.get('/manager/campaign/view/?_id='+cmpId).then(response=>{
+           
+		          const responseData = response.data
+		          const dataLength = responseData.length;
+		          const newCampaign = responseData[0];
+
+		          let managerArray = [];
+		          for(let i=1; i<dataLength; i++){
+		            managerArray.push(responseData[i]);
+		          }
+
+
+		          let newQuestionnaire = [];
+		          for(let i=0; i<newCampaign.questions.length; i++){
+		          	const qnr ={question: newCampaign.questions[i], id:i}
+		          	newQuestionnaire.push(qnr);
+		          }
+
+		          let locationArray = [];
+		          for(let i=0; i<newCampaign.locations.length; i++){
+		          	const loc = {
+		          		latitude : newCampaign.locations[i].latitude,
+		          		longitude : newCampaign.locations[i].longitude,
+		          		address : newCampaign.locations[i].address,
+		  				qNa : newCampaign.locations[i].qNa,
+		  				visited:newCampaign.locations[i].visited,
+		  				_id : newCampaign.locations[i]._id,
+		  				index : newCampaign.locations[i].index,
+		  				anonymous : newCampaign.locations[i].anonymous,
+		  				id : newCampaign.locations[i]._id
+		          	}
+
+		          	locationArray.push(loc);
+		          }
+
+
+
+
+
+		          if(this.state.isMounted){
+		            console.log('ViewCampaign', 'UPLOADED', newCampaign);
+		            this.setState({campaignTitle:newCampaign.name,
+		                           managers:managerArray,
+		                           startDate : moment(newCampaign.startDate),
+		                           endDate : moment(newCampaign.endDate),
+		                           talkingPoint : newCampaign.talkingPoints,
+		                    	   questionnaire : newQuestionnaire,
+		                    	   locations : locationArray,
+		                    	   visitMin : newCampaign.avgDuration,
+		                       	   manager_id:userID});
+		          }
+		        }).catch(error=>{
+		          console.log(error)
+		        })
         });
 	  }
 
@@ -233,11 +283,11 @@ class CreateCampaign extends Component{
 	  }
 
 	render(){
-		console.log(['Create Campaign Render']);
+		console.log(['Edit Campaign Render']);
 		return(
 			<div className='container'>
 					
-					<PageHead title='Create Campaign'/>
+					<PageHead title='Edit Campaign'/>
 					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
 						onChange = {(event) => this.handleInputChange(event)}/>
 					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)}  
@@ -267,4 +317,4 @@ class CreateCampaign extends Component{
 
 }
 
-export default CreateCampaign;
+export default EditCampaign;

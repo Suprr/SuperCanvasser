@@ -37,21 +37,14 @@ class ManageUsers extends Component {
       user.value = 2;
     }
     user.name = name;
-    axios
-      .put("/users/" + user.id + ".json/", user)
-      .then(response => {
-        this.handleUpdateUsers();
-        console.log("delete user success");
-      })
-      .catch(error => {
-        console.log("Error", error);
-      });
+
+    this.setState({ users: this.state.users.concat([user])});
   };
 
   componentDidMount(){
     
     this.setState( { isMounted: true }, () => {
-          axios.get('/sysad/view').then(response=>{
+          axios.get('/sysad/viewAll').then(response=>{
            
           const responseData = response.data
 
@@ -62,14 +55,19 @@ class ManageUsers extends Component {
           let localSysAdmin = []; 
 
           for(let i =0; i<responseData.length; i++){
-            if(responseData[i].role=='MANAGER')
-              localManager.push(responseData[i]);
-            else if(responseData[i].role=='CANVASSER')
-              localCanvasser.push(responseData[i]);
-            else
-              localSysAdmin.push(responseData[i]);
+            responseData[i].role.map(r=>{
+              if(r=='MANAGER')
+                localManager.push(responseData[i]);
+
+              if(r=='CANVASSER')
+                localCanvasser.push(responseData[i]);
+              if(r=='ADMIN')
+                localSysAdmin.push(responseData[i]);
+            });
+            
           }
 
+          console.log('VIEW CAMPAIGN ', localManager, localCanvasser, localSysAdmin);
 
           if(this.state.isMounted){
             console.log('ViewCampaign', 'UPLOADED');
@@ -77,6 +75,7 @@ class ManageUsers extends Component {
                             canvassers:localCanvasser,
                             sysAdmins:localSysAdmin});
           }
+
 
         }).catch(error=>{
           console.log(error)
@@ -109,19 +108,13 @@ class ManageUsers extends Component {
         <div className="spacing" />
         <AddUser onAdd={this.handleAdd} />
         <div className="spacing" />
-<<<<<<< HEAD
-        <Users
-          users={this.state.variablesFromServer}
-=======
           <Users
-          managers={this.state.users}
-          canvassers = {this.state.canvassers}
-          sysAdmins = {this.state.sysAdmins}
->>>>>>> master
-          onDelete={this.handleDelete}
-          onEdit={this.handleEdit}
-          onUpdate={this.handleUpdateUsers}
-        />
+            managers={this.state.managers}
+            canvassers = {this.state.canvassers}
+            sysAdmins = {this.state.sysAdmins}
+            onDelete={this.handleDelete}
+            onEdit={this.handleEdit}
+          />
       </div>
     );
   }

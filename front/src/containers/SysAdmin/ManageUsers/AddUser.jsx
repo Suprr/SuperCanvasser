@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./ManageUsersCSS.css";
 import axios from '../../../axios'
+import {withRouter} from 'react-router-dom'
+
 class AddUser extends Component {
   state = {
     email: "",
@@ -27,8 +29,6 @@ class AddUser extends Component {
      this.setState({[name]: value });
   }
 
-
-
   handleSubmit =(event) =>{
 
     const userInfo = {
@@ -42,9 +42,9 @@ class AddUser extends Component {
     axios.post( '/sysad/add', userInfo)
         .then( response => {
           //sessionStorage.setItem('userInfo', JSON.stringify(response.data));
-          console.log(['AddUser'],response.data, "DONE");
+          // console.log(['AddUser'],response.data, "DONE");
 
-          // this.props.history.push('/login/role/');
+          this.props.history.push('/sysad/viewAll');
         
         } )
         .catch( error => {
@@ -114,4 +114,4 @@ class AddUser extends Component {
   }
 }
 
-export default AddUser;
+export default withRouter(AddUser);
