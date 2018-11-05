@@ -20,6 +20,10 @@ class Canvasser extends Component {
             path={this.props.match.url + "/view-task"}
             component={ViewTask}
           />
+          <Route
+            path={this.props.match.url + "/view-task/questionnaire"}
+            component={Questionnaire}
+          />
           <Redirect
             from={this.props.match.url}
             to={this.props.match.url + "/edit-availability"}

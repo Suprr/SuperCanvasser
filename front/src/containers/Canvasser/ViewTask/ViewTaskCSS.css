@@ -1,0 +1,12 @@
+.task-row {
+  width: 700px;
+  border-bottom: 1px solid #aaa;
+}
+
+.question-row {
+  border-bottom: 1px solid #aaa;
+}
+
+.nest {
+  padding-left: 50px;
+}
