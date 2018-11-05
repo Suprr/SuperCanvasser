@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 
 @Component
@@ -21,26 +22,32 @@ public class UserService implements UserInterface{
 
     @Override
     public User editUser(User user) {
-        log.debug("Edit User - Service");
+        log.info("UserService :: Edit User");
         return userRepo.save(user);
     }
 
     @Override
     public User addUser(User user) {
-        log.debug("Add User - Service");
+        log.info("UserService :: Add User");
         return userRepo.insert(user);
     }
 
     @Override
     public User getUserByEmail(String email) {
-        log.debug("Get User - Service");
+        log.info("UserService :: Get User");
         return userRepo.findByEmail(email);
     }
 
     @Override
     public User getUserBy_id(String _id) {
-        log.debug("Get User - Service");
+        log.info("UserService :: Get User by ID");
         return userRepo.findBy_id(_id);
+    }
+
+    @Override
+    public List<User> getAllUSer() {
+        log.info("UserService :: Get All the Users");
+        return userRepo.findAll();
     }
 
     public User loginUser(User user) throws UnsupportedEncodingException {

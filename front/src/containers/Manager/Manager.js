@@ -89,7 +89,7 @@ class Manager extends Component{
 				<div className={["col-10", "fixed-center", classes.Manager].join(' ')}>
 					<Switch>
 						<Route path={this.props.match.url+'/campaign/list'} exact render = {() =><CampaignList campaignList={this.state.campaigns}/>}/>
-						<Route path={this.props.match.url+'/create-campaign'} component = {CreateCampaign}/>
+						<Route path={this.props.match.url+'/campaign/create'} component = {CreateCampaign}/>
 						<Route path={this.props.match.url+'/assign-task/:cid/:tid'} 
 							render = {() => <AssignTask/>}/>
 						<Route path={this.props.match.url+'/campaign/view'} 

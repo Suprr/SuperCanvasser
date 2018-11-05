@@ -14,10 +14,18 @@ class TaskCard extends Component{
 	 	this.props.history.push(headURL+'/assign-task/'+this.state.campaign_id+'/'+this.state.id+'/');
 	}
 
+	viewClickHandler=(event)=>{
+		const target = event.target;
+		const task_id = target.name;
+		console.log(['viewClickHandler'], task_id, 'props : ',this.props);
+
+		sessionStorage.setItem('taskID', task_id);
+		//change this url
+		this.props.history.push('/manager/campaign/view');
+	}
 	// if task is already assigned the assign button will disappear.
 
 	render(){
-		
 		
 		
 		return(
@@ -27,8 +35,9 @@ class TaskCard extends Component{
 					
 					<div className={["container-fluid", classes.TaskCardBody].join(' ')}>
 						<div className="row">
+
 							<div className="col-5">
-								<button className = 'btn btn-light'>View</button>
+								<button className = 'btn btn-light' name={this.props.task._id} onClick={this.viewClickHandler}>View</button>
 							</div>
 							<div className="col-7">
 									<button className = 'btn btn-danger' onClick={this.handler}>Assign</button>

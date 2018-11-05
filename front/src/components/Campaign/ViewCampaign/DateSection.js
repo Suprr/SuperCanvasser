@@ -29,12 +29,12 @@ class DateSection extends Component{
 	}
 
 	editTimeHandler = (event) =>{
-		console.log(this.state.editedStartDate.format('MM DD YYYY'));
+		console.log(this.state.editedStartDate.format('YYYY-MM-DD'));
 		if(this.state.editedStartDate!=''&&this.state.editedEndDate!=''){
 		
 			this.setState((prevState)=>({
-				startDate : this.state.editedStartDate.format('MM DD YYYY'),
-				endDate : this.state.editedEndDate.format('MM DD YYYY'),
+				startDate : this.state.editedStartDate.format('YYYY-MM-DD'),
+				endDate : this.state.editedEndDate.format('YYYY-MM-DD'),
 				showEdit:false}));
 		} else{
 			this.setState((prevState)=>({
@@ -43,7 +43,7 @@ class DateSection extends Component{
 		}
 
 		//Have to change
-		axios.put('/campaigns/'+this.props.id+'/startDate.json/', JSON.stringify(this.state.editedStartDate.format('MM DD YYYY'))).then( response => {  
+		axios.put('/campaigns/'+this.props.id+'/startDate.json/', JSON.stringify(this.state.editedStartDate.format('YYYY-MM-DD'))).then( response => {  
 	              console.log("Success", this.state.startDate);
 	      })
 	      .catch( error => {
@@ -51,7 +51,7 @@ class DateSection extends Component{
 	    });
 
 
-		axios.put('/campaigns/'+this.props.id+'/endDate.json/', JSON.stringify(this.state.editedEndDate.format('MM DD YYYY'))).then( response => {  
+		axios.put('/campaigns/'+this.props.id+'/endDate.json/', JSON.stringify(this.state.editedEndDate.format('YYYY-MM-DD'))).then( response => {  
 	              console.log("Success", this.state.endDate);
 	      })
 	      .catch( error => {

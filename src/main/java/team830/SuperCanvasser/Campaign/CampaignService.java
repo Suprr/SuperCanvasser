@@ -22,7 +22,7 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public Campaign addCampaign(Campaign campaign) {
-        return campaignRepo.save(campaign);
+        return campaignRepo.insert(campaign);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public List<Campaign> findAll(){
-        return  campaignRepo.findAll();
+        return campaignRepo.findAll();
     }
 
     @Override

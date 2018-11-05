@@ -19,6 +19,9 @@ import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDura
 import axios from '../../../axios'
 import Modal from '../../../components/UI/Modal/Modal'
 
+import Geocode from 'react-geocode'
+
+import NodeGeocoder from 'node-geocoder'
 class CreateCampaign extends Component{
 	state = {
 		campaignTitle : '',
@@ -27,14 +30,17 @@ class CreateCampaign extends Component{
 		endDate : moment(),
 		talkingPoint : '',
 		questionnaire : [],
+		questions: [],
 		locations : [],
-		visitHour : '',
+		realLocs : [],
 		visitMin : '',
 		duration : '',
 		newManager : '',
 		newQuestionnaire :'',
 		newLocation : '',
-		id : null
+		id : null,
+		manager_id : null,
+		isMounted : false,
 	}
 
 	handleInputChange = (event)=> {
@@ -84,19 +90,54 @@ class CreateCampaign extends Component{
 	  				//show modal
 	  		} else{
 		  		loc = address.number +", "+ address.street + ", "+ address.unit +", "+ address.city +", "+ address.state + ", "+ address.zipcode
-		  			
-		  		let newLocation = {
+		  		
+		  		let lat = null;
+		  		let long = null;
+
+		  		const newLocation = {
 		  			location : loc,
 		  			id : this.state.locations.length
 		  		}
+		  		// const realLocation = {
+		  		// 	lat: 123.293,
+		  		// 	long : 145.000
+		  		// }
 
-		  		this.setState((prevState)=>({
-		  			locations : [...prevState.locations, newLocation]
-		  		}))
+		  		const addressx = address.number+'+'+address.street.split(' ').join('+')+'%2C+'+address.unit.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
+		  		console.log(['ADdress'],addressx)
+		  		//x is long
+		  		//y is lat
+		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
+		  		then(res=>{
+		  			const addressMatch = res.data.result.addressMatches[0];
+		  			long = addressMatch.coordinates.x;
+		  			lat =  addressMatch.coordinates.y;
 
-		  		this.setState({
-		  			newLocation : ''
-		  		});
+
+			  		const realLocation = {
+			  			_id : null,
+			  			lat : lat,
+			  			long : long,
+			  			address : loc,
+			  			questionnaire : {}
+			  		}
+
+			  		console.log('Add Location', realLocation)
+
+			  		this.setState((prevState)=>({
+			  			locations : [...prevState.locations, newLocation],
+			  			realLocs : [...prevState.realLocs, realLocation],
+			  			newLocation : ''
+		  			}))
+
+		  			
+		  		}).catch(err=>{
+		  			//invalid date pop up
+		  			console.log(['addLocationHandler Err'],err)
+		  		})
+
+		  		
+		  		
 	  		}
 	  }
 
@@ -110,12 +151,10 @@ class CreateCampaign extends Component{
 		  		}
 
 		  		this.setState((prevState)=>({
-		  			questionnaire : [...prevState.questionnaire, newQuestion]
-		  		}));
-
-		  		this.setState({
+		  			questionnaire : [...prevState.questionnaire, newQuestion],
+		  			questions : [...prevState.questions, this.state.newQuestionnaire],
 		  			newQuestionnaire : ''
-		  		});
+		  		}));
 	  		}
 	  }
 
@@ -136,70 +175,54 @@ class CreateCampaign extends Component{
 
 
 	  handleSubmit = (event) =>{
+	  		//console.log(['SUbmit'], this.state.startDate.)
 	  		const campaign = {
-		  		campaignTitle : this.state.campaignTitle,
+		  		name : this.state.campaignTitle,
 				managers : this.state.managers,
-				startDate : this.state.startDate._d.toDateString(),
-				endDate : this.state.endDate._d.toDateString(),
-				talkingPoint : this.state.talkingPoint,
-				questionnaire : this.state.questionnaire,
-				locations : this.state.locations,
-				duration : this.state.visitHour+"H "+this.state.visitMin+"M",
-				id : this.state.id 
+				startDate : this.state.startDate.format('YYYY-MM-DD'),
+				endDate : this.state.endDate.format('YYYY-MM-DD'),
+				talkingPoints : this.state.talkingPoint,
+				questions : this.state.questions,
+				locations : this.state.realLocs,
+				avgDuration : this.state.visitMin,
+				status : "INACTIVE",
+				tasks : [],
+				canvassers : [],
+				// id : this.state.id 
 			}
+
+
 
 	  		//If I use push it generates auto key
 	  		//axios.push ('/campaigns.json', campaign).then( response => {
-	  		console.log('[[Hi]',this.state.id);
-	  		axios.put('/campaigns/'+this.state.id+'.json/', campaign).then( response => {
-
-           		console.log("campaignCreated", campaign, "response : ", response);
-           		this.props.signedin();
-            })
-            .catch( error => {
-                console.log("Error", error);
-            });
-
-            axios.put('/managers/0/campaigns/'+this.state.id+'.json/',JSON.stringify(this.state.id)).then( response => {
-
-           		console.log("addCampaignToManager");
-           		
-            })
-            .catch( error => {
-                console.log("Error", error);
-            });
-
-
-            // axios.put('/campaigns/length', this.state.id+1).then( response => {
-
-           	// 	console.log("id is increased");
-           		
-            // })
-            // .catch( error => {
-            //     console.log("Error", error);
-            // });
-
+	  		console.log('[[Hi]',campaign);
+	  		axios.post('/manager/campaign/create', campaign).then(response=>{
+	  			console.log(['Create Campaign'], "Campaign is Created ", campaign);
+	  		})
 
 	  }
 
-	  componentDidMount(){;
-	  	console.log(['Create Campaign Did Mount']);
+	  componentDidMount(){
 	  	
-	  	let x = null
-	  	axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
-	  		x= response.data
-	  		
+	  	
+	  	let x = null;
 
-	  		if(x!=null){
-	  			console.log(x.length)
-	  			let lastID = x[x.length-1].id
-	  			this.setState({id : lastID+1})
-	  		}else{
-	  			this.setState({id : 0})
-	  		}
-	  	});	  	
-	  	// 	console.log('Fail');
-	  	// })
+	  	const userInfoData= JSON.parse(sessionStorage.getItem('userInfo'));
+		const userID = userInfoData._id;
+
+		console.log(['Create Campaign Did Mount'], userID);
+
+		this.setState( { isMounted: true }, () => {
+          
+	          if(this.state.isMounted){
+	            this.setState({manager_id:userID, managers : [userID]});
+	          }
+
+        });
+	  }
+
+	  componentWillUnMount(){
+	    this.setState({isMounted:false});
 	  }
 
 	render(){
@@ -223,13 +246,12 @@ class CreateCampaign extends Component{
 					<AddLocation location={this.state.newLocation} onChange={this.handleInputChange}
 							onClick = {(event)=>this.addLocationHandler(event)}/>
 					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
-					<VisitDuration visitHour = {this.state.visitHour} visitMin = {this.state.visitMin} onChange = {(event) => this.handleInputChange(event)}/>
+					<VisitDuration visitMin = {this.state.visitMin} onChange = {(event) => this.handleInputChange(event)}/>
 					
-					<form>
 					<div className = {classes.Btn}>
 						<button className="btn btn-dark" onClick={this.handleSubmit}>Submit</button>
 					</div>
-					</form>
+					
 			
 				
 			</div>
