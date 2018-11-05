@@ -16,6 +16,7 @@ public class Location {
     private String address;
     private boolean visited;
     private HashMap<String, Boolean>  qNa;
+    private int index;
 
     public String get_id() {
         return _id;
@@ -64,4 +65,8 @@ public class Location {
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
+
+    public int getIndex() {return index;}
+
+    public void setIndex(int index) {this.index = index;}
 }

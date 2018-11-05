@@ -1,64 +1,58 @@
-package team830.SuperCanvasser.Algorithm;
+package team830.SuperCanvasser.Campaign;
 
 import java.util.ArrayList;
-import javafx.application.Application;
-import static javafx.application.Application.launch;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.stage.Stage;
+import java.util.List;
+
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import team830.SuperCanvasser.Location.Location;
+import team830.SuperCanvasser.Task.Task;
+import team830.SuperCanvasser.Task.TaskService;
 
 /**
  *
  * @author Chris
  */
-public class Algorithm extends Application {
-    // Walking speed in respect to Lattitude and Longitude is 0.05/69
-    // degrees of Lattitude/Longitude a minute
-    public static final double CANVASSER_SPEED = (0.05/69);
-    public static final int CANVASSER_WORKDAY = 480;
-    public static final int NUM_LOCATIONS = 100;
-    public static final int TIME_PER_VISIT = 15;
+public class Algorithm {
+    @Autowired
+    TaskService taskService;
+    // Walking speed in respect to Latitude and Longitude is 0.05/69
+    // degrees of Latitude/Longitude a minute
+    private static final double CANVASSER_SPEED = (0.05/69);
+    private static final int CANVASSER_WORKDAY = 480;
+    private static final int TIME_PER_VISIT = 15;
     
-    public static double[][] distMatrix;
-    public static Location[] locations;
-    public static double totalDistance = 0;
+    private static double[][] distMatrix;
+    private static double totalDistance = 0;
     
-    public static ArrayList<ArrayList<Location>> badSol = new ArrayList();
-    public static ArrayList<ArrayList<Location>> bestSol = new ArrayList();
-    
-    // Final comparison from beginning algorithm vs final optimized algorithm
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        int width = 1300, height = 650;
-        Canvas c = new Canvas(width, height);
+    private static ArrayList<ArrayList<Location>> bestSol = new ArrayList();
+    private static List<Task> tasks = new ArrayList();
+    private static List<String> taskIDs = new ArrayList();
+    Algorithm (Campaign campaign) {
+        for (int i = 0; i < campaign.getLocations().size(); i++) {
+            campaign.getLocations().get(i).setIndex(i);
+        }
+        makeDistanceMatrix(campaign.getLocations());
+        ArrayList<ArrayList<Location>> canvasserVisits = calculate(campaign.getLocations());
+        optimize(canvasserVisits);
 
-        // Graph and connect the best solution on the left
         for (int i = 0; i < bestSol.size(); i++) {
+            List<String> locations = new ArrayList();
             for (int j = 0; j < bestSol.get(i).size(); j++) {
-                c.getGraphicsContext2D().fillRect(bestSol.get(i).get(j).x * 5000, bestSol.get(i).get(j).y * 5000, 2, 2);
-                if (j != 0) {
-                    c.getGraphicsContext2D().strokeLine(bestSol.get(i).get(j - 1).x * 5000, bestSol.get(i).get(j - 1).y * 5000, bestSol.get(i).get(j).x * 5000, bestSol.get(i).get(j).y * 5000);
-                }
+                locations.add(bestSol.get(i).get(j).get_id());
             }
+            Task newTask = new Task(locations, locations.get(0));
+            newTask.set_id(ObjectId.get().toHexString());
+            taskIDs.add(newTask.get_id());
+            taskService.addTask(newTask);
+            tasks.add(newTask);
         }
-        
-        // Graph and connect the first solution on the right
-        for (int i = 0; i < badSol.size(); i++) {
-            for (int j = 0; j < badSol.get(i).size(); j++) {
-                c.getGraphicsContext2D().fillRect(650 + badSol.get(i).get(j).x * 5000,badSol.get(i).get(j).y * 5000, 2, 2);
-                if (j != 0) {
-                    c.getGraphicsContext2D().strokeLine(650 + badSol.get(i).get(j - 1).x * 5000,  badSol.get(i).get(j - 1).y * 5000, 650 + badSol.get(i).get(j).x * 5000, badSol.get(i).get(j).y * 5000);
-                }
-            }
-        }
-
-        Group root = new Group();
-        root.getChildren().add(c);
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
     }
-    
+
+    List<Task> getTasks () {
+        return tasks;
+    }
+    /*
     public static void main(String[] args) {
         locations = new Location[NUM_LOCATIONS];
         
@@ -142,26 +136,26 @@ public class Algorithm extends Application {
                 System.out.println();
             }
         }
-        launch(args);
     }
+    */
     
     // Calculate the paths for canvassers by choosing the
     // first location and finding the next not chosen location
     // Returns an array of canvassers each with an array of locations
-    public static ArrayList<ArrayList<Location>> calculate() {
-        Location curLocation = locations[0];
+    public static ArrayList<ArrayList<Location>> calculate(List<Location> locations) {
+        Location curLocation = locations.get(0);
         ArrayList<ArrayList<Location>> pathList = new ArrayList();
         ArrayList<Location> curList = new ArrayList();
         curList.add(curLocation);
-        double curPathTime = 15;
-        for (int i = 1; i < locations.length; i++) {
+        double curPathTime = TIME_PER_VISIT;
+        for (int i = 1; i < locations.size(); i++) {
             if (totalTimeWillBeReached(curPathTime, i - 1, i)) {
                 pathList.add(curList);
                 bestSol.add(curList);
                 curList = new ArrayList();
                 curPathTime = 15;
             }
-            curList.add(locations[i]);
+            curList.add(locations.get(i));
             double time = TIME_PER_VISIT + (distMatrix[i - 1][i]/CANVASSER_SPEED);
             curPathTime += time;
             totalDistance += time;
@@ -190,47 +184,47 @@ public class Algorithm extends Application {
                         for(int k = -1; k < locTo.size(); k++) {
                             
                             // Check if the route will change and change it if the total change is net negative distance
-                            if (((locIndexTo == locIndexFrom) && ((k == j) || (k == j - 1))) == false) {
+                            if (!((locIndexTo == locIndexFrom) && ((k == j) || (k == j - 1)))) {
                                 double subtractDist1, subtractDist2, subtractDist3, addDist1, addDist2, addDist3;
                                 
                                 if (j == 0) {
                                     subtractDist1 = 0;
                                 }
                                 else {
-                                    subtractDist1 = distMatrix[locFrom.get(j - 1).id][locFrom.get(j).id];
+                                    subtractDist1 = distMatrix[locFrom.get(j - 1).getIndex()][locFrom.get(j).getIndex()];
                                 }
                                 
                                 if (j == locFrom.size() - 1) {
                                     subtractDist2 = 0;
                                 }
                                 else {
-                                    subtractDist2 = distMatrix[locFrom.get(j).id][locFrom.get(j+1).id];
+                                    subtractDist2 = distMatrix[locFrom.get(j).getIndex()][locFrom.get(j+1).getIndex()];
                                 }
                                 
                                 if (k == locTo.size() - 1 || k == -1) {
                                     subtractDist3 = 0;
                                 }
                                 else {
-                                    subtractDist3 = distMatrix[locTo.get(k).id][locTo.get(k+1).id];
+                                    subtractDist3 = distMatrix[locTo.get(k).getIndex()][locTo.get(k+1).getIndex()];
                                 }
                                 
                                 if (j == 0 || j == locFrom.size() - 1) {
                                     addDist1 = 0;
                                 }
                                 else {
-                                    addDist1 = distMatrix[locFrom.get(j-1).id][locFrom.get(j+1).id];
+                                    addDist1 = distMatrix[locFrom.get(j-1).getIndex()][locFrom.get(j+1).getIndex()];
                                 }
                                 if (k == -1) {
                                     addDist2 = 0;
                                 }
                                 else {
-                                    addDist2 = distMatrix[locTo.get(k).id][locFrom.get(j).id];
+                                    addDist2 = distMatrix[locTo.get(k).getIndex()][locFrom.get(j).getIndex()];
                                 }
                                 if (k == locTo.size() - 1) {
                                     addDist3 = 0;
                                 }
                                 else {
-                                    addDist3 = distMatrix[locFrom.get(j).id][locTo.get(k + 1).id];
+                                    addDist3 = distMatrix[locFrom.get(j).getIndex()][locTo.get(k + 1).getIndex()];
                                 }
                                 
                                 if (totalDistOfCanvasser(visits.get(locIndexTo))+ TIME_PER_VISIT + (addDist1 + addDist2 + addDist3)/CANVASSER_SPEED <= CANVASSER_WORKDAY) {
@@ -296,12 +290,12 @@ public class Algorithm extends Application {
     // Calculates the distance between two locations
     // adds x component with y component of distance between 2 locations
     static double manhattanDistance(Location loc1, Location loc2) {
-        return Math.abs(loc1.x - loc2.x) + Math.abs(loc1.y - loc2.y);
+        return Math.abs(loc1.getLatitude() - loc2.getLatitude()) + Math.abs(loc1.getLongitude() - loc2.getLongitude());
     }
     
     // Creates a distance matrix used in our calculations
-    static double[][] makeDistanceMatrix() {
-        int numElements = locations.length;
+    static double[][] makeDistanceMatrix(List<Location> locations) {
+        int numElements = locations.size();
         distMatrix = new double[numElements][numElements];
         double distance;
         
@@ -309,7 +303,7 @@ public class Algorithm extends Application {
         // calculate for one side of the diagonal since it is reflected
         for (int i = 0; i < numElements ; i++) {
             for (int j = i + 1; j < numElements; j++) {
-                distance = manhattanDistance(locations[i], locations[j]);
+                distance = manhattanDistance(locations.get(i), locations.get(j));
                 distMatrix[i][j] = distance;
                 distMatrix[j][i] = distance;
             }
@@ -369,8 +363,7 @@ public class Algorithm extends Application {
             for (int i = 0; i < visits.size(); i++) {
                 ArrayList tempArr = new ArrayList();
                 for (int j = 0; j < visits.get(i).size(); j++) {
-                    Location tempLoc = new Location(visits.get(i).get(j).x, visits.get(i).get(j).y, visits.get(i).get(j).id);
-                    tempArr.add(tempLoc);
+                    tempArr.add(visits.get(i).get(j));
                 }
                 tempVisits.add(tempArr);
             }
@@ -451,68 +444,5 @@ public class Algorithm extends Application {
             }
         }
         return true;
-    }
-    
-    // Gets the smallest and second smallest distance indexes
-    static int[] getSmallestAndSmallerInd (ArrayList<ArrayList<Location>> visits) {
-        int[] indexes = new int[2];
-        int smallestInd, smallerInd;
-        if (totalDistOfCanvasser(visits.get(0)) > totalDistOfCanvasser(visits.get(1))) {
-            smallerInd = 0;
-            smallestInd = 1;
-        }
-        else {
-            smallerInd = 1;
-            smallestInd = 0;
-        }
-        for (int i = 2; i < visits.size(); i++) {
-            if (totalDistOfCanvasser(visits.get(i)) < totalDistOfCanvasser(visits.get(smallerInd))) {
-                if (totalDistOfCanvasser(visits.get(i)) < totalDistOfCanvasser(visits.get(smallestInd))) {
-                    smallerInd = smallestInd;
-                    smallestInd = i;
-                }
-                else if (totalDistOfCanvasser(visits.get(i)) > totalDistOfCanvasser(visits.get(smallestInd))) {
-                    smallerInd = i;
-                }
-            }
-        }
-        indexes[0] = smallestInd;
-        indexes[1] = smallerInd;
-        return indexes;
-    }
-    
-    static boolean[][] checkAndAssignCanvassers(boolean[][] availDates, int slots) {
-        int curSlots = 0;
-        for (boolean[] canvDates : availDates) {
-            for (boolean date : canvDates) {
-                if (date) {
-                    curSlots++;
-                }
-            }
-        }
-        
-        if (curSlots < slots) {
-            return null;
-        }
-        else {
-            boolean[][] bookedDates = new boolean[availDates.length][availDates[0].length];
-            for (int i = 0; i < bookedDates.length; i++) {
-                for (int j = 0; j < bookedDates[0].length; j++) {
-                    bookedDates[i][j] = availDates[i][j];
-                }
-            }
-            for (boolean[] canvDates : bookedDates) {
-                for (int i = 0; i < canvDates.length; i++) {
-                    if (canvDates[i]) {
-                        canvDates[i] = false;
-                        slots--;
-                        if (slots == 0) {
-                            return bookedDates;
-                        }
-                    }
-                }
-            }
-            return null;
-        }
     }
 }
