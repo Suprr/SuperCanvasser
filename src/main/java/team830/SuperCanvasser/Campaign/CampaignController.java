@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
+import team830.SuperCanvasser.User.User;
 import team830.SuperCanvasser.User.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +26,10 @@ public class CampaignController {
     private CampaignService campaignService;
     @Autowired
     private UserService userService;
-    
+
     //id = campaignId. this returns the list that has campaign and managers(User)
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public ResponseEntity getCampaign(@RequestParam String _id, HttpServletRequest request) {
+    public ResponseEntity viewCampaign(@RequestParam String _id, HttpServletRequest request) {
         Campaign campaign = campaignService.findBy_Id(_id);
         log.info("CampaignController :: Getting Campaign");
         if(campaign != null){
@@ -44,6 +45,19 @@ public class CampaignController {
         }
         log.info("CampaignController :: Campaign Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Campaign Not Found");
+    }
+
+    @RequestMapping(value = "/view/man", method = RequestMethod.POST)
+    public ResponseEntity getManagerForView(@RequestBody List<String> manId){
+        List<User> manList = new ArrayList<>();
+        if(!manId.isEmpty()){
+            for(String id : manId){
+                manList.add(userService.getUserBy_id(id));
+            }
+            log.info("CampaignController :: Getting the Managers (User) for Campaign");
+            return ResponseEntity.ok(manList);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Manager Not Found for Campaign");
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
