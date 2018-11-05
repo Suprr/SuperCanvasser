@@ -26,7 +26,13 @@ public class AvailabilityService implements AvailabilityInterface {
         return availabilityRepo.insert(availability);
     }
 
-    public List<Availability> findByCanvasserId(String id) {
+    public List<Availability> findByCanvasserIdEquals(List<String> id) {
+        log.info("Finding Canvassers Tasks - Service");
+        log.info(id.toString());
+        return availabilityRepo.findByCanvasserIdEquals(id);
+    }
+
+    public Availability findByCanvasserId(String id) {
         log.info("Finding Canvassers Tasks - Service");
         return availabilityRepo.findByCanvasserId(id);
     }

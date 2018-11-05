@@ -11,5 +11,7 @@ public interface AvailabilityInterface {
 
     Availability addAvailability(Availability availability);
 
-    List<Availability> findByCanvasserId(String id);
+    Availability findByCanvasserId(String id);
+
+    List<Availability> findByCanvasserIdEquals(List<String> id);
 }

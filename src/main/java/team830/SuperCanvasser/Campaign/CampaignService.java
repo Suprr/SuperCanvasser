@@ -5,11 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team830.SuperCanvasser.Canvasser.Availability;
+import team830.SuperCanvasser.Canvasser.AvailabilityRepo;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +26,8 @@ public class CampaignService implements CampaignInterface {
 
     @Autowired
     private LocationRepo locationRepo;
+
+    private AvailabilityRepo availabilityRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
@@ -66,6 +73,28 @@ public class CampaignService implements CampaignInterface {
     @Override
     public List<Campaign> findAll(){
         return campaignRepo.findAll();
+    }
+
+
+    @Override
+    public List<Date> listAvailableDates(String sdate, String edate, Availability availability) {
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        List<Date> availDates = new ArrayList<>();
+        try {
+            Date startDate = formatter.parse(sdate);
+            Date endDate = formatter.parse(edate);
+//            Availability availabilities = availabilityRepo.findByCanvasserId(availability.getCanvasserId());
+//            List<String> dates = new ArrayList<String>(availabilities.getAvailabilityDates());
+            List<String> dates = new ArrayList<String>(availability.getAvailabilityDates());
+
+            for(String s : dates){
+                availDates.add(formatter.parse(s));
+            }
+        } catch (ParseException e) {
+            log.debug("Dates cannot be parsed");
+        }
+
+        return availDates;
     }
 
     @Override
