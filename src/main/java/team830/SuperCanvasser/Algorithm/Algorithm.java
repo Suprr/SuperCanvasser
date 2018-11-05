@@ -19,14 +19,14 @@ public class Algorithm extends Application {
     public static final int CANVASSER_WORKDAY = 480;
     public static final int NUM_LOCATIONS = 100;
     public static final int TIME_PER_VISIT = 15;
-    
+
     public static double[][] distMatrix;
     public static Location[] locations;
     public static double totalDistance = 0;
-    
+
     public static ArrayList<ArrayList<Location>> badSol = new ArrayList();
     public static ArrayList<ArrayList<Location>> bestSol = new ArrayList();
-    
+
     // Final comparison from beginning algorithm vs final optimized algorithm
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -42,7 +42,7 @@ public class Algorithm extends Application {
                 }
             }
         }
-        
+
         // Graph and connect the first solution on the right
         for (int i = 0; i < badSol.size(); i++) {
             for (int j = 0; j < badSol.get(i).size(); j++) {
@@ -58,26 +58,26 @@ public class Algorithm extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
-    
+
     public static void main(String[] args) {
         locations = new Location[NUM_LOCATIONS];
-        
+
         // Randomize lattitude and logitude for testing
         for (int i = 0; i < NUM_LOCATIONS; i++) {
             locations[i] = new Location(Math.random() * 0.1, Math.random() * 0.1, i);
         }
-        
-        
+
+
         makeDistanceMatrix();
         ArrayList<ArrayList<Location>> canvasserVisits = calculate();
-        
+
         // Calculates total distance + route of first solution
         System.out.println("Bad Solution total distance: " + totalDistance + " total canvassers " + canvasserVisits.size());
         for (int i = 0; i < canvasserVisits.size(); i++) {
             System.out.print("Canvasser " + i+ ": ");
             System.out.println(totalDistOfCanvasser(canvasserVisits.get(i)));
         }
-        
+
         // Clones the first solution so we can graph it later
         for (int i = 0; i < canvasserVisits.size(); i++) {
             ArrayList tempArr = new ArrayList();
@@ -87,9 +87,9 @@ public class Algorithm extends Application {
             }
             badSol.add(tempArr);
         }
-        
+
         optimize(canvasserVisits);
-        
+
         // Calculate if canvassers can complete the campaign
         int numConsecutiveDates = (int) ((Math.random() * 4) + 4);
         int numCanvassers = (int) ((Math.random() * 5) + 3);
@@ -119,7 +119,7 @@ public class Algorithm extends Application {
             System.out.println();
         }
         boolean[][] updatedAvailDates = checkAndAssignCanvassers(canvasserAvailabilityDates, bestSol.size());
-        
+
         if (updatedAvailDates == null) {
             System.out.println("Not enough canvasser available dates");
         }
@@ -144,7 +144,7 @@ public class Algorithm extends Application {
         }
         launch(args);
     }
-    
+
     // Calculate the paths for canvassers by choosing the
     // first location and finding the next not chosen location
     // Returns an array of canvassers each with an array of locations
@@ -170,7 +170,7 @@ public class Algorithm extends Application {
         bestSol.add(curList);
         return pathList;
     }
-    
+
     // Helper function for optimize, uses the local neighborhood search
     static void optimizeHelper(ArrayList<ArrayList<Location>> visits) {
         double dist = totalDistance;
@@ -178,7 +178,7 @@ public class Algorithm extends Application {
         ArrayList<Location> locFrom, locTo;
         int locIndexFrom, locIndexTo;
         double lowestNeighborDist, neighborDist;
-        
+
         // Iterates until there are no more better options
         while (true) {
             lowestNeighborDist = Double.MAX_VALUE;
@@ -186,34 +186,34 @@ public class Algorithm extends Application {
                 locFrom = visits.get(locIndexFrom);
                 for (int j = 0; j < locFrom.size(); j++) {
                     for (locIndexTo =0; locIndexTo < visits.size(); locIndexTo++) {
-                        locTo = visits.get(locIndexTo); 
+                        locTo = visits.get(locIndexTo);
                         for(int k = -1; k < locTo.size(); k++) {
-                            
+
                             // Check if the route will change and change it if the total change is net negative distance
                             if (((locIndexTo == locIndexFrom) && ((k == j) || (k == j - 1))) == false) {
                                 double subtractDist1, subtractDist2, subtractDist3, addDist1, addDist2, addDist3;
-                                
+
                                 if (j == 0) {
                                     subtractDist1 = 0;
                                 }
                                 else {
                                     subtractDist1 = distMatrix[locFrom.get(j - 1).id][locFrom.get(j).id];
                                 }
-                                
+
                                 if (j == locFrom.size() - 1) {
                                     subtractDist2 = 0;
                                 }
                                 else {
                                     subtractDist2 = distMatrix[locFrom.get(j).id][locFrom.get(j+1).id];
                                 }
-                                
+
                                 if (k == locTo.size() - 1 || k == -1) {
                                     subtractDist3 = 0;
                                 }
                                 else {
                                     subtractDist3 = distMatrix[locTo.get(k).id][locTo.get(k+1).id];
                                 }
-                                
+
                                 if (j == 0 || j == locFrom.size() - 1) {
                                     addDist1 = 0;
                                 }
@@ -232,7 +232,7 @@ public class Algorithm extends Application {
                                 else {
                                     addDist3 = distMatrix[locFrom.get(j).id][locTo.get(k + 1).id];
                                 }
-                                
+
                                 if (totalDistOfCanvasser(visits.get(locIndexTo))+ TIME_PER_VISIT + (addDist1 + addDist2 + addDist3)/CANVASSER_SPEED <= CANVASSER_WORKDAY) {
                                     neighborDist = (addDist1 + addDist2 + addDist3 - subtractDist1 - subtractDist2 - subtractDist3);
                                     if (neighborDist < lowestNeighborDist) {
@@ -253,11 +253,11 @@ public class Algorithm extends Application {
             }
             locFrom = visits.get(locFromSwitch);
             locTo = visits.get(locToSwitch);
-            
+
             Location tempLoc = locFrom.get(indexASwitch);
 
             locFrom.remove(indexASwitch);
-            
+
             if (locFromSwitch == locToSwitch) {
                 if (indexASwitch < indexBSwitch) {
                     locTo.add(indexBSwitch, tempLoc);
@@ -269,10 +269,10 @@ public class Algorithm extends Application {
             else {
                 locTo.add(indexBSwitch + 1, tempLoc);
             }
-            
+
             visits.set(locFromSwitch, locFrom);
             visits.set(locToSwitch, locTo);
-            
+
             dist += lowestNeighborDist/CANVASSER_SPEED;
             if (dist < totalDistance) {
                 totalDistance = dist;
@@ -282,30 +282,30 @@ public class Algorithm extends Application {
             }
         }
     }
-    
+
     // Optimizes the simple solution using localized neighborhood search
     // Repeats the optimization when # of canvassers could be reduced
     static void optimize(ArrayList<ArrayList<Location>> visits) {
         optimizeHelper(visits);
-        
+
         // Checks if the # of canvassers could be reduced
-        // If yes, reduce and repeat search    
+        // If yes, reduce and repeat search
         combineCanvassers(visits);
     }
-    
+
     // Calculates the distance between two locations
     // adds x component with y component of distance between 2 locations
     static double manhattanDistance(Location loc1, Location loc2) {
         return Math.abs(loc1.x - loc2.x) + Math.abs(loc1.y - loc2.y);
     }
-    
+
     // Creates a distance matrix used in our calculations
     static double[][] makeDistanceMatrix() {
         int numElements = locations.length;
         distMatrix = new double[numElements][numElements];
         double distance;
-        
-        // Matrix does not need a value when i == j, and only needs to 
+
+        // Matrix does not need a value when i == j, and only needs to
         // calculate for one side of the diagonal since it is reflected
         for (int i = 0; i < numElements ; i++) {
             for (int j = i + 1; j < numElements; j++) {
@@ -321,7 +321,7 @@ public class Algorithm extends Application {
     static boolean totalTimeWillBeReached(double curtime, int curIndex, int closestIndex) {
         return curtime + TIME_PER_VISIT + (distMatrix[curIndex][closestIndex]/CANVASSER_SPEED) > CANVASSER_WORKDAY;
     }
-    
+
     // Combines canvassers if the lowest 2 distances can be combined to one
     static void combineCanvassers(ArrayList<ArrayList<Location>> visits) {
         while (true) {
@@ -338,7 +338,7 @@ public class Algorithm extends Application {
                         visitsInd2 = j;
                         mode = 0;
                     }
-                    
+
                     combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(visits.get(i).size() - 1), visits.get(j).get(0))/CANVASSER_SPEED;
                     if (combinedDist < shortestDist) {
                         shortestDist = combinedDist;
@@ -346,7 +346,7 @@ public class Algorithm extends Application {
                         visitsInd2 = j;
                         mode = 1;
                     }
-                    
+
                     combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(0), visits.get(j).get(visits.get(j).size() - 1))/CANVASSER_SPEED;
                     if (combinedDist < shortestDist) {
                         shortestDist = combinedDist;
@@ -354,7 +354,7 @@ public class Algorithm extends Application {
                         visitsInd2 = j;
                         mode = 2;
                     }
-                    
+
                     combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(visits.get(i).size() - 1), visits.get(j).get(visits.get(j).size() - 1))/CANVASSER_SPEED;
                     if (combinedDist < shortestDist) {
                         shortestDist = combinedDist;
@@ -364,7 +364,7 @@ public class Algorithm extends Application {
                     }
                 }
             }
-            
+
             ArrayList<ArrayList<Location>> tempVisits = new ArrayList();
             for (int i = 0; i < visits.size(); i++) {
                 ArrayList tempArr = new ArrayList();
@@ -374,7 +374,7 @@ public class Algorithm extends Application {
                 }
                 tempVisits.add(tempArr);
             }
-            
+
             if (mode == 0) {
                 ArrayList<Location> newPath = new ArrayList();
                 for (int i = tempVisits.get(visitsInd1).size() - 1; i >= 0; i--) {
@@ -413,11 +413,11 @@ public class Algorithm extends Application {
                 for (int i = tempVisits.get(visitsInd2).size() - 1; i >= 0; i--) {
                     tempVisits.get(visitsInd1).add(tempVisits.get(visitsInd2).get(i));
                 }
-                tempVisits.remove(visitsInd2); 
+                tempVisits.remove(visitsInd2);
             }
-            
+
             optimizeHelper(tempVisits);
-            
+
             if (canvasserIsValid(tempVisits)) {
                 visits = tempVisits;
                 bestSol = tempVisits;
@@ -431,9 +431,9 @@ public class Algorithm extends Application {
                 break;
             }
         }
-        
+
     }
-    
+
     // Calculates the distance a canvasser will travel
     static double totalDistOfCanvasser(ArrayList<Location> canvasser){
         double tempDist = 0;
@@ -442,7 +442,7 @@ public class Algorithm extends Application {
         }
         return (tempDist/CANVASSER_SPEED) + (TIME_PER_VISIT * canvasser.size());
     }
-    
+
     // Checks if there is a canvasser of time longer than CANVASSER_WORKDAY
     static boolean canvasserIsValid(ArrayList<ArrayList<Location>> canvassers) {
         for (ArrayList canvasser : canvassers) {
@@ -452,7 +452,7 @@ public class Algorithm extends Application {
         }
         return true;
     }
-    
+
     // Gets the smallest and second smallest distance indexes
     static int[] getSmallestAndSmallerInd (ArrayList<ArrayList<Location>> visits) {
         int[] indexes = new int[2];
@@ -480,7 +480,7 @@ public class Algorithm extends Application {
         indexes[1] = smallerInd;
         return indexes;
     }
-    
+
     static boolean[][] checkAndAssignCanvassers(boolean[][] availDates, int slots) {
         int curSlots = 0;
         for (boolean[] canvDates : availDates) {
@@ -490,7 +490,7 @@ public class Algorithm extends Application {
                 }
             }
         }
-        
+
         if (curSlots < slots) {
             return null;
         }

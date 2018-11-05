@@ -8,7 +8,6 @@ class EditDuration extends Component{
 
 	render(){
 		return(
-			
 					<div className = {['text-center', classes.VDBody].join(' ')}>
 						<input 	
 							name = 'editedHour'
@@ -30,10 +29,7 @@ class EditDuration extends Component{
 								</div>
 
 							</div>
-					</div>
-				
-
-			
+					</div>			
 		);
 	}
 
