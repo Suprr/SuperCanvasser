@@ -24,7 +24,9 @@ class ViewCampaign extends Component {
   state = {
     ...this.props,
     show: false,
-    campaign : null
+    campaign : null,
+    managers : null,
+    isMounted : false,
   };
 
   openModalHandelr = () => {
@@ -36,28 +38,59 @@ class ViewCampaign extends Component {
   };
 
   componentDidMount(){
-     let cmpIndex = this.props.match.params.id;
-     axios.get('https://cse308-de3df.firebaseio.com/campaigns/'+cmpIndex+'.json').then(response=>{
-          let x= response.data
-          let newCampaign = x;
-          // let newCampaigns = [];
-          //console.log(['ViewCmp componentDidMount'], newCampaign);
-          // for(let c in campaignIndexes){
-          //   if(x[c]){
-          //     newCampaigns.push(x[c]);
-          //   }
-          // }
-          this.setState({campaign:newCampaign});
-          // this.setState({campaigns : newCampaigns});
-          // this.props.campaignSet(newCampaigns);
-          //this.setState({campaigns : response.data.campaigns})
-      });     
+    const cmpId = sessionStorage.getItem('campaignID')
+    console.log(['View Campaign did mount'], cmpId);
+
+    this.setState( { isMounted: true }, () => {
+          axios.get('/manager/campaign/view/?_id='+cmpId).then(response=>{
+           
+          const responseData = response.data
+          const dataLength = responseData.length;
+          const newCampaign = responseData[0];
+
+          let managerArray = [];
+          for(let i=1; i<dataLength; i++){
+            managerArray.push(responseData[i]);
+          }
+
+          console.log(['ViewCampaign Data'],newCampaign);
+          console.log(['ViewCampaign Manager'], managerArray)
+          if(this.state.isMounted){
+            console.log('ViewCampaign', 'UPLOADED');
+            this.setState({campaign:newCampaign,
+                           managers:managerArray});
+          }
+        }).catch(error=>{
+          console.log(error)
+        })
+    });
+
+
+    ////////
+     // let cmpIndex = this.props.match.params.id;
+     // axios.get('https://cse308-de3df.firebaseio.com/campaigns/'+cmpIndex+'.json').then(response=>{
+     //      let x= response.data
+     //      let newCampaign = x;
+     //      // let newCampaigns = [];
+     //      //console.log(['ViewCmp componentDidMount'], newCampaign);
+     //      // for(let c in campaignIndexes){
+     //      //   if(x[c]){
+     //      //     newCampaigns.push(x[c]);
+     //      //   }
+     //      // }
+     //      this.setState({campaign:newCampaign});
+     //      // this.setState({campaigns : newCampaigns});
+     //      // this.props.campaignSet(newCampaigns);
+     //      //this.setState({campaigns : response.data.campaigns})
+     //  });     
       
      // console.log(['View Task'], this.props);
 
    }
   
-
+componentWillUnMount(){
+    this.setState({isMounted:false});
+  }
   
 
   render() {
@@ -66,24 +99,24 @@ class ViewCampaign extends Component {
    // let campaign = this.props.campaign[parseInt(this.props.match.params.index)];
   	let cmpaign = this.state.campaign ? (<div className={[classes.ViewCampaign].join(" ")}>
         <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
-          <QuestionnaireList questionnaire={this.state.campaign.questionnaire} id={this.state.campaign.id} />
+          <QuestionnaireList questionnaire={this.state.campaign.questionnaires} id={this.state.campaign._id} />
         </Modal>
-        <PageHead title="View Campaign" subtitle={this.state.campaign.title} />
+        <PageHead title="View Campaign" subtitle={this.state.campaign.name} />
 
         <div className={[classes.Components, "container"].join(" ")}>
           <div className="row justify-content-center">
-            <ManagerSection managers={this.state.campaign.managers} id={this.state.campaign.id}/>
+            <ManagerSection managers={this.state.campaign.managers} id={this.state.campaign._id}/>
           </div>
           <div className="row justify-content-center">
             <DateSection
               startDate={this.state.campaign.startDate}
               endDate={this.state.campaign.endDate}
-              id={this.state.campaign.id}
+              id={this.state.campaign._id}
             />
             
           </div>
           <div className="row justify-content-center">
-            <TalkingPointSection talkingPoint={this.state.campaign.talkingPoint} id={this.state.campaign.id}/>
+            <TalkingPointSection talkingPoint={this.state.campaign.talkingPoints} id={this.state.campaign._id}/>
           </div>
           <div className="row justify-content-center">
             <QuestionnaireSection
@@ -92,10 +125,10 @@ class ViewCampaign extends Component {
             />
           </div>
           <div className="row justify-content-center">
-            <VisitDurationSection duration={this.state.campaign.duration} id={this.state.campaign.id}/>
+            <VisitDurationSection duration={this.state.campaign.avgDuration} id={this.state.campaign._id}/>
           </div>
           <div className="row justify-content-center">
-            <TasksSection tasks={this.state.campaign.tasks} id={this.state.campaign.id} url = {this.props.match.url} history ={this.props.history}/>
+            <TasksSection tasks={this.state.campaign.tasks} id={this.state.campaign._id} url = {this.props.match.url} history ={this.props.history}/>
           </div>
         </div>
       </div>) : null;

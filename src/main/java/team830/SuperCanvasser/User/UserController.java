@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
@@ -77,6 +78,15 @@ public class UserController {
         if (getRoleInSession(request).equals(Role.ADMIN)) {
             log.info("UserController : Got user information");
             return ResponseEntity.ok(userService.getUserByEmail(email));
+        }
+        log.info("UserController :: Does not have authority to view the users");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
+    }
+
+    @RequestMapping(value = "/sysad/viewAll" , method = RequestMethod.GET)
+    public ResponseEntity viewAllUser(HttpServletRequest request) {
+        if (getRoleInSession(request).equals(Role.ADMIN)) {
+            return ResponseEntity.ok(userService.getAllUSer());
         }
         log.info("UserController :: Does not have authority to view the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");

@@ -11,14 +11,7 @@ class VisitDuration extends Component{
 					<p>Visit Duration</p>
 				</div>
 				
-				<div className = {['col-3', classes.InputSection].join(' ')}>
-					<input 	
-							name = 'visitHour'
-							value = {this.props.visitHour}
-							className = {[classes.TextField].join(' ')}
-							placeholder = 'Hour'
-							onChange={this.props.onChange}/>
-				</div>
+				
 				<div className = {['col-3', classes.InputSection].join(' ')}>
 					<input 	
 							name = 'visitMin'

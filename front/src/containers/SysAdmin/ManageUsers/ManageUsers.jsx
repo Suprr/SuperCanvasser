@@ -1,37 +1,13 @@
 import React, { Component } from "react";
 import AddUser from "./AddUser";
 import Users from "./Users";
-import axios from "../../../axios";
-
+import axios from "../../../axios"
 class ManageUsers extends Component {
   state = {
-    variablesFromServer: []
-  };
-
-  componentDidMount() {
-    this.handleUpdateUsers();
-  }
-
-  handleUpdateUsers = () => {
-    console.log("componentDidMount ManageUsers");
-    let x = null;
-    axios
-      .get("https://cse308-de3df.firebaseio.com/users.json")
-      .then(response => {
-        x = response.data;
-
-        if (x != null) {
-          console.log(x);
-          let newVariables = [];
-          for (let i in response.data) {
-            if (x[i] != null) {
-              newVariables.push(x[i]);
-            }
-          }
-          console.log("variablesFromServer", newVariables);
-          this.setState({ variablesFromServer: newVariables });
-        }
-      });
+    managers:[],
+    canvassers:[],
+    sysAdmins :[],
+    isMounted : false,
   };
 
   handleDelete = userID => {
@@ -72,6 +48,46 @@ class ManageUsers extends Component {
       });
   };
 
+  componentDidMount(){
+    
+    this.setState( { isMounted: true }, () => {
+          axios.get('/sysad/view').then(response=>{
+           
+          const responseData = response.data
+
+          console.log(['ManagerUSer'], responseData);
+
+          let localManager=[];
+          let localCanvasser = [];
+          let localSysAdmin = []; 
+
+          for(let i =0; i<responseData.length; i++){
+            if(responseData[i].role=='MANAGER')
+              localManager.push(responseData[i]);
+            else if(responseData[i].role=='CANVASSER')
+              localCanvasser.push(responseData[i]);
+            else
+              localSysAdmin.push(responseData[i]);
+          }
+
+
+          if(this.state.isMounted){
+            console.log('ViewCampaign', 'UPLOADED');
+             this.setState({managers:localManager,
+                            canvassers:localCanvasser,
+                            sysAdmins:localSysAdmin});
+          }
+
+        }).catch(error=>{
+          console.log(error)
+        })
+    });
+  }
+
+  componentWillUnMount(){
+    this.setState({isMounted:false});
+  }
+
   newUniqueId(users) {
     let highestNum = 0;
     for (let i = 0; i < this.state.variablesFromServer.length; i++) {
@@ -83,15 +99,25 @@ class ManageUsers extends Component {
   }
 
   handleEdit = () => {};
+
+
   render() {
+
     return (
       <div>
         <h1>Manage Users</h1>
         <div className="spacing" />
         <AddUser onAdd={this.handleAdd} />
         <div className="spacing" />
+<<<<<<< HEAD
         <Users
           users={this.state.variablesFromServer}
+=======
+          <Users
+          managers={this.state.users}
+          canvassers = {this.state.canvassers}
+          sysAdmins = {this.state.sysAdmins}
+>>>>>>> master
           onDelete={this.handleDelete}
           onEdit={this.handleEdit}
           onUpdate={this.handleUpdateUsers}

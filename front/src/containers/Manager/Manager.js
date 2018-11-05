@@ -18,22 +18,57 @@ class Manager extends Component{
 
 		campaignList : null,
 		managerID : 0,
-		campaigns : null
-		
+		campaigns : null,
+		isMounted: false,
 	}
 
 	componentDidMount(){
 		//console.log(['Manager componentDidMount'], this.state.campaignList);
-		let x = null
-		
-		if(!this.state.campaignList){
-			 axios.get('https://cse308-de3df.firebaseio.com/managers/'+this.state.managerID+'.json').then(response=>{
-		          x= response.data 
-		        //  console.log('[Manager componentDidMount]',x.campaigns)
-		          this.setState((prevState)=>({campaignList : response.data.campaigns}));
-		      });    
-		}	
-	}
+		 let x = null
+		 //userID is id from session store
+		 const userInfoData= JSON.parse(sessionStorage.getItem('userInfo'));
+		//const data = sessionStorage.getItem('userInfo');
+		 const userID = userInfoData._id;
+		 console.log('USER ID', userID);
+		 //const userID = getSessionStore.
+		 this.setState( { isMounted: true }, () => {
+         console.log('USER ID2', userID);
+         axios.get('/manager/campaign/list/?_id='+userID).then(response=>{
+	          
+	          const data = response.data;
+	          console.log(['Manager Recieved Campaigns Data'],data);
+	          
+	          const length = data.length;
+	          let newCampaigns = []
+	          for(let i=0; i<length; i++){
+	            newCampaigns.push(data[i]);
+	          }
+
+	          console.log('CampaignList', newCampaigns);
+	          if(this.state.isMounted){
+
+	          console.log('CampaignList', 'UPLOADED');
+	            this.setState({campaigns:newCampaigns});
+	          }
+        }).catch(error=>{
+          console.log('USER ID Error', userID);
+          console.log(error)
+        })
+    } );
+      
+  }
+
+  componentWillUnMount(){
+    this.setState({isMounted:false});
+  }
+	// 	if(!this.state.campaignList){
+	// 		 axios.get('https://cse308-de3df.firebaseio.com/managers/'+this.state.managerID+'.json').then(response=>{
+	// 	          x= response.data 
+	// 	        //  console.log('[Manager componentDidMount]',x.campaigns)
+	// 	          this.setState((prevState)=>({campaignList : response.data.campaigns}));
+	// 	      });    
+	// 	}	
+	// }
 	
 
 	componentDidUpdate(){
@@ -41,10 +76,10 @@ class Manager extends Component{
 	}
 
 
-	realCampianSet=(realCamp)=>{
-		//console.log('[Real Camp]',realCamp)
-		this.setState({campaigns : realCamp});
-	}
+	// realCampianSet=(realCamp)=>{
+	// 	//console.log('[Real Camp]',realCamp)
+	// 	this.setState({campaigns : realCamp});
+	// }
 
 	render(){
 		console.log(['Manager Props'], this.props.match.params);
@@ -53,16 +88,16 @@ class Manager extends Component{
 				
 				<div className={["col-10", "fixed-center", classes.Manager].join(' ')}>
 					<Switch>
-						<Route path={this.props.match.url+'/campaign-list'} exact render = {() =><CampaignList campaignSet = {this.realCampianSet} campaignList={this.state.campaignList}/>}/>
-						<Route path={this.props.match.url+'/create-campaign'} component = {CreateCampaign}/>
+						<Route path={this.props.match.url+'/campaign/list'} exact render = {() =><CampaignList campaignList={this.state.campaigns}/>}/>
+						<Route path={this.props.match.url+'/campaign/create'} component = {CreateCampaign}/>
 						<Route path={this.props.match.url+'/assign-task/:cid/:tid'} 
 							render = {() => <AssignTask/>}/>
-						<Route path={this.props.match.url+'/campaign-list/:id/:index'} 
-                         render={()=> <ViewCampaign campaign = {this.state.campaigns}/>}/>
+						<Route path={this.props.match.url+'/campaign/view'} 
+                         render={()=> <ViewCampaign/>}/>
                          <Route path={this.props.match.url+'/task-assignment/:tid'} render = {()=><TaskDetail/>}/>
-                         <Route path={this.props.match.url+'/task-assignment/'} render = {()=><TaskAssignment campaignList={this.state.campaignList}/>}/>
+                         <Route path={this.props.match.url+'/task-assignment/'} render = {()=><TaskAssignment campaignList={this.state.campaigns}/>}/>
 
-						<Redirect from={this.props.match.url} to = {this.props.match.url+'/campaign-list'}/>
+						<Redirect from={this.props.match.url} to = {this.props.match.url+'/campaign/list'}/>
 					</Switch>
 				</div>
 		)

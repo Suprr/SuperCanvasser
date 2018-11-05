@@ -4,12 +4,12 @@ const menuData = {
 			manager : [
 				{
 					title: 'Campaign List',
-					path : 'campaign-list',
+					path : 'campaign/list',
 					id : 'maaa'
 				},
 				{
 					title : 'Create Campaign',
-					path : 'create-campaign',
+					path : 'campaign/create',
 					id : 'mbbb'
 				},
 				{

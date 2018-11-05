@@ -6,19 +6,20 @@ class ManagerSection extends Component{
 		...this.props
 	}
 
+	//should create a method for getting managers info from user.
 
 	render(){
+		console.log(['ManagerSection'],this.props.managers)
 		let managers =  this.state.managers ? this.state.managers.map(mng=>{
 			//<div className={[classes.Unknown, 'rounded-circle', 'text-center'].join(' ')}></div>
 			let manager = (
-					  <div key={mng.id} className={['row',classes.Manager].join(' ')}> 
-						<div className={[classes.ManagerName, 'col-7', 'text-center'].join(' ')}>{mng.name}</div>
+					  <div key={mng._id} className={['row',classes.Manager].join(' ')}> 
+						<div className={[classes.ManagerName, 'col-7', 'text-center'].join(' ')}>{mng.firstName+" "+mng.lastName}</div>
 						<div className={[classes.Removebutton, 'col-5'].join(' ')}><button className = 'btn btn-danger col-4'>remove</button></div>
 					  </div>);
 
 			return manager;
 		}) : null ;
-
 
 		return(
 			//<div className = {['container'].join(' ')}>
