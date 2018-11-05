@@ -61,9 +61,9 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, HttpServletRequest request) {
-            if(campaign.equals((request.getSession().getAttribute("currentCampaign")))){
-                log.info("CampaignController :: Campaign Edited");
+    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, BindingResult result) {
+            if(!result.hasErrors()) {
+                log.info("CampaignController :: Campaign has been edited");
                 return ResponseEntity.ok(campaignService.editCampaign(campaign));
             }
             log.info("CampaignController :: Campaign Not Found");

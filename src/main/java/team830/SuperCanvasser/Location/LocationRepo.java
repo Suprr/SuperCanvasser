@@ -7,5 +7,5 @@ import team830.SuperCanvasser.User.User;
 
 @Repository
 public interface LocationRepo extends MongoRepository<Location, String> {
-
+    Location findLocationBy_id(String _id);
 }

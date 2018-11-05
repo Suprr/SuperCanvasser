@@ -26,7 +26,17 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public Campaign editCampaign(Campaign campaign) {
+        List<Location> locations = new ArrayList<>();
+        for(Location location : campaign.getLocations()) {
+            if(location.get_id()!=""){
+
+            }
+            else if(locationRepo.findLocationBy_id(location.get_id())!= null){
+
+            }
+        }
         return campaignRepo.save(campaign);
+
     }
 
     @Override
