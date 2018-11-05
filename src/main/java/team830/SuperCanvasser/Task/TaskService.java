@@ -67,4 +67,13 @@ public class TaskService implements TaskInterface {
         }
         return null;
     }
+
+    @Override
+    public List<Task> findAllTasksById(List<String> ts){
+        List<Task> tasks = new ArrayList<>();
+        for(String t : ts){
+            tasks.add(taskRepo.findBy_id(t));
+        }
+        return tasks;
+    }
 }

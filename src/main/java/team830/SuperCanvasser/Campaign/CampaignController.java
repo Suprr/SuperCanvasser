@@ -89,5 +89,4 @@ public class CampaignController {
         log.info("CampaignController :: No Campaign exist under this manager");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign.");
     }
-
 }

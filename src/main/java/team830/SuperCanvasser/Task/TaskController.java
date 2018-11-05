@@ -69,6 +69,12 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findLocationsById(locations));
     }
 
+    @RequestMapping(value = "/tasks", method = RequestMethod.POST)
+    public ResponseEntity getTasksById(@RequestBody List<String> tasks){
+        log.info("TaskController :: Grabbing tasks by id");
+        return ResponseEntity.ok(taskService.findAllTasksById(tasks));
+    }
+
     @RequestMapping(value = "/activeTask", method = RequestMethod.GET)
     public ResponseEntity getTaskForToday(@RequestParam String _id){
         Task task = taskService.findTodayTask(_id);
