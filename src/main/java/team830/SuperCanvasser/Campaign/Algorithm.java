@@ -1,10 +1,13 @@
 package team830.SuperCanvasser.Campaign;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import team830.SuperCanvasser.Canvasser.AvailabilityService;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Task.Task;
 import team830.SuperCanvasser.Task.TaskService;
@@ -16,6 +19,8 @@ import team830.SuperCanvasser.Task.TaskService;
 public class Algorithm {
     @Autowired
     TaskService taskService;
+    CampaignService campaignService;
+    AvailabilityService availabilityService;
     // Walking speed in respect to Latitude and Longitude is 0.05/69
     // degrees of Latitude/Longitude a minute
     private static final double CANVASSER_SPEED = (0.05/69);
@@ -47,10 +52,37 @@ public class Algorithm {
             taskService.addTask(newTask);
             tasks.add(newTask);
         }
+        int totalCanvasserDates = 0;
+        for (int i = 0; i < campaign.getCanvassers().size(); i++) {
+            totalCanvasserDates += campaignService.listAvailableDates(campaign.getStartDate(), campaign.getEndDate(), availabilityService.findByCanvasserId(campaign.getCanvassers().get(i))).size();
+        }
+        if (totalCanvasserDates < tasks.size()) {
+            //error
+        }
+        else {
+            int canvasserIndex = 0;
+            while (totalCanvasserDates > 0) {
+                if (campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).size() > 0) {
+                    totalCanvasserDates--;
+                    tasks.get(totalCanvasserDates).setCanvasserId(campaign.getCanvassers().get(canvasserIndex));
+                    tasks.get(totalCanvasserDates).setDate(campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).get(0));
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    String format = formatter.format(campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).get(0));
+                    availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex)).getAvailabilityDates().add(format);
+                }
+                else {
+                    canvasserIndex++;
+                }
+            }
+        }
     }
 
     List<Task> getTasks () {
         return tasks;
+    }
+
+    List<String> getTaskIDs() {
+        return taskIDs;
     }
     /*
     public static void main(String[] args) {
