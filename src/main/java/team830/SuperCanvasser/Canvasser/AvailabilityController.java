@@ -48,13 +48,13 @@ public class AvailabilityController {
         }
     }
 
-    @GetMapping("/user/{id}")
-    public Availability getAvailabilitiesByCanvasser(@PathVariable("id") String id) {
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public Availability getAvailabilitiesByCanvasser(@RequestParam String id) {
         log.info("AvailabilityController : Getting all availabilities by canvasser");
         return (AvailabilityService.findByCanvasserId(id));
     }
 
-    @PostMapping("/user")
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public List<Availability> getAvailForListCanvassers(@Valid @RequestBody ArrayStringWrapper id, BindingResult result) {
         if(result.hasErrors()){
             log.info("AvailabilityController : Fetching canvassers availabilities by ids failed.");

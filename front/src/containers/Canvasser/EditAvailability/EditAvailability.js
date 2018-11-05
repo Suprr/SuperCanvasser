@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Availability from "../../../components/Campaign/AssignTask/Availability";
+//import Calendar from "../../../components/UI/Calendar/Calendar";
 
 class EditAvailability extends Component {
   state = {};
@@ -7,7 +7,7 @@ class EditAvailability extends Component {
     return (
       <div>
         <h1>Edit Availability</h1>
-        <Availability canvasser={this.state.selectedCanvasser} />
+        {/*<Calendar/> */}
       </div>
     );
   }
