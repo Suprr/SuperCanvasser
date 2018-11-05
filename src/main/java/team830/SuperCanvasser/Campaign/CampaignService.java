@@ -1,18 +1,27 @@
 package team830.SuperCanvasser.Campaign;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team830.SuperCanvasser.Location.Location;
+import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class CampaignService implements CampaignInterface {
+
     @Autowired
     private CampaignRepo campaignRepo;
+
+    @Autowired
+    private LocationRepo locationRepo;
+
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     @Override
@@ -22,6 +31,19 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public Campaign addCampaign(Campaign campaign) {
+    // Create Locations
+        List<Location> locations = new ArrayList<>();
+        for(Location location : campaign.getLocations()){
+            HashMap<String, Boolean> qNa = new HashMap<>();
+            // default answer for questionnaire is FALSE
+            for(String s: campaign.getQuestions()){
+                qNa.put(s, false);
+            }
+            location.set_id(ObjectId.get().toHexString());
+            location.setqNa(qNa);
+            locationRepo.insert(location);
+        }
+        campaign.setLocations(locations);
         return campaignRepo.insert(campaign);
     }
 

@@ -5,14 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import team830.SuperCanvasser.Location.Location;
-import team830.SuperCanvasser.Location.LocationService;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 import team830.SuperCanvasser.User.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +25,7 @@ public class CampaignController {
     private CampaignService campaignService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private LocationService locationService;
-
+    
     //id = campaignId. this returns the list that has campaign and managers(User)
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     public ResponseEntity getCampaign(@RequestParam String _id, HttpServletRequest request) {
@@ -61,18 +57,8 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity createCampaign(@RequestBody Campaign campaign) {
-            if(!campaignService.findAll().contains(campaign)){
-
-                // Create Locations
-
-
-                for(Location location : campaign.getLocations()){
-                    HashMap<String, Boolean> qNa = new HashMap<>();
-//                    qNa.put()
-
-                    locationService.addLocation(location);
-                }
+    public ResponseEntity createCampaign(@RequestBody Campaign campaign, BindingResult result) {
+            if(!result.hasErrors()){
                 log.info("CampaignController :: Campaign has been created");
                 return ResponseEntity.ok(campaignService.addCampaign(campaign));
             }
@@ -88,7 +74,6 @@ public class CampaignController {
             log.info("CampaignController :: Campaign is returning all the list found by manager");
             return ResponseEntity.ok(campaignService.findAllbyManager(_id));
         }
-
         log.info("CampaignController :: No Campaign exist under this manager");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign.");
     }

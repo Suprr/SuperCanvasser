@@ -1,5 +1,4 @@
 package team830.SuperCanvasser.Campaign;
-
 import team830.SuperCanvasser.Status;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -97,17 +96,13 @@ public class Campaign {
         this.canvassers = canvassers;
     }
 
-    public List<Location> getLocations() {
-        return locations;
-    }
+    public List<Location> getLocations() { return locations; }
 
     public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
 
-    public List<String> getQuestions() {
-        return questions;
-    }
+    public List<String> getQuestions() { return questions; }
 
     public void setQuestions(List<String> questions) {
         this.questions = questions;
