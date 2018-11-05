@@ -8,10 +8,13 @@ class TaskAssignmentList extends Component{
 	state = {
 		tasks : null,
 		load : this.props.load,
+		isMounted:false,
 	}
 
 	componentDidUpdate(){
-		if(this.props.campaign){
+			//console.log(['TaskAssignmentList'], this.state.load, this.state.tasks);
+				//get Tasks from server
+			if(this.props.campaign){
 			//console.log(['TaskAssignmentList'], this.state.load, this.state.tasks);
 			
 			if(!this.props.load){
@@ -35,13 +38,47 @@ class TaskAssignmentList extends Component{
 	     	 	});     
 			}
 		}
+	
+	}
+
+	componentDidUpdate(){
+
+		if(this.props.campaign){
+			if(!this.props.load){
+				const taskId = sessionStorage.getItem('taskID')
+			    console.log(['TaskAssignmentList did mount'], taskId);
+
+			    this.setState( { isMounted: true }, () => {
+			    	  //change this url
+			          axios.post('task/tasks', this.props.tasks).then(response=>{
+				        let taskData= response.data 
+				          //get tasks id from campaign
+				          
+				        if(this.state.isMounted){
+				            console.log('TaskAssignmentList', taskData);
+				            this.setState({tasks:taskData});
+				        }
+		     	 	  
+			        }, this.props.updateHandler()).catch(error=>{
+			          console.log(error)
+			        })
+			    });
+			}
+
+		}	
+
+	}
+
+	componentWillUnMount(){
+		this.setState({isMounted:false});
 	}
 
 
 	render(){
-
+		let count = 1;
 		let tasks =  this.state.tasks&&this.state.tasks.length>0? this.state.tasks.map(tsk =>{
-			let task = <TaskAssignmentItem url={this.props.url} key= {tsk.id} task={tsk}/> 
+			let task = <TaskAssignmentItem url={this.props.url} key= {tsk._id} task={tsk} number = {count}/> 
+			count++;
 		    return task;
 		  }) : <h1>No Task</h1>;
 		//console.log(this.state.tasks)

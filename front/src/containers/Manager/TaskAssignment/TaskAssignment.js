@@ -10,61 +10,16 @@ import TaskDetail from './TaskDetail/TaskDetail'
 class TaskAssignment extends Component{
 	state ={
 		selectedCampaign: null,
-		campaigns : null,
+		campaigns : this.props.campaignList,
 		tasks : null,
 		loadTasks : false,
 	}
 
-	componentDidMount(){
-		if(!this.state.campaigns&&this.props.campaignList){
-      
-	      axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
-	          let x= response.data 
-	          let campaignIndexes = this.props.campaignList;
-	          let newCampaigns = [];
-	          for(let c in campaignIndexes){
-	            if(x){
-	              newCampaigns.push(x[campaignIndexes[c]]);
-	            }
-	          }
-
-	          this.setState((prevState)=>({campaigns : newCampaigns}));
-	      });     
-	    }
-	}
-
-
-  componentDidUpdate(){
-    //console.log(['List componentDidUpdate'], this.props);
-    if(!this.state.campaigns&&this.state.campaignList){
-      axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
-          let x= response.data 
-          let campaignIndexes = this.state.campaignList;
-          let newCampaigns = [];
-          for(let c in campaignIndexes){
-            if(x){
-              newCampaigns.push(x[campaignIndexes[c]]);
-            }
-          }
-
-          this.setState((prevState)=>({campaigns : newCampaigns}));
-      });     
-    }
-    
-  }
-
-  componentWillReceiveProps(nextProps){
-
-    //console.log(['componentWillReceiveProps List'], nextProps.campaignList);
-
-    if(!this.state.campaignList){
-      this.setState({campaignList : nextProps.campaignList});
-    }
-  }
 
   //when user select a campaign, this method is called from Task Assignment Header
   selectedCampaignHandler = (campaign) =>{
-  	this.setState({selectedCampaign : campaign, loadTasks : false});
+  	console.log(['TaskAssignment'],campaign);
+  	this.setState({selectedCampaign : campaign, loadTasks : false, tasks:campaign.tasks});
   }
 
   //when Tasks are loaded this method is called from Task AssignmentList
@@ -73,7 +28,7 @@ class TaskAssignment extends Component{
   }
 
 	render(){
-		console.log(['Task Assignment'],this.props)
+		console.log(['Task Assignment'], this.props)
 		return <div>
 					<PageHead title='View Task Assignment'/>
 					<div className={classes.TaskAssignmentHead}>

@@ -8,7 +8,6 @@ class TaskAssignmentListHead extends Component{
 			<div className='col-3'>Canvassers</div>
 			<div className='col-3'>Dates</div>
 			<div className='col-2'>Number of Locations</div>
-			<div className='col-1'>Duration</div>
 		</div>
 	}
 }

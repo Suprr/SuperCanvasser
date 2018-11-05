@@ -65,7 +65,6 @@ public class Algorithm {
                 if (campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).size() > 0) {
                     totalCanvasserDates--;
                     tasks.get(totalCanvasserDates).setCanvasserId(campaign.getCanvassers().get(canvasserIndex));
-                    //tasks.get(totalCanvasserDates).setDate(campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).get(0));
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String format = formatter.format(campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).get(0));
                     availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex)).getAvailabilityDates().add(format);

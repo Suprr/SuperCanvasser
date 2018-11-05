@@ -40,6 +40,7 @@ class EditCampaign extends Component{
 		id : null,
 		manager_id : null,
 		isMounted : false,
+		_id : null
 	}
 
 	handleInputChange = (event)=> {
@@ -172,7 +173,7 @@ class EditCampaign extends Component{
 	  			//if(locs[i]._id!)
 	  			let loc = {
 	  				latitude : locs[i].latitude,
-	  				longitude : locs[i].latitude,
+	  				longitude : locs[i].longitude,
 	  				address : locs[i].address,
 	  				qNa : locs[i].qNa,
 	  				visited:locs[i].visited,
@@ -195,12 +196,13 @@ class EditCampaign extends Component{
 				endDate : this.state.endDate.format('YYYY-MM-DD'),
 				talkingPoints : this.state.talkingPoint,
 				questions : realQuestions,
-				locations : this.state.realLocs,
+				locations : realLocs,
 				avgDuration : this.state.visitMin,
 				status : "INACTIVE",
-				tasks : [],
+				tasks : this.state.tasks,
 				canvassers : [],
 				questionnaire : [],
+				_id : this.state._id
 			}
 
 	  		//If I use push it generates auto key
@@ -223,15 +225,9 @@ class EditCampaign extends Component{
 
 			  axios.get('/manager/campaign/view/?_id='+cmpId).then(response=>{
            
-		          const responseData = response.data
-		          const dataLength = responseData.length;
-		          const newCampaign = responseData[0];
-
-		          let managerArray = [];
-		          for(let i=1; i<dataLength; i++){
-		            managerArray.push(responseData[i]);
-		          }
-
+		          const newCampaign = response.data[0];
+		        	
+		         
 
 		          let newQuestionnaire = [];
 		          for(let i=0; i<newCampaign.questions.length; i++){
@@ -263,14 +259,16 @@ class EditCampaign extends Component{
 		          if(this.state.isMounted){
 		            console.log('ViewCampaign', 'UPLOADED', newCampaign);
 		            this.setState({campaignTitle:newCampaign.name,
-		                           managers:managerArray,
+		                           managers:newCampaign.managers,
 		                           startDate : moment(newCampaign.startDate),
 		                           endDate : moment(newCampaign.endDate),
 		                           talkingPoint : newCampaign.talkingPoints,
 		                    	   questionnaire : newQuestionnaire,
 		                    	   locations : locationArray,
+		                    	   tasks : newCampaign.tasks,
 		                    	   visitMin : newCampaign.avgDuration,
-		                       	   manager_id:userID});
+		                       	   manager_id:userID,
+		                       	   _id : newCampaign._id});
 		          }
 		        }).catch(error=>{
 		          console.log(error)

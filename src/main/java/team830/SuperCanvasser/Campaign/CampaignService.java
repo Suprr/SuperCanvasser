@@ -13,10 +13,7 @@ import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CampaignService implements CampaignInterface {
@@ -35,9 +32,15 @@ public class CampaignService implements CampaignInterface {
     public Campaign editCampaign(Campaign campaign) {
         List<Location> locations = campaign.getLocations();
         for(Location location : campaign.getLocations()) {
-            if(location.get_id()!=""){
+            if(location.get_id().equals("")){
                 // creating a location if there is new location added in
-                locations.add(createLocation(campaign.getQuestions(), location));
+                HashMap<String, Boolean> qNa = new HashMap<>();
+                for(String s: campaign.getQuestions()){
+                    qNa.put(s, false);
+                }
+                location.setqNa(qNa);
+                location.set_id(ObjectId.get().toHexString());
+                locationRepo.insert(location);
             }
         }
         for(Location loc : locationRepo.findAll()){
