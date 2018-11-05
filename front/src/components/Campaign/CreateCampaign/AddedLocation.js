@@ -9,7 +9,7 @@ class AddedLocations extends Component{
 			let location = (
 				<div className = 'row' key={loc.id}>
 					<div className={[classes.QuestionnaireItem, 'col-10'].join(' ')}> 
-						{loc.location} 
+						{loc.address} 
 					</div>
 					<div className = 'col-2'>
 						<button className = 'btn btn-danger' name={loc.id} onClick={this.props.onClick}>Remove</button>

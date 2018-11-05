@@ -32,7 +32,6 @@ class EditCampaign extends Component{
 		endDate : moment(),
 		talkingPoint : '',
 		questionnaire : [],
-		questions: [],
 		locations : [],
 		visitMin : '',
 		newManager : '',
@@ -90,38 +89,33 @@ class EditCampaign extends Component{
 	  				//show modal
 	  		} else{
 		  		loc = address.number +", "+ address.street + ", "+ address.unit +", "+ address.city +", "+ address.state + ", "+ address.zipcode
-		  		
-		  		let lat = null;
-		  		let long = null;
-
-		  		const newLocation = {
-		  			location : loc,
-		  			id : this.state.locations.length
-		  		}
-
+		  	
 		  		const addressx = address.number+'+'+address.street.split(' ').join('+')+'%2C+'+address.unit.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
-		  		console.log(['ADdress'],addressx)
+		  		console.log(['Address'],addressx)
 
 		  		//x is long, y is lat
 		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
 		  		then(res=>{
 		  			const addressMatch = res.data.result.addressMatches[0];
-		  			long = addressMatch.coordinates.x;
-		  			lat =  addressMatch.coordinates.y;
+		  			const long = addressMatch.coordinates.x;
+		  			const lat =  addressMatch.coordinates.y;
 
-
-			  		const realLocation = {
-			  			lat : lat,
-			  			long : long,
+			  		const newLocation = {
+			  			latitude : lat,
+			  			longitude : long,
 			  			address : loc,
-			  			questionnaire : {}
+			  			qNa : {},
+			  			id : this.state.locations.length,
+			  			_id:"",
+			  			index : -1,
+			  			anonymous:false,
+			  			visited : false
 			  		}
 
-			  		console.log('Add Location', realLocation)
+			  		console.log('Add Location', newLocation)
 
 			  		this.setState((prevState)=>({
 			  			locations : [...prevState.locations, newLocation],
-			  			realLocs : [...prevState.realLocs, realLocation],
 			  			newLocation : ''
 		  			}))
 
@@ -146,7 +140,6 @@ class EditCampaign extends Component{
 
 		  		this.setState((prevState)=>({
 		  			questionnaire : [...prevState.questionnaire, newQuestion],
-		  			questions : [...prevState.questions, this.state.newQuestionnaire],
 		  			newQuestionnaire : ''
 		  		}));
 	  		}
@@ -176,13 +169,16 @@ class EditCampaign extends Component{
 	  		const questions = this.state.questionnaire;
 	  		
 	  		for(let i=0; i<locs.length; i++){
+	  			//if(locs[i]._id!)
 	  			let loc = {
-	  				lat : locs[i].lat,
-	  				long : locs[i].long,
+	  				latitude : locs[i].latitude,
+	  				longitude : locs[i].latitude,
 	  				address : locs[i].address,
-	  				questionnaire : {},
-	  				visited:false,
-	  				_id : ""
+	  				qNa : locs[i].qNa,
+	  				visited:locs[i].visited,
+	  				_id : locs[i]._id,
+	  				index : locs[i].index,
+	  				anonymous : locs[i].anonymous
 	  			}
 
 	  			realLocs.push(loc);
@@ -232,15 +228,37 @@ class EditCampaign extends Component{
 		          const newCampaign = responseData[0];
 
 		          let managerArray = [];
-		          
 		          for(let i=1; i<dataLength; i++){
 		            managerArray.push(responseData[i]);
 		          }
+
+
 		          let newQuestionnaire = [];
 		          for(let i=0; i<newCampaign.questions.length; i++){
 		          	const qnr ={question: newCampaign.questions[i], id:i}
 		          	newQuestionnaire.push(qnr);
 		          }
+
+		          let locationArray = [];
+		          for(let i=0; i<newCampaign.locations.length; i++){
+		          	const loc = {
+		          		latitude : newCampaign.locations[i].latitude,
+		          		longitude : newCampaign.locations[i].longitude,
+		          		address : newCampaign.locations[i].address,
+		  				qNa : newCampaign.locations[i].qNa,
+		  				visited:newCampaign.locations[i].visited,
+		  				_id : newCampaign.locations[i]._id,
+		  				index : newCampaign.locations[i].index,
+		  				anonymous : newCampaign.locations[i].anonymous,
+		  				id : newCampaign.locations[i]._id
+		          	}
+
+		          	locationArray.push(loc);
+		          }
+
+
+
+
 
 		          if(this.state.isMounted){
 		            console.log('ViewCampaign', 'UPLOADED', newCampaign);
@@ -250,9 +268,8 @@ class EditCampaign extends Component{
 		                           endDate : moment(newCampaign.endDate),
 		                           talkingPoint : newCampaign.talkingPoints,
 		                    	   questionnaire : newQuestionnaire,
-		                    	   locations : newCampaign.locations,
+		                    	   locations : locationArray,
 		                    	   visitMin : newCampaign.avgDuration,
-		                           questions : newCampaign.questions,
 		                       	   manager_id:userID});
 		          }
 		        }).catch(error=>{
