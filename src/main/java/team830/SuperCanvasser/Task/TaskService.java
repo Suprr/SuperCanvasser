@@ -4,15 +4,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team830.SuperCanvasser.Location.Location;
+import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class TaskService implements TaskInterface {
+
+    @Autowired
+    private LocationRepo locationRepo;
     @Autowired
     private TaskRepo taskRepo;
+
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     @Override
@@ -39,5 +46,12 @@ public class TaskService implements TaskInterface {
         return taskRepo.findByCanvasserIdAndTaskStatus(id, status);
     }
 
-
+    @Override
+    public List<Location> findLocationsById(List<String> locs){
+        List<Location> locations = new ArrayList<>();
+        for(String loc : locs){
+            locations.add(locationRepo.findLocationBy_id(loc));
+        }
+        return locations;
+    }
 }
