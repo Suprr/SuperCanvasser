@@ -4,10 +4,10 @@ class User extends Component {
   render() {
     return (
       <div className="d-flex edit-row">
-        <span>{this.props.user.name}</span>
+        <span>{this.props.user.firstName+" "+this.props.user.lastName}</span>
         <div className="ml-auto">
           <button
-            onClick={() => this.props.onDelete(this.props.user)}
+            onClick={() => this.props.onDelete(this.props.user._id)}
             className="btn-circle"
           >
             -

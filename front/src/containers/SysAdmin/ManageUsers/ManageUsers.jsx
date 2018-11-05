@@ -37,19 +37,8 @@ class ManageUsers extends Component {
       user.value = 2;
     }
     user.name = name;
-<<<<<<< Updated upstream
-    axios
-      .put("/users/" + user.id + ".json/", user)
-      .then(response => {
-        this.handleUpdateUsers();
-        console.log("delete user success");
-      })
-      .catch(error => {
-        console.log("Error", error);
-      });
-=======
+
     this.setState({ users: this.state.users.concat([user])});
->>>>>>> Stashed changes
   };
 
   componentDidMount(){
@@ -119,28 +108,13 @@ class ManageUsers extends Component {
         <div className="spacing" />
         <AddUser onAdd={this.handleAdd} />
         <div className="spacing" />
-<<<<<<< HEAD
-        <Users
-          users={this.state.variablesFromServer}
-=======
           <Users
-<<<<<<< Updated upstream
-          managers={this.state.users}
-          canvassers = {this.state.canvassers}
-          sysAdmins = {this.state.sysAdmins}
->>>>>>> master
-          onDelete={this.handleDelete}
-          onEdit={this.handleEdit}
-          onUpdate={this.handleUpdateUsers}
-        />
-=======
             managers={this.state.managers}
             canvassers = {this.state.canvassers}
             sysAdmins = {this.state.sysAdmins}
             onDelete={this.handleDelete}
             onEdit={this.handleEdit}
           />
->>>>>>> Stashed changes
       </div>
     );
   }
