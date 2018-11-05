@@ -14,7 +14,7 @@ class Dropdown extends Component{
 
 	selectItem = (item) => {
 	    this.setState({
-	      headerTitle: item.campaignTitle,
+	      headerTitle: item.name,
 	      listOpen: false
     	}, this.props.resetThenSet(item))
   	}
@@ -38,7 +38,7 @@ class Dropdown extends Component{
 	        </div>
 	        {listOpen && <ul className="dd-list">
 	          {list.map((item)=> (
-	            <li className="dd-list-item" key={item.id} onClick={() => this.selectItem(item)}>{item.campaignTitle}</li>
+	            <li className="dd-list-item" key={item._id} onClick={() => this.selectItem(item)}>{item.name}</li>
 	          ))}
 	        </ul>}
 	      </div>

@@ -15,7 +15,7 @@ public class Task {
     @Id
     private String _id;
     private List<String> locations;
-    private Date date;
+    private String date;
     private Status taskStatus;
     private String recommendedLoc;
     private String canvasserId;
@@ -24,7 +24,7 @@ public class Task {
         this.locations = new ArrayList<String>(locations);
         this.recommendedLoc = rec;
         this.taskStatus = Status.INACTIVE;
-        this.date = new Date();
+        this.date = "";
     }
 
     public String get_id() {
@@ -43,11 +43,11 @@ public class Task {
         this.locations = locations;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

@@ -61,13 +61,11 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, BindingResult result) {
-            if(!result.hasErrors()) {
+    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign) {
                 log.info("CampaignController :: Campaign has been edited");
                 return ResponseEntity.ok(campaignService.editCampaign(campaign));
-            }
-            log.info("CampaignController :: Campaign Not Found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
+//            log.info("CampaignController :: Campaign Not Found");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)

@@ -22,13 +22,11 @@ class TaskDetail extends Component{
 
 	    this.setState( { isMounted: true }, () => {
 	    	  //change this url
-	          axios.get('/getById/?_id='+taskId).then(response=>{
+	          axios.get('task/getById/?_id='+taskId).then(response=>{
 	           
 	          const responseData = response.data;
-	         
-
-
 	          console.log(['View Task Data'],responseData);
+
 	          if(this.state.isMounted){
 	            console.log('View Task', 'UPLOADED');
 	            this.setState({task:responseData});

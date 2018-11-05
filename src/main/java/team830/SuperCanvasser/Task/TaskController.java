@@ -51,20 +51,20 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)
-    public ResponseEntity getTaskById(@RequestParam String id) {
-        return ResponseEntity.ok(taskService.findBy_Id(id));
+    public ResponseEntity getTaskById(@RequestParam String _id) {
+        return ResponseEntity.ok(taskService.findBy_Id(_id));
     }
 
     @RequestMapping(value = "getByCan", method = RequestMethod.GET)
-    public ResponseEntity getByCanvasserId(@RequestParam("id") String id) {
-        log.info("TaskController : Grabbing Tasks by canvasser: " + id);
-        return ResponseEntity.ok(taskService.findByCanvasserIdAndTaskStatus(id, Status.INACTIVE));
+    public ResponseEntity getByCanvasserId(@RequestParam String _id) {
+        log.info("TaskController : Grabbing Tasks by canvasser: " + _id);
+        return ResponseEntity.ok(taskService.findByCanvasserIdAndTaskStatus(_id, Status.INACTIVE));
     }
 
     @RequestMapping(value = "/locations", method = RequestMethod.POST)
-    public ResponseEntity getLocationsById(@RequestBody List<String> locs){
+    public ResponseEntity getLocationsById(@RequestBody List<String> locations){
         log.info("TaskController :: Grabbing locations by id");
-        return ResponseEntity.ok(taskService.findLocationsById(locs));
+        return ResponseEntity.ok(taskService.findLocationsById(locations));
     }
 }
 
