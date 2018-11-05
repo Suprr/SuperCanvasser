@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-//import Calendar from "../../../components/UI/Calendar/Calendar";
+import Calendar from "../../../components/UI/Calendar/Calendar";
 
 class EditAvailability extends Component {
   state = {};
@@ -7,7 +7,7 @@ class EditAvailability extends Component {
     return (
       <div>
         <h1>Edit Availability</h1>
-        {/*<Calendar/> */}
+        <Calendar/>
       </div>
     );
   }

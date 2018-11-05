@@ -9,12 +9,13 @@ class Task extends Component {
   };
 
   handleQuestionaire = event => {
-    if (this.props.task.type === "Questionnaire") {
+    if (!this.props.task.visited) {
       this.setState({ navigate: true });
     }
   };
 
   render() {
+    const type = this.props.task.visited?"View":"Questionnaire";
     if (this.state.navigate) {
       return (
         <Redirect
@@ -30,10 +31,7 @@ class Task extends Component {
           </div>
           <div className="col-sm">
             <div>
-              <span>{this.props.task.add1}</span>
-            </div>
-            <div>
-              <span>{this.props.task.add2}</span>
+              <span>{this.props.task.address}</span>
             </div>
           </div>
           <div className="col-sm">
@@ -43,7 +41,7 @@ class Task extends Component {
               }}
               className="btn"
             >
-              {this.props.task.type}
+              {type}
             </button>
           </div>
         </div>

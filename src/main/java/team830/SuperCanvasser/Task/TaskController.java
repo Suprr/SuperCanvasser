@@ -3,10 +3,12 @@ package team830.SuperCanvasser.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import sun.misc.Request;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.Status;
@@ -51,20 +53,31 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)
-    public ResponseEntity getTaskById(@RequestParam String id) {
-        return ResponseEntity.ok(taskService.findBy_Id(id));
+    public ResponseEntity getTaskById(@RequestParam String _id) {
+        return ResponseEntity.ok(taskService.findBy_Id(_id));
     }
 
-    @RequestMapping(value = "getByCan", method = RequestMethod.GET)
-    public ResponseEntity getByCanvasserId(@RequestParam("id") String id) {
-        log.info("TaskController : Grabbing Tasks by canvasser: " + id);
-        return ResponseEntity.ok(taskService.findByCanvasserIdAndTaskStatus(id, Status.INACTIVE));
+    @RequestMapping(value = "/getByCan", method = RequestMethod.GET)
+    public ResponseEntity getByCanvasserId(@RequestParam String _id) {
+        log.info("TaskController : Grabbing Tasks by canvasser: " + _id);
+        return ResponseEntity.ok(taskService.findByCanvasserIdAndTaskStatus(_id, Status.INACTIVE));
     }
 
     @RequestMapping(value = "/locations", method = RequestMethod.POST)
-    public ResponseEntity getLocationsById(@RequestBody List<String> locs){
+    public ResponseEntity getLocationsById(@RequestBody List<String> locations){
         log.info("TaskController :: Grabbing locations by id");
-        return ResponseEntity.ok(taskService.findLocationsById(locs));
+        return ResponseEntity.ok(taskService.findLocationsById(locations));
+    }
+
+    @RequestMapping(value = "/activeTask", method = RequestMethod.GET)
+    public ResponseEntity getTaskForToday(@RequestParam String _id){
+        Task task = taskService.findTodayTask(_id);
+        if(task != null){
+            log.info("TaskController :: Grabbing task by canvasserId");
+            return ResponseEntity.ok(task);
+        }
+        log.info("TaskController :: No ActiveTask Found");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No ActiveTask Found");
     }
 }
 
