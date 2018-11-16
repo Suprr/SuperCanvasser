@@ -48,6 +48,10 @@ public class CampaignService implements CampaignInterface {
                 locationRepo.delete(loc);
             }
         }
+        // calculating the tasks again. triggering the Algo
+        List<String> taskIDs = Algorithm.start(campaign);
+        log.info("CampaignService :: Algorithm was triggered");
+        campaign.setTasks(taskIDs);
         return campaignRepo.save(campaign);
 
     }
