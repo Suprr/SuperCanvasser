@@ -5,40 +5,38 @@ import Canvasser from '../Canvasser/Canvasser'
 import SysAdmin from '../SysAdmin/SysAdmin'
 class Base extends Component{
 	state = {
-		id : null,
+		user : null,
 	}
 	componentDidMount(){
 		const data = JSON.parse(sessionStorage.getItem('userInfo'));
 		console.log(['Base componentDidMount'], data)
-		this.setState({id:data.email})
+		this.setState({user:data})
 	}
 	render(){
 		let display=null
-		console.log(this.state.email);
-		// if(this.state.id){
-		// 	if(this.props.match.params.role=='manager'){
-		// 		display = (<Manager userID = {this.props.match.params.id}/>);
-		// 	}else if(this.props.match.params.role=='canvasser'){
-		// 		display = (<Canvasser userID = {this.props.match.params.id}/>);
-		// 	} else{
-		// 		display = (<SysAdmin userID = {this.props.match.params.id}/>);
-		// 	}
-		// }
-
-		if(this.state.id){
+		
+		if(this.state.user&&this.state.user.email){
 			if(this.props.match.params.role=='manager'){
-				display = (<Manager userID = {this.state.id}/>);
+				display = (
+					<Layout role={this.props.match.params.role} user = {this.state.user} url={this.props.match.url}>
+					<Manager userID = {this.state.user.email}/>
+					</Layout>);
 			}else if(this.props.match.params.role=='canvasser'){
-				display = (<Canvasser userID = {this.state.id}/>);
+				display = (<Layout role={this.props.match.params.role} user = {this.state.user} url={this.props.match.url}>
+					<Canvasser userID = {this.state.user.email}/>
+					</Layout>
+					);
 			} else{
-				display = (<SysAdmin userID = {this.state.id}/>);
+				display = (
+					<Layout role={this.props.match.params.role} user = {this.state.user} url={this.props.match.url}>
+						<SysAdmin userID = {this.state.user.email}/>
+						</Layout>
+						);
 			}
 		}
 		return(
 			<div>
-				<Layout role={this.props.match.params.role} userID = {this.state.id} url={this.props.match.url}>
-					{display}
-				</Layout>
+				{display}
 			</div>
 		);
 	}
