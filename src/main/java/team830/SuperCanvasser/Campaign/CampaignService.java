@@ -57,7 +57,12 @@ public class CampaignService implements CampaignInterface {
     // Create Locations
         List<Location> locations = createLocations(campaign, new ArrayList<Location>());
         campaign.setLocations(locations);
+        // triggering algo and setting the getting the tasks
+        List<String> taskIDs = Algorithm.start(campaign);
+        log.info("CampaignService :: Algorithm was triggered");
+        campaign.setTasks(taskIDs);
         return campaignRepo.insert(campaign);
+
     }
 
     @Override
