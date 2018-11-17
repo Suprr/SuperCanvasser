@@ -31,9 +31,12 @@ public class CampaignService implements CampaignInterface {
     @Override
     public Campaign editCampaign(Campaign campaign) {
         List<Location> locations = campaign.getLocations();
+        boolean locationEdited = false;
+        // if new location added
         for(Location location : campaign.getLocations()) {
             if(location.get_id().equals("")){
-                // creating a location if there is new location added in
+                locationEdited = true;
+                // if new location is added
                 HashMap<String, Boolean> qNa = new HashMap<>();
                 for(String s: campaign.getQuestions()){
                     qNa.put(s, false);
@@ -43,17 +46,23 @@ public class CampaignService implements CampaignInterface {
                 locationRepo.insert(location);
             }
         }
+
+        // if location deleted
         for(Location loc : locationRepo.findAll()){
             if(!locations.contains(loc)){
+                locationEdited = true;
                 locationRepo.delete(loc);
             }
         }
-        // calculating the tasks again. triggering the Algo
-        List<String> taskIDs = Algorithm.start(campaign);
-        log.info("CampaignService :: Algorithm was triggered");
-        campaign.setTasks(taskIDs);
-        return campaignRepo.save(campaign);
 
+        if(locationEdited){
+            // calculating the tasks again. triggering the Algo
+            List<String> taskIDs = Algorithm.start(campaign);
+            log.info("CampaignService :: Algorithm was triggered");
+            campaign.setTasks(taskIDs);
+        }
+
+        return campaignRepo.save(campaign);
     }
 
     @Override
@@ -128,6 +137,7 @@ public class CampaignService implements CampaignInterface {
         location.setqNa(qNa);
         return locationRepo.insert(location);
     }
+
     private List<Location> createLocations(Campaign campaign, List<Location> locations){
         for(Location location : campaign.getLocations()){
             locations.add(createLocation(campaign.getQuestions(), location));
