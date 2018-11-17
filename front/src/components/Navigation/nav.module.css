@@ -39,3 +39,36 @@
 .OtherItem{
 	margin-right:20px;
 }
+
+
+.RoleDropDown{
+	list-style: none;
+	border : 1px solid black;
+	margin:5px;
+	position: absolute;
+}
+
+.RoleDropDown ul{
+	padding:0px;
+	margin:0px;
+	z-index: 10;
+
+}
+
+.roleItem{
+	list-style: none;
+	padding:5px 10px;
+	border-bottom: 1px solid black;	
+}
+
+.roleItem:hover{
+	background-color: #cb4d58;
+	color : white;
+}
+
+.Visible{
+	visibility: inline-block;
+}
+.Invisible{
+	display: none;
+}

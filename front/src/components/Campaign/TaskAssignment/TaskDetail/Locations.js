@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import classes from './TaskDetail.module.css'
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
 import './map.css'
 import axios from '../../../../axios'
 
@@ -44,8 +44,11 @@ class Locations extends Component{
 		let count=0;
 
 		const markers = this.state.locations&&this.state.locations.length>0? this.state.locations.map(loc=>{
-			let marker =  <Marker key={count++} position={[loc.latitude, loc.longitude]}>
+			let marker =  <Marker key={count++} attribution={count} position={[loc.latitude, loc.longitude]}>
 						     <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+						     <Tooltip direction='center'permanent>
+			                       <span>{count}</span>
+			                </Tooltip>
 						   </Marker>;
 		    return marker;
 		}) : null;

@@ -88,7 +88,7 @@ class ViewCampaign extends Component {
 
         <div className={[classes.Components, "container"].join(" ")}>
           <div className="row">
-            <button onClick={this.editButtonClickHandler}>Edit</button>
+            <button className={['btn','btn-light', classes.EditBtn].join(' ')} onClick={this.editButtonClickHandler}>Edit</button>
           </div>
           <div className="row justify-content-center">
             <ManagerSection managers={this.state.campaign.managers} id={this.state.campaign._id}/>

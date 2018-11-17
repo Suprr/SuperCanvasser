@@ -1,3 +1,9 @@
 .Components{
 	margin:0 auto;
 }
+
+.EditBtn{
+	background : #cb4d58;
+	color:white;
+	border: none;
+}

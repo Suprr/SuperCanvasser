@@ -16,6 +16,7 @@ import AddLocation from '../../../components/Campaign/CreateCampaign/AddLocation
 import AddedLocation from '../../../components/Campaign/CreateCampaign/AddedLocation'
 import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDuration'
 
+import ManagerList from '../../../components/Campaign/CreateCampaign/ManagerList'
 import axios from '../../../axios'
 import Modal from '../../../components/UI/Modal/Modal'
 
@@ -23,6 +24,7 @@ import Geocode from 'react-geocode'
 
 import NodeGeocoder from 'node-geocoder'
 import MessageBox from '../../../components/UI/MessageBox/MessageBox'
+import {withRouter} from 'react-router-dom'
 
 class CreateCampaign extends Component{
 	state = {
@@ -41,7 +43,8 @@ class CreateCampaign extends Component{
 		manager_id : null,
 		isMounted : false,
 		show : false,
-		message : null
+		message : null,
+		managerList : false
 	}
 
 	handleInputChange = (event)=> {
@@ -80,14 +83,16 @@ class CreateCampaign extends Component{
 	    
 	  }
 
+	  selectManager = (manager) =>{
+	  	this.setState({newManager : manager});
+	  }
+
 	  addManagerHandler = (event) =>{
 	  		if(this.state.newManager==''){
 	  			//show modal
 	  		}else{
-		  		let newManager = {
-		  			name : this.state.newManager, 
-		  			id : this.state.managers.length
-		  		}
+		  		let newManager = this.state.newManager;
+		  		
 		  		this.setState((prevState)=>({
 		  			managers : [...prevState.managers, newManager]
 		  		}))
@@ -108,49 +113,48 @@ class CreateCampaign extends Component{
 		  		else
 	  				loc = address.address1+ ", "+ address.city +", "+ address.state + ", "+ address.zipcode
 		  		
-		  		
 		  		const addressx = address.address1.split(' ').join('+')+'%2C+'+address.address2.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
 		  		//x is long, y is lat
 		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
-		  		then(res=>{
-		  			const addressMatch = res.data.result.addressMatches[0];
-		  			const long = addressMatch.coordinates.x;
-		  			const lat =  addressMatch.coordinates.y;
+			  		then(res=>{
+			  			const addressMatch = res.data.result.addressMatches[0];
+			  			const long = addressMatch.coordinates.x;
+			  			const lat =  addressMatch.coordinates.y;
 
-		  			let validLocation = true;
-		  			
-		  			for(let i=0; i<this.state.locations.length; i++){
-			  			let loc = this.state.locations[i]
-			  			if(loc.latitude===lat && loc.longitude===long){
-			  				validLocation = false;
-			  				break;
+			  			let validLocation = true;
+			  			
+			  			for(let i=0; i<this.state.locations.length; i++){
+				  			let loc = this.state.locations[i]
+				  			if(loc.latitude===lat && loc.longitude===long){
+				  				validLocation = false;
+				  				break;
+				  			}
+				  		}
+
+				  		if(validLocation){
+				  			const newLocation = {
+				  				latitude : lat,
+					  			longitude : long,
+				  				address : loc,
+				  				id : this.state.locations.length,
+				  			}
+					  		
+					  		console.log('Add Location', newLocation)
+
+					  		this.setState((prevState)=>({
+					  			locations : [...prevState.locations, newLocation],
+					  			newLocation : ''
+				  			}))
+
+			  			} else{
+			  				this.showMessageBox('The location is already added');
 			  			}
-			  		}
 
-			  		if(validLocation){
-			  			const newLocation = {
-			  				latitude : lat,
-				  			longitude : long,
-			  				address : loc,
-			  				id : this.state.locations.length,
-			  			}
-				  		
-				  		console.log('Add Location', newLocation)
-
-				  		this.setState((prevState)=>({
-				  			locations : [...prevState.locations, newLocation],
-				  			newLocation : ''
-			  			}))
-
-		  			} else{
-		  				this.showMessageBox('The location is already added');
-		  			}
-
-		  		}).catch(err=>{
-		  			//invalid date pop up
-		  			console.log(['addLocationHandler Err'],err)
-		  			this.showMessageBox('Invalid Location, Try again');
-		  		})
+			  		}).catch(err=>{
+			  			//invalid date pop up
+			  			console.log(['addLocationHandler Err'],err)
+			  			this.showMessageBox('Invalid Location, Try again');
+			  		})
 	  		}
 	  }
 
@@ -161,6 +165,14 @@ class CreateCampaign extends Component{
 
 	  closeMessageBox = () => {
 	    this.setState({ show: false });
+	  }
+
+	  openSearchModal = () =>{
+	  	this.setState({managerList : true})
+	  }
+
+	  closeSearchModal = () =>{
+	  	this.setState({managerList:false})
 	  }
 
 
@@ -258,6 +270,7 @@ class CreateCampaign extends Component{
 				}
 		  		axios.post('/manager/campaign/create', campaign).then(response=>{
 		  			console.log(['Create Campaign'], "Campaign is Created ", campaign);
+		  			this.props.history.push('/manager/campaign/list');
 		  		})
 	  		}
 	  }
@@ -274,7 +287,10 @@ class CreateCampaign extends Component{
 		this.setState( { isMounted: true }, () => {
           	  
 	          if(this.state.isMounted){
-	            this.setState({manager_id:userID, managers : [userID]});
+	            this.setState(prevState=>({
+	            	manager_id:userID, 
+	            	managers : [...prevState.managers, userID]
+	            }));
 	          }
 
         });
@@ -287,11 +303,15 @@ class CreateCampaign extends Component{
 	render(){
 		return(
 			<div className='container'>
+					<Modal show={this.state.managerList} modalClosed={this.closeSearchModal}>
+			          <ManagerList selectManager={this.selectManager}/>
+			        </Modal>
+
 					<MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
 					<PageHead title='Create Campaign'/>
 					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
 						onChange = {(event) => this.handleInputChange(event)}/>
-					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)}  
+					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)} openSearchModal={this.openSearchModal} 
 						manager = {this.state.newManager}/>
 					<AddedManagers managers = {this.state.managers}/>
 					
@@ -318,4 +338,4 @@ class CreateCampaign extends Component{
 
 }
 
-export default CreateCampaign;
+export default withRouter(CreateCampaign);

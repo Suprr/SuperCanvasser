@@ -7,6 +7,9 @@
 	width:100%;
 	margin: 10% 0%;
 }
+.CardHead{
+	text-align: center;
+}
 
 .Link{
 	color:white;
@@ -14,4 +17,10 @@
 .Link:hover{
 	color : white;
 	text-decoration: none;
+}
+
+.progressImage{
+	width:10px;
+	height:10px;
+	margin-left:10px;
 }

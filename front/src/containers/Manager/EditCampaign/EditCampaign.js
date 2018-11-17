@@ -24,6 +24,7 @@ import Geocode from 'react-geocode'
 import NodeGeocoder from 'node-geocoder'
 
 import MessageBox from '../../../components/UI/MessageBox/MessageBox'
+import {withRouter} from 'react-router-dom'
 
 class EditCampaign extends Component{
 	
@@ -275,6 +276,7 @@ class EditCampaign extends Component{
 		  		console.log('[[EDITED]',campaign);
 		  		axios.post('/manager/campaign/edit', campaign).then(response=>{
 		  			console.log(['Edit Campaign'], campaign);
+		  			this.props.history.push('/manager/campaign/view');
 		  		})
 		  	}
 
@@ -319,11 +321,10 @@ class EditCampaign extends Component{
 		          }
 
 
-
-
-
 		          if(this.state.isMounted){
 		            console.log('ViewCampaign', 'UPLOADED', newCampaign);
+
+
 		            this.setState({campaignTitle:newCampaign.name,
 		                           managers:newCampaign.managers,
 		                           startDate : moment(newCampaign.startDate),
@@ -381,4 +382,4 @@ class EditCampaign extends Component{
 
 }
 
-export default EditCampaign;
+export default withRouter(EditCampaign);
