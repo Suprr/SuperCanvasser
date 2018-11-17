@@ -82,11 +82,23 @@ public class CampaignController {
     // _id = managerID
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity getAllCampaigns(@RequestParam String _id, HttpServletRequest request){
-        if(campaignService.findAllbyManager(_id) != null){
+        List<Campaign> campaigns = campaignService.findAllbyManager(_id);
+        if(campaigns != null){
             log.info("CampaignController :: Campaign is returning all the list found by manager");
-            return ResponseEntity.ok(campaignService.findAllbyManager(_id));
+            return ResponseEntity.ok(campaigns);
         }
         log.info("CampaignController :: No Campaign exist under this manager");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign.");
+    }
+
+    @RequestMapping(value = "/create/manlist", method = RequestMethod.GET)
+    public ResponseEntity getAllManagersInUser(@RequestParam String regex, HttpServletRequest request){
+        List<User> users = userService.getAllUsersByNameRegex(regex);
+        if(users != null){
+            log.info("CampaignController :: List of Managers for createCampaign");
+            return ResponseEntity.ok(users);
+        }
+        log.info("CampaignController :: Could Not Return a List of Managers");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to Load Managers");
     }
 }
