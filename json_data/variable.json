@@ -1,0 +1,6 @@
+{
+    "_id" : ObjectId("5bdbd11de4e562c16f08a311"),
+    "type" : "WorkHours",
+    "value" : "13",
+    "_class" : "team830.SuperCanvasser.Variable.Variable"
+}

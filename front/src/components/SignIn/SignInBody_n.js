@@ -28,12 +28,13 @@ class SignInBody_n extends Component{
        			
             } )
             .catch( error => {
+            	this.props.openModal();
                 console.log("Error", error);
+
             });
 	}
 
 	render(){
-		//console.log('[SignInBody]',this.props);
 		return (
 			<div className={[classes.SignInBody, "container", "text-center"].join(' ')}> 
 				
@@ -50,6 +51,7 @@ class SignInBody_n extends Component{
 					<div className= {[classes.InputTextWrapper,"text-center","form-group"].join(' ')}>
 						<input 
 							className = {[classes.FormControl].join(' ')}
+							type = "password"
 							placeholder = "password"
 							onChange={(event) => this.setState({password: event.target.value})}/>
 					</div>

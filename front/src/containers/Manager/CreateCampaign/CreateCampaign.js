@@ -16,12 +16,16 @@ import AddLocation from '../../../components/Campaign/CreateCampaign/AddLocation
 import AddedLocation from '../../../components/Campaign/CreateCampaign/AddedLocation'
 import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDuration'
 
+import ManagerList from '../../../components/Campaign/CreateCampaign/ManagerList'
 import axios from '../../../axios'
 import Modal from '../../../components/UI/Modal/Modal'
 
 import Geocode from 'react-geocode'
 
 import NodeGeocoder from 'node-geocoder'
+import MessageBox from '../../../components/UI/MessageBox/MessageBox'
+import {withRouter} from 'react-router-dom'
+
 class CreateCampaign extends Component{
 	state = {
 		campaignTitle : '',
@@ -38,14 +42,23 @@ class CreateCampaign extends Component{
 		id : null,
 		manager_id : null,
 		isMounted : false,
+		show : false,
+		message : null,
+		managerList : false
 	}
 
 	handleInputChange = (event)=> {
 	    const target = event.target;
 	    const value = target.value;
 	    const name = target.name;
-	    
-   	 	this.setState({[name]: value });
+	    if(target.validity.valid){
+   	 		this.setState({[name]: value });
+   	 	} else{
+   	 		if(target.name=='visitMin')
+   	 			this.showMessageBox('Visit duration must be integer.');
+   	 		else
+   	 			this.showMessageBox('Invalid Type');
+   	 	}
 		
 	}
 
@@ -58,19 +71,28 @@ class CreateCampaign extends Component{
 
 
 	 handleEndDateChange = (newDate)=>{
-	    this.setState({
-	      endDate: newDate
-	    });
+	 	if((!this.state.startDate.isSame(newDate,'day'))&&this.state.startDate.isAfter(newDate)){
+	 		this.showMessageBox('The End Date Must Be After the Start Date');
+	 	} else{
+	 		//valid date
+	 		this.setState({
+		      endDate: newDate
+		    });
+	 	}
+
+	    
+	  }
+
+	  selectManager = (manager) =>{
+	  	this.setState({newManager : manager});
 	  }
 
 	  addManagerHandler = (event) =>{
 	  		if(this.state.newManager==''){
 	  			//show modal
 	  		}else{
-		  		let newManager = {
-		  			name : this.state.newManager, 
-		  			id : this.state.managers.length
-		  		}
+		  		let newManager = this.state.newManager;
+		  		
 		  		this.setState((prevState)=>({
 		  			managers : [...prevState.managers, newManager]
 		  		}))
@@ -83,61 +105,103 @@ class CreateCampaign extends Component{
 
 	  addLocationHandler = (address, event) =>{
 	  		let loc ='';
-	  		if(address.number=='' || address.street=='' || address.city=='' || address.state=='' || address.zipcode==''){
-	  				//show modal
+	  		if(address.address1=='' || address.city=='' || address.state=='' || address.zipcode==''){
+	  				this.showMessageBox('Fill the location info please.');
 	  		} else{
-		  		loc = address.number +", "+ address.street + ", "+ address.unit +", "+ address.city +", "+ address.state + ", "+ address.zipcode
+	  			if(address.address2!='')
+		  			loc = address.address1+ ", "+ address.address2 +", "+ address.city +", "+ address.state + ", "+ address.zipcode
+		  		else
+	  				loc = address.address1+ ", "+ address.city +", "+ address.state + ", "+ address.zipcode
 		  		
-		  		
-		  		const addressx = address.number+'+'+address.street.split(' ').join('+')+'%2C+'+address.unit.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
-		  		console.log(['Address'],addressx)
-
+		  		const addressx = address.address1.split(' ').join('+')+'%2C+'+address.address2.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
 		  		//x is long, y is lat
 		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
-		  		then(res=>{
-		  			const addressMatch = res.data.result.addressMatches[0];
-		  			const long = addressMatch.coordinates.x;
-		  			const lat =  addressMatch.coordinates.y;
+			  		then(res=>{
+			  			const addressMatch = res.data.result.addressMatches[0];
+			  			const long = addressMatch.coordinates.x;
+			  			const lat =  addressMatch.coordinates.y;
 
+			  			let validLocation = true;
+			  			
+			  			for(let i=0; i<this.state.locations.length; i++){
+				  			let loc = this.state.locations[i]
+				  			if(loc.latitude===lat && loc.longitude===long){
+				  				validLocation = false;
+				  				break;
+				  			}
+				  		}
 
-		  			const newLocation = {
-		  				latitude : lat,
-			  			longitude : long,
-		  				address : loc,
-		  				id : this.state.locations.length,
-		  			}
-			  		
+				  		if(validLocation){
+				  			const newLocation = {
+				  				latitude : lat,
+					  			longitude : long,
+				  				address : loc,
+				  				id : this.state.locations.length,
+				  			}
+					  		
+					  		console.log('Add Location', newLocation)
 
-			  		console.log('Add Location', newLocation)
+					  		this.setState((prevState)=>({
+					  			locations : [...prevState.locations, newLocation],
+					  			newLocation : ''
+				  			}))
 
-			  		this.setState((prevState)=>({
-			  			locations : [...prevState.locations, newLocation],
-			  			newLocation : ''
-		  			}))
+			  			} else{
+			  				this.showMessageBox('The location is already added');
+			  			}
 
-		  		}).catch(err=>{
-		  			//invalid date pop up
-		  			console.log(['addLocationHandler Err'],err)
-		  		})
-
-		  		
-		  		
+			  		}).catch(err=>{
+			  			//invalid date pop up
+			  			console.log(['addLocationHandler Err'],err)
+			  			this.showMessageBox('Invalid Location, Try again');
+			  		})
 	  		}
 	  }
 
-	  addQuestionnaireHandler = (event) =>{
-	  		if(this.state.newQuestion==''){
-	  			//show modal
-	  		}else{
-		  		let newQuestion = {
-		  			question : this.state.newQuestionnaire, 
-		  			id : this.state.questionnaire.length
-		  		}
 
-		  		this.setState((prevState)=>({
-		  			questionnaire : [...prevState.questionnaire, newQuestion],
-		  			newQuestionnaire : ''
-		  		}));
+	  showMessageBox = (message) => {
+	    this.setState({ show: true , message : message});
+	  }
+
+	  closeMessageBox = () => {
+	    this.setState({ show: false });
+	  }
+
+	  openSearchModal = () =>{
+	  	this.setState({managerList : true})
+	  }
+
+	  closeSearchModal = () =>{
+	  	this.setState({managerList:false})
+	  }
+
+
+	  addQuestionnaireHandler = (event) =>{
+	  		if(this.state.newQuestionnaire==''){
+	  			//show modal
+	  			this.showMessageBox('Type new question to add it in your questionnaire list.');
+	  		}else{
+	  			let validQuestion = true;
+	  			for(let i =0; i<this.state.questionnaire.length; i++){
+	  				let q = this.state.questionnaire[i];
+	  				if(q.question == this.state.newQuestionnaire){
+	  					validQuestion = false;
+	  				}
+	  			}
+
+	  			if(validQuestion){
+			  		let newQuestion = {
+			  			question : this.state.newQuestionnaire, 
+			  			id : this.state.questionnaire.length
+			  		}
+
+			  		this.setState((prevState)=>({
+			  			questionnaire : [...prevState.questionnaire, newQuestion],
+			  			newQuestionnaire : ''
+			  		}));
+		  		} else{
+		  			this.showMessageBox('This question is already added.');
+		  		}
 	  		}
 	  }
 
@@ -149,7 +213,6 @@ class CreateCampaign extends Component{
 	  }
 
 	  removeLocationHandler = (event) =>{
-
   			const removedList = this.state.locations.filter(ele=>{return ele.id != event.target.name});
 		  	this.setState((prevState)=>({
 		  		locations : removedList		
@@ -158,7 +221,6 @@ class CreateCampaign extends Component{
 
 
 	  handleSubmit = (event) =>{
-	  		//console.log(['SUbmit'], this.state.startDate.)
 	  		let realLocs=[]
 	  		const locs = this.state.locations
 	  		
@@ -184,34 +246,36 @@ class CreateCampaign extends Component{
 	  			questionsArray.push(questionnaire[i].question)
 	  		}
 
-
-	  		const campaign = {
-		  		name : this.state.campaignTitle,
-				managers : this.state.managers,
-				startDate : this.state.startDate.format('YYYY-MM-DD'),
-				endDate : this.state.endDate.format('YYYY-MM-DD'),
-				talkingPoints : this.state.talkingPoint,
-				questions : questionsArray,
-				locations : realLocs,
-				avgDuration : this.state.visitMin,
-				status : "INACTIVE",
-				tasks : [],
-				canvassers : []
-			}
-
-
-
-	  		//If I use push it generates auto key
-	  		//axios.push ('/campaigns.json', campaign).then( response => {
-	  		console.log('[[Hi]',campaign);
-	  		axios.post('/manager/campaign/create', campaign).then(response=>{
-	  			console.log(['Create Campaign'], "Campaign is Created ", campaign);
-	  		})
-
+	  		if(this.state.campaignTitle==''||this.state.visitMin==''||this.state.talkingPoint==''){
+	  			this.showMessageBox('There is one more empty text field');
+	  		} else if(!parseInt(this.state.visitMin)){
+	  			this.showMessageBox('Visit duration cannot be string value.');
+	  		} else if((!this.state.startDate.isSame(this.state.endDate,'day'))&&this.state.startDate.isAfter(this.state.endDate)){
+				this.showMessageBox('Start Date Must Be Prior to the End Date.');
+	  		} else if(questionsArray.length==0||realLocs.length==0){
+	  			this.showMessageBox('Questionnaire and Locations must be one more.');
+	  		}  else{
+		  		const campaign = {
+			  		name : this.state.campaignTitle,
+					managers : this.state.managers,
+					startDate : this.state.startDate.format('YYYY-MM-DD'),
+					endDate : this.state.endDate.format('YYYY-MM-DD'),
+					talkingPoints : this.state.talkingPoint,
+					questions : questionsArray,
+					locations : realLocs,
+					avgDuration : this.state.visitMin,
+					status : "INACTIVE",
+					tasks : [],
+					canvassers : []
+				}
+		  		axios.post('/manager/campaign/create', campaign).then(response=>{
+		  			console.log(['Create Campaign'], "Campaign is Created ", campaign);
+		  			this.props.history.push('/manager/campaign/list');
+		  		})
+	  		}
 	  }
 
 	  componentDidMount(){
-	  	
 	  	
 	  	let x = null;
 
@@ -223,7 +287,10 @@ class CreateCampaign extends Component{
 		this.setState( { isMounted: true }, () => {
           	  
 	          if(this.state.isMounted){
-	            this.setState({manager_id:userID, managers : [userID]});
+	            this.setState(prevState=>({
+	            	manager_id:userID, 
+	            	managers : [...prevState.managers, userID]
+	            }));
 	          }
 
         });
@@ -234,14 +301,17 @@ class CreateCampaign extends Component{
 	  }
 
 	render(){
-		console.log(['Create Campaign Render']);
 		return(
 			<div className='container'>
-					
+					<Modal show={this.state.managerList} modalClosed={this.closeSearchModal}>
+			          <ManagerList selectManager={this.selectManager}/>
+			        </Modal>
+
+					<MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
 					<PageHead title='Create Campaign'/>
 					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
 						onChange = {(event) => this.handleInputChange(event)}/>
-					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)}  
+					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)} openSearchModal={this.openSearchModal} 
 						manager = {this.state.newManager}/>
 					<AddedManagers managers = {this.state.managers}/>
 					
@@ -268,4 +338,4 @@ class CreateCampaign extends Component{
 
 }
 
-export default CreateCampaign;
+export default withRouter(CreateCampaign);

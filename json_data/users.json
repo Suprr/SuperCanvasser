@@ -1,0 +1,12 @@
+{
+    "_id" : ObjectId("5bdbd11de4e562c16f08a30f"),
+    "firstName" : "Richy",
+    "lastName" : "Ridsdell",
+    "email" : "aaa@gmail.com",
+    "pwd" : "aaaa",
+    "role" : [ 
+        "MANAGER", 
+        "CANVASSER", 
+        "ADMIN"
+    ]
+}

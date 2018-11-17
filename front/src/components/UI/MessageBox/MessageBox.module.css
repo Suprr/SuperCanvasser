@@ -1,0 +1,35 @@
+.MessageBox {
+    position: fixed;
+    z-index: 500;
+    background-color: white;
+    width: 50%;
+    height:20%;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px black;
+    padding: 30px;
+    left: 20%;
+    top: 40%;
+    box-sizing: border-box;
+    transition: all 0.3s ease-out;
+    overflow-y: scroll;
+}
+.MessageArea{
+    width: 100%;
+    text-align: center;
+}
+
+.MessageBoxBtn{
+    margin:2% 0;
+    width:100%;
+}
+
+.OkayBtn{
+    background-color: #cb4d58;
+    color : #ffffff;
+}
+@media (min-width: 600px) {
+    .MessageBox {
+        width: 60%;
+        left: calc(50% - 30%);
+    }
+}

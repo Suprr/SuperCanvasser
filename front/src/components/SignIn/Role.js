@@ -59,7 +59,6 @@ class Role extends Component{
 		//get roles from the server.
 		const data = JSON.parse(sessionStorage.getItem('userInfo'));
 		//const data = sessionStorage.getItem('userInfo');
-		console.log(['Role ComponentDidmonut'], data);
 		this.setState({options:data.role});
 	}
 
