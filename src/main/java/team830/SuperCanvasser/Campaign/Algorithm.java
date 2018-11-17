@@ -18,9 +18,9 @@ import team830.SuperCanvasser.Task.TaskService;
  */
 public class Algorithm {
     @Autowired
-    TaskService taskService;
-    CampaignService campaignService;
-    AvailabilityService availabilityService;
+    static TaskService taskService;
+    static CampaignService campaignService;
+    static AvailabilityService availabilityService;
     // Walking speed in respect to Latitude and Longitude is 0.05/69
     // degrees of Latitude/Longitude a minute
     private static final double CANVASSER_SPEED = (0.05/69);
@@ -33,7 +33,8 @@ public class Algorithm {
     private static ArrayList<ArrayList<Location>> bestSol = new ArrayList();
     private static List<Task> tasks = new ArrayList();
     private static List<String> taskIDs = new ArrayList();
-    Algorithm (Campaign campaign) {
+
+    public static List<String> start(Campaign campaign){
         for (int i = 0; i < campaign.getLocations().size(); i++) {
             campaign.getLocations().get(i).setIndex(i);
         }
@@ -52,13 +53,16 @@ public class Algorithm {
             taskService.addTask(newTask);
             tasks.add(newTask);
         }
+
         int totalCanvasserDates = 0;
         for (int i = 0; i < campaign.getCanvassers().size(); i++) {
             totalCanvasserDates += campaignService.listAvailableDates(campaign.getStartDate(), campaign.getEndDate(), availabilityService.findByCanvasserId(campaign.getCanvassers().get(i))).size();
         }
+
         if (totalCanvasserDates < tasks.size()) {
             //error
         }
+
         else {
             int canvasserIndex = 0;
             while (totalCanvasserDates > 0) {
@@ -74,6 +78,7 @@ public class Algorithm {
                 }
             }
         }
+        return taskIDs;
     }
 
     List<Task> getTasks () {
@@ -173,6 +178,7 @@ public class Algorithm {
     // Calculate the paths for canvassers by choosing the
     // first location and finding the next not chosen location
     // Returns an array of canvassers each with an array of locations
+
     public static ArrayList<ArrayList<Location>> calculate(List<Location> locations) {
         Location curLocation = locations.get(0);
         ArrayList<ArrayList<Location>> pathList = new ArrayList();

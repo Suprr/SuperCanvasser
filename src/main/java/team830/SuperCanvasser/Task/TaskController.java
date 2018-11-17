@@ -4,18 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Request;
-import team830.SuperCanvasser.Location.Location;
-import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/task")
@@ -49,7 +44,6 @@ public class TaskController {
             task.setTaskStatus(Status.INACTIVE);
             return (taskService.addTask(task));
         }
-
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)
