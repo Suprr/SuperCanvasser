@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import classes from './CreateCampaign.module.css'
 
+import RemoveIcon from '../../../assets/images/minus.png'
+
 class AddedLocations extends Component{
 	
 	state = {
@@ -14,7 +16,7 @@ class AddedLocations extends Component{
 						{loc.address} 
 					</div>
 					<div className = 'col-2'>
-						<button className = 'btn btn-danger' name={loc.id} onClick={this.props.onClick}>Remove</button>
+						<input type='image' src={RemoveIcon} className={classes.RemoveBtn} name={loc.id} onClick={this.props.onClick}/>
 					</div>
 				</div>
 			)

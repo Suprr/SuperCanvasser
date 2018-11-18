@@ -1,63 +1,140 @@
 import React, { Component } from "react";
 import Task from "./Task";
-import axios from '../../../axios'
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import axios from "../../../axios";
 
 class ViewTask extends Component {
   state = {
-    isMounted: false,
-    nextLoc: {
-    },
+    nextLoc: {},
     locations: [],
-    visitedLoc: []
+    visitedLoc: [],
+    positions: [],
+    zoom: 13
   };
 
   componentDidMount() {
-	  const userInfoData= JSON.parse(sessionStorage.getItem('userInfo'));
-    const userID = userInfoData._id;
-    this.setState({ isMounted: true }, () => {
-      let recLoc;
-      let locations;
+    //get addresses for task from backend
+    //examples of locations
+    const addresses = [
+      {
+        number: "141",
+        street: "Main Street",
+        unit: "",
+        city: "Setauket",
+        state: "NY",
+        zipcode: "11733"
+      },
+      {
+        number: "67",
+        street: "North Columbia Street",
+        unit: "",
+        city: "Port Jefferson",
+        state: "NY",
+        zipcode: "11777"
+      }
+    ];
+    for (let i = 0; i < addresses.length; i++) {
+      let address = addresses[i];
+      let loc =
+        address.number +
+        ", " +
+        address.street +
+        ", " +
+        address.unit +
+        ", " +
+        address.city +
+        ", " +
+        address.state +
+        ", " +
+        address.zipcode;
+
+      const addressx =
+        address.number +
+        "+" +
+        address.street.split(" ").join("+") +
+        "%2C+" +
+        address.unit.split(" ").join("+") +
+        "%2c+" +
+        address.city.split(" ").join("+") +
+        "%2c+" +
+        address.state +
+        "+%2c+" +
+        address.zipcode.split(" ").join("+");
       axios
-        .get("/task/activeTask/?_id="+userID)
-        .then(response => {
-          const data = response.data;
-          if (this.state.isMounted) {
-            recLoc=data.recommendedLoc;
-            locations = data.locations;
-          axios
-          .post("/task/locations", locations)
-           .then(response=> {
-             const newData = response.data;
-             this.setState({ nextLoc: newData[0], locations: newData});
-           })
+        .get(
+          `${"https://cors-anywhere.herokuapp.com/"}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=` +
+            addressx +
+            `&benchmark=9&format=json`
+        )
+        .then(res => {
+          const addressMatch = res.data.result.addressMatches[0];
+          const long = addressMatch.coordinates.x;
+          const lat = addressMatch.coordinates.y;
+
+          const newLocation = {
+            latitude: lat,
+            longitude: long,
+            number: address.number,
+            street: address.street,
+            city: address.city,
+            zipcode: address.zipcode,
+            qNa: {},
+            id: this.state.locations.length,
+            _id: "",
+            index: -1,
+            anonymous: false,
+            visited: false
+          };
+
+          console.log("Add Location", newLocation);
+          const coords = [newLocation.latitude, newLocation.longitude];
+          this.setState(prevState => ({
+            locations: [...prevState.locations, newLocation],
+            positions: [...prevState.positions, coords],
+            newLocation: ""
+          }));
+          if (i == 0) {
+            this.setState({ nextLoc: newLocation });
           }
         })
-    });
+        .catch(err => {
+          console.log(["addLocationHandler Err"], err);
+        });
+    }
   }
-
-  componentWillUnMount() {
-    this.setState({ isMounted: false });
-  }
-
   render() {
-    console.log(this.state.locations, this.state.nextLoc);
     return (
       <div>
         <h1>View Task</h1>
-        <h2>Nov 11, 2018</h2>
-        <h2>Task1</h2>
-        <h2>Next Recommended Location</h2>
-        {
-        <Task key={this.state.nextLoc._id} task={this.state.nextLoc} />
-        }
-        <h2>Unvisited Location</h2>
-        {this.state.locations.map(task => (
-          <Task key={task._id} task={task} />
-        ))}
-        <h2>Visited Location</h2>
-        {this.state.visitedLoc.map(task => (
-          <Task key={task._id} task={task} />
-        ))}
+        <div className="nest">
+          <h2>Nov 11, 2018</h2>
+          <h2>Task1</h2>
+          <Map center={this.state.positions[0]} zoom={this.state.zoom}>
+            <TileLayer
+              attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+              url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            />
+            {this.state.positions.map(pos => (
+              <Marker position={pos} />
+            ))}
+          </Map>
+          <h2>Next Recommended Location</h2>
+          <div className="nest">
+            <Task key={this.state.nextLoc.id} task={this.state.nextLoc} />
+          </div>
+          <h2>Unvisited Location</h2>
+          <div className="nest">
+            {this.state.locations.map(task => (
+              <Task key={task.id} task={task} />
+            ))}
+          </div>
+          <h2>Visited Location</h2>
+          <div className="nest">
+            {this.state.visitedLoc.map(task => (
+              <Task key={task.id} task={task} />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

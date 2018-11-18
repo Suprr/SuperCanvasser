@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
+import team830.SuperCanvasser.Task.TaskService;
 import team830.SuperCanvasser.User.User;
 import team830.SuperCanvasser.User.UserService;
 
@@ -27,6 +28,8 @@ public class CampaignController {
     private CampaignService campaignService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TaskService taskService;
 
     //id = campaignId. this returns the list that has campaign and managers(User)
     @RequestMapping(value = "/view", method = RequestMethod.GET)
@@ -73,6 +76,7 @@ public class CampaignController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Manager Not Found for Campaign");
     }
+
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, BindingResult result) {

@@ -18,7 +18,15 @@ public class AvailabilityService implements AvailabilityInterface {
     @Override
     public Availability editAvailability(Availability availability) {
         log.info("Edit Availability - Service");
-        return availabilityRepo.save(availability);
+        if (availability.get_id() != null){
+            if (availabilityRepo.existsById(availability.get_id())){
+                log.debug("Availability exists");
+                return availabilityRepo.save(availability);
+            }
+        }else{
+            log.debug("Availability doesn't exist");
+        }
+        return null;
     }
 
     public Availability addAvailability(Availability availability) {

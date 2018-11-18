@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.Canvasser.Availability;
-import team830.SuperCanvasser.Canvasser.AvailabilityRepo;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.SuperCanvasserApplication;
@@ -87,21 +86,52 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public List<Date> listAvailableDates(String sdate, String edate, Availability availability) {
-        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
-        List<Date> availDates = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        List<String> sdates = new ArrayList<>(availability.getAvailabilityDates());
+        List<Date> unavailDates = new ArrayList<>();
+        List<Date> dates = new ArrayList<>();
+
+        //convert string dates from availability to date objects
+        for(String s: sdates){
+            try {
+                unavailDates.add(formatter.parse(s));
+            } catch (ParseException e) {
+                log.info("Formatting Strings failed");
+            }
+        }
+
         try {
             Date startDate = formatter.parse(sdate);
             Date endDate = formatter.parse(edate);
-            List<String> dates = new ArrayList<String>(availability.getAvailabilityDates());
+//            log.info(sdate + " " + edate);
+            log.info("START DATE " + startDate.toString() + "\nEND DATE " + endDate.toString());
+            if (startDate.after(endDate)) {
+                log.info("start date must be before or equal to end date");
+                return null;
+            }
 
-            for(String s : dates){
-                availDates.add(formatter.parse(s));
+            while (!startDate.after(endDate)) {
+                boolean flag = false;
+                for(Date d: unavailDates) {
+                    if (startDate.equals(d)) {
+                        flag = true;
+                    }
+                }
+                    if (!flag) dates.add(startDate);
+                        Calendar c = Calendar.getInstance();
+                        //Setting the date to the given date
+                        c.setTime(startDate);
+
+                        //Number of Days to add
+                        c.add(Calendar.DAY_OF_MONTH, 1);
+                        startDate = c.getTime();
+                        //Date after adding the days to the given date
+    //                  String newDate = formatter.format(c.getTime());
             }
         } catch (ParseException e) {
             log.debug("Dates cannot be parsed");
         }
-
-        return availDates;
+        return dates;
     }
 
     @Override

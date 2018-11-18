@@ -40,7 +40,7 @@ public class TaskController {
             log.info("TaskController : Task adding failed");
             return null;
         } else {
-            log.info("TaskController : Tagit statusk has been added");
+            log.info("TaskController : Task has been added");
             task.setTaskStatus(Status.INACTIVE);
             return (taskService.addTask(task));
         }
