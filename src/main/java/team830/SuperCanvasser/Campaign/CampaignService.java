@@ -88,7 +88,6 @@ public class CampaignService implements CampaignInterface {
         return campaignRepo.findAll();
     }
 
-
     @Override
     public List<Date> listAvailableDates(String sdate, String edate, Availability availability) {
         SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");

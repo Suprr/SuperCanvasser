@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 import team830.SuperCanvasser.User.User;
 import team830.SuperCanvasser.User.UserService;
@@ -62,10 +63,15 @@ public class CampaignController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign) {
-                log.info("CampaignController :: Campaign has been edited");
-                return ResponseEntity.ok(campaignService.editCampaign(campaign));
-//            log.info("CampaignController :: Campaign Not Found");
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
+        // checking whether campaign exist in DB
+        if(campaignService.findBy_Id(campaign.get_id()) == null || campaign.getStatus().equals(Status.INACTIVE)){
+            log.info("CampaignController :: Campaign is Active or finished.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
+        }
+        else{
+            log.info("CampaignController :: Campaign has been edited");
+            return ResponseEntity.ok(campaignService.editCampaign(campaign));
+        }
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)

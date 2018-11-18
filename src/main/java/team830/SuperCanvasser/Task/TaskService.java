@@ -32,7 +32,7 @@ public class TaskService implements TaskInterface {
 
     @Override
     public Task addTask(Task task) {
-        log.debug("Executing add task - service");
+        log.info("TaskService :: Executing add task - service");
         return taskRepo.insert(task);
     }
 

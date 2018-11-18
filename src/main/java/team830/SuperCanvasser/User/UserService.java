@@ -36,6 +36,12 @@ public class UserService implements UserInterface{
     }
 
     @Override
+    public void deleteUser(String userId){
+        log.info("UserService :: Delete User");
+        userRepo.deleteById(userId);
+    }
+
+    @Override
     public User getUserByEmail(String email) {
         log.info("UserService :: Get User");
         return userRepo.findByEmail(email);
