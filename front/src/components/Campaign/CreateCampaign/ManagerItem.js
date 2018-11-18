@@ -8,7 +8,7 @@ class ManagerItem extends Component{
 				{this.props.manager.firstName + " " + this.props.manager.lastName}
 			</div>
 			<div className="col-4">
-				<button onClick={this.props.selectManager(this.props.manager)}>Select</button>
+				<button onClick={this.props.selectManager.bind(this, this.props.manager)}>Select</button>
 			</div>
 		</div>;
 	}
