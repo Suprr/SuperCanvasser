@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Document(collection = "locations")
 @Data
@@ -15,9 +16,28 @@ public class Location {
     private double longitude;
     private String address;
     private boolean visited;
-    private HashMap<String, Boolean>  qNa;
+    private Map<String, Boolean> qNa;
     private boolean anonymous;
     private int index;
+
+    public Location(String _id, double latitude, double longitude, String address, boolean visited, Map<String, Boolean> qNa, boolean anonymous, int index) {
+        this._id = _id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+        this.visited = visited;
+        this.qNa = new HashMap<>(qNa);
+        this.anonymous = anonymous;
+        this.index = index;
+    }
+
+    public Location( double latitude, double longitude, String address) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+        this.visited = false;
+    }
+
 
     public String get_id() {
         return _id;
@@ -43,7 +63,7 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public HashMap<String, Boolean> getqNa() {
+    public Map<String, Boolean> getqNa() {
         return qNa;
     }
 

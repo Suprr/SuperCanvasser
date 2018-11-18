@@ -67,7 +67,7 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public List<Date> listAvailableDates(String sdate, String edate, Availability availability) {
-        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         List<String> sdates = new ArrayList<>(availability.getAvailabilityDates());
         List<Date> unavailDates = new ArrayList<>();
         List<Date> dates = new ArrayList<>();
@@ -84,9 +84,11 @@ public class CampaignService implements CampaignInterface {
         try {
             Date startDate = formatter.parse(sdate);
             Date endDate = formatter.parse(edate);
-
+//            log.info(sdate + " " + edate);
+            log.info("START DATE " + startDate.toString() + "\nEND DATE " + endDate.toString());
             if (startDate.after(endDate)) {
                 log.info("start date must be before or equal to end date");
+                return null;
             }
 
             while (!startDate.after(endDate)) {

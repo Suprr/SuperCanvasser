@@ -33,8 +33,9 @@ public class TaskController {
             return null;
         } else {
             log.info("TaskController : Task has been edited");
-            return ResponseEntity.ok(taskService.editTask(task));
-        }
+            Task res = taskService.editTask(task);
+                return ResponseEntity.ok(res);
+            }
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -43,7 +44,7 @@ public class TaskController {
             log.info("TaskController : Task adding failed");
             return null;
         } else {
-            log.info("TaskController : Tagit statusk has been added");
+            log.info("TaskController : Task has been added");
             task.setTaskStatus(Status.INACTIVE);
             return (taskService.addTask(task));
         }
@@ -55,7 +56,7 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findBy_Id(id));
     }
 
-    @RequestMapping(value = "getByCan", method = RequestMethod.GET)
+    @RequestMapping(value = "/getByCan", method = RequestMethod.GET)
     public ResponseEntity getByCanvasserId(@RequestParam("id") String id) {
         log.info("TaskController : Grabbing Tasks by canvasser: " + id);
         return ResponseEntity.ok(taskService.findByCanvasserIdAndTaskStatus(id, Status.INACTIVE));
