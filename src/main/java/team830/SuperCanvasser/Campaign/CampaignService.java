@@ -20,11 +20,8 @@ public class CampaignService implements CampaignInterface {
 
     @Autowired
     private CampaignRepo campaignRepo;
-
     @Autowired
     private LocationRepo locationRepo;
-
-    private AvailabilityRepo availabilityRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
@@ -67,7 +64,7 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public Campaign addCampaign(Campaign campaign) {
-    // Create Locations
+        // Create Locations
         List<Location> locations = createLocations(campaign, new ArrayList<Location>());
         campaign.setLocations(locations);
         // triggering algo and setting the getting the tasks
@@ -95,8 +92,6 @@ public class CampaignService implements CampaignInterface {
         try {
             Date startDate = formatter.parse(sdate);
             Date endDate = formatter.parse(edate);
-//            Availability availabilities = availabilityRepo.findByCanvasserId(availability.getCanvasserId());
-//            List<String> dates = new ArrayList<String>(availabilities.getAvailabilityDates());
             List<String> dates = new ArrayList<String>(availability.getAvailabilityDates());
 
             for(String s : dates){
