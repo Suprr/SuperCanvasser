@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Component
@@ -49,6 +52,15 @@ public class UserService implements UserInterface{
         log.info("UserService :: Get All the Users");
         return userRepo.findAll();
     }
+
+    public List<User> getAllUsersByNameRegex(String nameRegex){
+        log.info("UserService :: Get All the Users By Name");
+        Set<User> userSet = new HashSet<>(userRepo.findUserByFirstNameRegex(nameRegex));
+        userSet.addAll(userRepo.findUserByLastNameRegex(nameRegex));
+        List<User> users = new ArrayList<>(userSet);
+        return users;
+    }
+
 
     public User loginUser(User user) throws UnsupportedEncodingException {
         User repoUser = userRepo.findByEmail(user.getEmail());

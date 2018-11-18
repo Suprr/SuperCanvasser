@@ -3,7 +3,9 @@ import classes from './CreateCampaign.module.css'
 
 class AddedLocations extends Component{
 	
-
+	state = {
+		showProgressCircle : false
+	}
 	render(){
 		let locations = this.props.locations.map(loc => {
 			let location = (
