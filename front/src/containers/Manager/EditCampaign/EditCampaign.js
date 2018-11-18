@@ -173,7 +173,7 @@ class EditCampaign extends Component{
 	  			//if(locs[i]._id!)
 	  			let loc = {
 	  				latitude : locs[i].latitude,
-	  				longitude : locs[i].latitude,
+	  				longitude : locs[i].longitude,
 	  				address : locs[i].address,
 	  				qNa : locs[i].qNa,
 	  				visited:locs[i].visited,

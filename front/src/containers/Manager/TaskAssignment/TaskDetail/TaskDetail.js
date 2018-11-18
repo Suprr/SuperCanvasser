@@ -38,6 +38,10 @@ class TaskDetail extends Component{
 
 	}
 
+	componentWillUnMount(){
+		this.setState({isMounted:false});
+	}
+
 	openModalHandelr = () => {
 	    this.setState({ show: true });
 	 }

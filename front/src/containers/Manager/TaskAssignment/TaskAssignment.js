@@ -19,7 +19,7 @@ class TaskAssignment extends Component{
   //when user select a campaign, this method is called from Task Assignment Header
   selectedCampaignHandler = (campaign) =>{
   	console.log(['TaskAssignment'],campaign);
-  	this.setState({selectedCampaign : campaign, loadTasks : false});
+  	this.setState({selectedCampaign : campaign, loadTasks : false, tasks:campaign.tasks});
   }
 
   //when Tasks are loaded this method is called from Task AssignmentList

@@ -13,4 +13,6 @@ public interface TaskInterface {
     Task findBy_Id(String id);
     List<Task> findByCanvasserIdAndTaskStatus(String id, Status status);
     List<Location> findLocationsById(List<String> locs);
+    List<Task> findAllTasksById(List<String> ts);
+    Task findTodayTask(String _id);
 }
