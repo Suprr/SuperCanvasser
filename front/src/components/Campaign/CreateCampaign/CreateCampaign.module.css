@@ -42,3 +42,9 @@
 	border : 1px solid black;
 	padding: 5% 10%;
 }
+
+.RemoveBtn{
+	width:20px;
+	height:20px;
+	margin-left:20px;
+}

@@ -18,6 +18,7 @@ import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDura
 
 import axios from '../../../axios'
 import Modal from '../../../components/UI/Modal/Modal'
+import ManagerList from '../../../components/Campaign/CreateCampaign/ManagerList'
 
 import Geocode from 'react-geocode'
 
@@ -45,7 +46,9 @@ class EditCampaign extends Component{
 		isMounted : false,
 		_id : null,
 		show : false,
-		message : null
+		message : null,
+		managerList : false,
+		searchedManagerList : [],
 	}
 
 	handleInputChange = (event)=> {
@@ -54,7 +57,12 @@ class EditCampaign extends Component{
 	    const name = target.name;
 	    
 	    if(target.validity.valid){
-   	 		this.setState({[name]: value });
+   	 		if(target.name=='newManager'){
+   	 			this.setState({newManager : value, 
+   	 				newManagerObj : null})
+   	 		} else{
+   	 			this.setState({[name]: value });
+   	 		}
    	 	} else{
    	 		if(target.name=='visitMin')
    	 			this.showMessageBox('Visit duration must be integer.');
@@ -84,21 +92,26 @@ class EditCampaign extends Component{
 	 	}
 	  }
 
-	  addManagerHandler = (event) =>{
-	  		if(this.state.newManager==''){
-	  			//show modal
-	  		}else{
-		  		let newManager = {
-		  			name : this.state.newManager, 
-		  			id : this.state.managers.length
-		  		}
-		  		this.setState((prevState)=>({
-		  			managers : [...prevState.managers, newManager]
-		  		}))
+     selectManager = (manager) =>{
+	  	console.log(['Selected Manager'], manager);
+	  	this.setState({newManager : manager.firstName+ " " + manager.lastName,
+	  					newManagerObj : manager,
+	  					managerList : false});
+	  }
 
-		  		this.setState({
-		  			newManager : ''
-		  		});
+	  addManagerHandler = (event) =>{
+	  		if(!this.state.newManagerObj){
+	  			//show modal
+	  			this.showMessageBox('Manager is not selected from the search list. You must not modify the selected manager from the input textfield.');
+
+	  		}else{
+		  		let newManager = this.state.newManagerObj._id;
+		  		
+		  		this.setState((prevState)=>({
+		  			managers : [...prevState.managers, newManager],
+		  			newManager : '',
+		  			newManagerObj : null
+		  		}))
 	  		}
 	  }
 
@@ -173,6 +186,20 @@ class EditCampaign extends Component{
 	    this.setState({ show: false });
 	  }
 
+	  openSearchModal = () =>{
+           axios.get('/manager/campaign/create/manlist?regex='+this.state.newManager).then(response=>{
+	          	  const managerList = response.data;
+	          	  console.log(['ManagerList'], managerList)
+		          this.setState({searchedManagerList: managerList, managerList : true});
+	        }).catch(error=>{
+	          console.log(error)
+	        });	
+	  }
+
+	  closeSearchModal = () =>{
+	  	this.setState({managerList:false})
+	  }
+
 	  addQuestionnaireHandler = (event) =>{
 	  		if(this.state.newQuestionnaire==''){
 	  			//show modal
@@ -203,6 +230,7 @@ class EditCampaign extends Component{
 	  }
 
 	  removeQuestionnaireHandler = (event) =>{
+
   			const removedList = this.state.questionnaire.filter(ele=>{return ele.id != event.target.name});
 		  	this.setState((prevState)=>({
 		  		questionnaire : removedList		
@@ -210,11 +238,22 @@ class EditCampaign extends Component{
 	  }
 
 	  removeLocationHandler = (event) =>{
-
   			const removedList = this.state.locations.filter(ele=>{return ele.id != event.target.name});
 		  	this.setState((prevState)=>({
 		  		locations : removedList		
 		  	}));
+	  }
+
+	  removeManagerHandler = (event) =>{
+	  		console.log(['Remove Handler'], event.target.name);
+	  		if(this.state.managers.length<=1){
+	  			this.showMessageBox('Number of manager must be at least one');
+	  		} else{
+	  			const removedList = this.state.managers.filter(ele=>{return ele != event.target.name});
+			  	this.setState((prevState)=>({
+			  		managers : removedList		
+			  	}));
+		  	}
 	  }
 
 
@@ -352,12 +391,16 @@ class EditCampaign extends Component{
 		return(
 			<div className='container'>
 					<MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
+					<Modal show={this.state.managerList} modalClosed={this.closeSearchModal}>
+			          <ManagerList selectManager={this.selectManager} searchedManagers = {this.state.searchedManagerList}/>
+			        </Modal>
 					<PageHead title='Edit Campaign'/>
 					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
 						onChange = {(event) => this.handleInputChange(event)}/>
-					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)}  
+
+					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)} openSearchModal={this.openSearchModal} 
 						manager = {this.state.newManager}/>
-					<AddedManagers managers = {this.state.managers}/>
+					<AddedManagers managers = {this.state.managers} removeHandler = {this.removeManagerHandler}/>
 					
 					<DateSection name = 'startDate' date = {this.state.startDate} onChange = {this.handleStartDateChange}/>
 					<DateSection name = 'endDate' date = {this.state.endDate} onChange = {this.handleEndDateChange}/>

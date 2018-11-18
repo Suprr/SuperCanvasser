@@ -37,6 +37,7 @@ class CreateCampaign extends Component{
 		locations : [],
 		visitMin : '',
 		newManager : '',
+		newManagerObj : null,
 		newQuestionnaire :'',
 		newLocation : '',
 		id : null,
@@ -44,26 +45,31 @@ class CreateCampaign extends Component{
 		isMounted : false,
 		show : false,
 		message : null,
-		managerList : false
+		managerList : false,
+		searchedManagerList : [],
 	}
 
 	handleInputChange = (event)=> {
 	    const target = event.target;
 	    const value = target.value;
 	    const name = target.name;
+	    
 	    if(target.validity.valid){
-   	 		this.setState({[name]: value });
+	    	if(target.name=='newManager'){
+   	 			this.setState({newManager : value, 
+   	 				newManagerObj : null})
+   	 		} else{
+   	 			this.setState({[name]: value });
+   	 		}
    	 	} else{
    	 		if(target.name=='visitMin')
    	 			this.showMessageBox('Visit duration must be integer.');
-   	 		else
+ 			else
    	 			this.showMessageBox('Invalid Type');
-   	 	}
-		
+   	 	}	
 	}
 
 	 handleStartDateChange = (newDate)=>{
-	   
 	    this.setState({
 	      startDate: newDate
 	    });
@@ -80,26 +86,27 @@ class CreateCampaign extends Component{
 		    });
 	 	}
 
-	    
 	  }
 
 	  selectManager = (manager) =>{
-	  	this.setState({newManager : manager});
+	  	console.log(['Selected Manager'], manager);
+	  	this.setState({newManager : manager.firstName+ " " + manager.lastName,
+	  					newManagerObj : manager,
+	  					managerList : false});
 	  }
 
 	  addManagerHandler = (event) =>{
-	  		if(this.state.newManager==''){
+	  		if(!this.state.newManagerObj){
 	  			//show modal
+	  			this.showMessageBox('Manager is not selected from the search list. You must not modify the selected manager from the input textfield.');
 	  		}else{
-		  		let newManager = this.state.newManager;
+		  		let newManager = this.state.newManagerObj._id;
 		  		
 		  		this.setState((prevState)=>({
-		  			managers : [...prevState.managers, newManager]
+		  			managers : [...prevState.managers, newManager],
+		  			newManager : '',
+		  			newManagerObj : null
 		  		}))
-
-		  		this.setState({
-		  			newManager : ''
-		  		});
 	  		}
 	  }
 
@@ -168,7 +175,15 @@ class CreateCampaign extends Component{
 	  }
 
 	  openSearchModal = () =>{
-	  	this.setState({managerList : true})
+
+           axios.get('/manager/campaign/create/manlist?regex='+this.state.newManager).then(response=>{
+	          	  const managerList = response.data;
+	          	  console.log(['ManagerList'], managerList)
+		          this.setState({searchedManagerList: managerList, managerList : true});
+	        }).catch(error=>{
+	          console.log(error)
+	        });	
+	        
 	  }
 
 	  closeSearchModal = () =>{
@@ -217,6 +232,18 @@ class CreateCampaign extends Component{
 		  	this.setState((prevState)=>({
 		  		locations : removedList		
 		  	}));
+	  }
+
+	  removeManagerHandler = (event) =>{
+	  		console.log(['Remove Handler'], event.target.name);
+	  		if(event.target.name==this.state.manager_id){
+	  			this.showMessageBox('This manager cannot be deleted becuase he/she is creating this campaign.');
+	  		} else{
+	  			const removedList = this.state.managers.filter(ele=>{return ele != event.target.name});
+			  	this.setState((prevState)=>({
+			  		managers : removedList		
+			  	}));
+		  	}
 	  }
 
 
@@ -304,7 +331,7 @@ class CreateCampaign extends Component{
 		return(
 			<div className='container'>
 					<Modal show={this.state.managerList} modalClosed={this.closeSearchModal}>
-			          <ManagerList selectManager={this.selectManager}/>
+			          <ManagerList selectManager={this.selectManager} searchedManagers = {this.state.searchedManagerList} />
 			        </Modal>
 
 					<MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
@@ -313,7 +340,7 @@ class CreateCampaign extends Component{
 						onChange = {(event) => this.handleInputChange(event)}/>
 					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)} openSearchModal={this.openSearchModal} 
 						manager = {this.state.newManager}/>
-					<AddedManagers managers = {this.state.managers}/>
+					<AddedManagers managers = {this.state.managers} removeHandler = {this.removeManagerHandler}/>
 					
 					<DateSection name = 'startDate' date = {this.state.startDate} onChange = {this.handleStartDateChange}/>
 					<DateSection name = 'endDate' date = {this.state.endDate} onChange = {this.handleEndDateChange}/>

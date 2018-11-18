@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import classes from './CreateCampaign.module.css'
-
+import RemoveIcon from '../../../assets/images/minus.png'
 class AddedQuestionnaire extends Component{
 	
 
@@ -12,7 +12,7 @@ class AddedQuestionnaire extends Component{
 					<div className = 'col-1'> {count}. </div>
 					<div className={[classes.QuestionnaireItem, 'col-6'].join(' ')}> {qnr.question} </div>
 					<div className = 'col-2'>
-						<button onClick={(event)=>this.props.onClick(event)} name={qnr.id} className = 'btn btn-danger'>Remove</button>
+						<input type='image' src={RemoveIcon} className={classes.RemoveBtn} onClick={(event)=>this.props.onClick(event)} name={qnr.id}/>
 					</div>
 				</div>
 			)
