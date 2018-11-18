@@ -1,4 +1,4 @@
-package team830.SuperCanvasser.Canvasser;
+package team830.SuperCanvasser.Availability;
 
 import lombok.Data;
 

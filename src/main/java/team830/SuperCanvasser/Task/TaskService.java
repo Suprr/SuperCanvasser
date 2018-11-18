@@ -89,7 +89,7 @@ public class TaskService implements TaskInterface {
         return tasks;
     }
 
-    // for view task.. returns the user id and gets the user -> this is used in campaign controller
+    // for view task.. returns the user id and gets the user
     public User getCanvasserById(String _id){
         log.info("TaskService :: getting canvasser by id");
         return userRepo.findBy_id(_id);
