@@ -12,10 +12,9 @@ class TaskDetailBody extends Component{
 						Canvasser
 					</div>
 					<div className={['col-6', classes.Item].join(' ')}>
-						{this.props.task.canvasser}
+						{this.props.task.canvasserId}
 					</div>
 				</div>
-
 				<div className={['row', 'col-9',classes.ItemSection].join(' ')}>
 					<div className={['col-6', classes.ItemTitle].join(' ')}>
 						Date
@@ -24,7 +23,6 @@ class TaskDetailBody extends Component{
 						{this.props.task.date}
 					</div>
 				</div>
-
 				<div className={['row', 'col-9',classes.ItemSection].join(' ')}>
 					<div className={['col-6', classes.ItemTitle].join(' ')}>
 						Number of Location
@@ -33,16 +31,6 @@ class TaskDetailBody extends Component{
 						{this.props.task.locations.length}
 					</div>
 				</div>
-
-				<div className={['row', 'col-9',classes.ItemSection].join(' ')}>
-					<div className={['col-6', classes.ItemTitle].join(' ')}>
-						Duration
-					</div>
-					<div className={['col-6', classes.Item].join(' ')}>
-						{this.props.task.duration}
-					</div>
-				</div>
-
 				<div className={['row', 'col-9',classes.ItemSection].join(' ')}>
 					<div className={['col-6', classes.ItemTitle].join(' ')}>
 						Locations
@@ -51,7 +39,6 @@ class TaskDetailBody extends Component{
 						<button className={['btn-light','btn', classes.ViewBtn].join(' ')} onClick={this.props.modalOpen}>View</button>
 					</div>
 				</div>
-
 				<div className={['row', 'col-9',classes.ItemSection].join(' ')}>
 					<div className={['col-12', classes.btnSection].join(' ')}>
 						<button className={['btn-light','btn', classes.GoBackBtn].join(' ')}>Go Back</button>

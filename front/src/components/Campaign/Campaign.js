@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import classes from './Campaign.module.css'
 import {Link, withRouter} from 'react-router-dom'
+import Inactive from '../../assets/images/inactivity.png'
+import Active from '../../assets/images/inprogress.png'
+import Finish from '../../assets/images/finish.png'
 class Campaign extends Component{
 	state ={
 		...this.props.campaign
@@ -16,12 +19,24 @@ class Campaign extends Component{
 
 	render(){
 						//<Link className={classes.Link} to={this.props.url+'/view'}>
-		return(
+		let img = null;
+		if(this.props.campaign){
+			const status = this.props.campaign.status;
+			if(status=='INACTIVE')
+				img = <img src={Inactive}/>
+			else if(status=='ACTIVE')
+				img = <img src={Active}/>
+			else
+				img = <img src={Finish}/>
+		}
 
+		return(
 			<div className = {["card", classes.Campaign].join(' ')}>
 				<div className={["card-body"].join(' ')}>
-					<h5 className="card-title">{this.props.campaign.name}</h5>
-					
+					<div className={['row', 'card-title', 'd-flex','justify-content-center', classes.CardHead].join(' ')}>
+						<h5>{this.props.campaign.name}</h5>
+						<div className={classes.progressImage}>{img}</div>
+					</div>
 					<div className={["container-fluid", classes.CampaignBody].join(' ')}>
 						<div className="row">
 							<div className="col-5">

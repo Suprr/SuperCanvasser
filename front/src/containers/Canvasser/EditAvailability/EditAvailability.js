@@ -1,13 +1,28 @@
 import React, { Component } from "react";
-import Availability from "../../../components/Campaign/AssignTask/Availability";
+import Calendar from "../../../components/UI/Calendar/Calendar";
 
 class EditAvailability extends Component {
-  state = {};
+  state = {
+    inAvailableDates: []
+  };
+
+  onCalendarClick = e => {
+    let newInavDates = this.state.inAvailableDates;
+    newInavDates.push(e);
+    this.setState({ inAvailableDates: newInavDates });
+    // send inavail dates to backend
+  };
+
   render() {
     return (
       <div>
         <h1>Edit Availability</h1>
-        <Availability canvasser={this.state.selectedCanvasser} />
+        {
+          <Calendar
+            onClick={this.onCalendarClick}
+            inavailable={this.state.inAvailableDates}
+          />
+        }
       </div>
     );
   }

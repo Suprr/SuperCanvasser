@@ -1,0 +1,35 @@
+{
+    "_id" : ObjectId("5bdfc2946f2f7f8fde56b929"),
+    "managers" : [ 
+        "5bdbd11de4e562c16f08a30f"
+    ],
+    "startDate" : "2018-11-05",
+    "endDate" : "2018-11-16",
+    "canvassers" : [],
+    "locations" : [ 
+        {
+            "$ref" : "locations",
+            "$id" : ObjectId("5be0195e5af982083f8e570b")
+        }, 
+        {
+            "$ref" : "locations",
+            "$id" : ObjectId("5be0195e5af982083f8e570c")
+        }
+    ],
+    "questions" : [ 
+        "sam,dsan,masdnm,asd", 
+        "dsalkkjdkalsjdklakdljklasd", 
+        "dsajkdlkasdjklasdkj", 
+        "dsadasdasd", 
+        "dsaads"
+    ],
+    "tasks" : [ 
+        "5bdfdea13bab5bed899b57ce"
+    ],
+    "name" : "campaign5",
+    "avgDuration" : 90.0,
+    "averageRating" : 0,
+    "talkingPoints" : "edited talking point",
+    "status" : "INACTIVE",
+    "_class" : "team830.SuperCanvasser.Campaign.Campaign"
+}

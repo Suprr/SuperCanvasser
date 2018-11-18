@@ -44,46 +44,13 @@ class App extends Component {
   };
 
   render() {
-    //let page = <Route path="/sign-in" exact component={SignIn} />
-    //let page = <SignIn user = {this.state.user} />
     let page = null;
     if (this.state.user.authenticated) {
       page = <Redirect to="/" />;
     } else {
       page = <Redirect to="/login" />;
     }
-    // console.log("[Render]", this.state.user.role);
-    // if (this.state.user.authenticated) {
-    //   if (this.state.user.role === "Manager") {
-    //     console.log("here");
-    //     page = (
-    //       <Layout user={this.state.user}>
-    //         <Manager manager={this.state.user} />
-    //       </Layout>
-    //     );
-    //   } else if (this.state.user.role === "Canvasser") {
-    //     page = (
-    //       <Layout user={this.state.user}>
-    //         <Canvasser />
-    //       </Layout>
-    //     );
-    //   } else {
-    //     page = (
-    //       <Layout user={this.state.user}>
-    //         <SysAdmin />
-    //       </Layout>
-    //     );
-    //   }
-
-    //   //	page = <Base path = {'/'+this.state.user.role} user = {this.state.user} exact component={Base}/>
-    // } else {
-    //   page = <SignIn user={this.state.user} signedIn={this.signInHandler} />;
-    // }
-    //let info = { userID: "email", passwords: "pass", role: "Canvasser" };
-    //this.signInHandler(info);
-    return (
-    
-      
+    return ( 
       <BrowserRouter>
         <Switch>
           <Route path="/login" exact component={SignIn} />

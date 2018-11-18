@@ -1,0 +1,17 @@
+{
+    "_id" : ObjectId("5be0195e5af982083f8e570b"),
+    "latitude" : 40.890167,
+    "longitude" : -73.12422,
+    "address" : "51, marion ave , , stony brook, ny, 11790",
+    "visited" : false,
+    "qNa" : {
+        "dsajkdlkasdjklasdkj" : false,
+        "sam,dsan,masdnm,asd" : false,
+        "dsaads" : false,
+        "dsalkkjdkalsjdklakdljklasd" : false,
+        "dsadasdasd" : false
+    },
+    "anonymous" : false,
+    "index" : -1,
+    "_class" : "team830.SuperCanvasser.Location.Location"
+}

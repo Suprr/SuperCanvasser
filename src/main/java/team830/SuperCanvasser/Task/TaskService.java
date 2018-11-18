@@ -9,8 +9,10 @@ import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 @Service
 public class TaskService implements TaskInterface {
@@ -61,5 +63,25 @@ public class TaskService implements TaskInterface {
             locations.add(locationRepo.findLocationBy_id(loc));
         }
         return locations;
+    }
+    @Override
+    public Task findTodayTask(String _id){
+        List<Task> tasks = taskRepo.findAll();
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        for(Task t : tasks){
+            if(t.getCanvasserId().equals(_id) && t.getDate().equals(formatter.format(date).toString()))
+                return t;
+        }
+        return null;
+    }
+
+    @Override
+    public List<Task> findAllTasksById(List<String> ts){
+        List<Task> tasks = new ArrayList<>();
+        for(String t : ts){
+            tasks.add(taskRepo.findBy_id(t));
+        }
+        return tasks;
     }
 }

@@ -23,6 +23,9 @@ import Geocode from 'react-geocode'
 
 import NodeGeocoder from 'node-geocoder'
 
+import MessageBox from '../../../components/UI/MessageBox/MessageBox'
+import {withRouter} from 'react-router-dom'
+
 class EditCampaign extends Component{
 	
 	state = {
@@ -40,6 +43,9 @@ class EditCampaign extends Component{
 		id : null,
 		manager_id : null,
 		isMounted : false,
+		_id : null,
+		show : false,
+		message : null
 	}
 
 	handleInputChange = (event)=> {
@@ -47,7 +53,15 @@ class EditCampaign extends Component{
 	    const value = target.value;
 	    const name = target.name;
 	    
-   	 	this.setState({[name]: value });
+	    if(target.validity.valid){
+   	 		this.setState({[name]: value });
+   	 	} else{
+   	 		if(target.name=='visitMin')
+   	 			this.showMessageBox('Visit duration must be integer.');
+   	 		else
+   	 			this.showMessageBox('Invalid Type');
+   	 		
+   	 	}
 		
 	}
 
@@ -60,9 +74,14 @@ class EditCampaign extends Component{
 
 
 	 handleEndDateChange = (newDate)=>{
-	    this.setState({
-	      endDate: newDate
-	    });
+	    if((!this.state.startDate.isSame(newDate,'day'))&&this.state.startDate.isAfter(newDate)){
+	 		this.showMessageBox('The End Date Must Be After the Start Date');
+	 	} else{
+	 		//valid date
+	 		this.setState({
+		      endDate: newDate
+		    });
+	 	}
 	  }
 
 	  addManagerHandler = (event) =>{
@@ -85,14 +104,17 @@ class EditCampaign extends Component{
 
 	  addLocationHandler = (address, event) =>{
 	  		let loc ='';
-	  		if(address.number=='' || address.street=='' || address.city=='' || address.state=='' || address.zipcode==''){
-	  				//show modal
-	  		} else{
-		  		loc = address.number +", "+ address.street + ", "+ address.unit +", "+ address.city +", "+ address.state + ", "+ address.zipcode
-		  	
-		  		const addressx = address.number+'+'+address.street.split(' ').join('+')+'%2C+'+address.unit.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
-		  		console.log(['Address'],addressx)
 
+  			if(address.address1=='' || address.city=='' || address.state=='' || address.zipcode==''){
+  				//show modal
+  				this.showMessageBox('Fill the location info please.');
+	  		} else{
+	  			if(address.address2!='')
+		  			loc = address.address1+ ", "+ address.address2 +", "+ address.city +", "+ address.state + ", "+ address.zipcode
+		  		else
+	  				loc = address.address1+ ", "+ address.city +", "+ address.state + ", "+ address.zipcode
+		  		
+		  		const addressx = address.address1.split(' ').join('+')+'%2C+'+address.address2.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
 		  		//x is long, y is lat
 		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
 		  		then(res=>{
@@ -100,24 +122,38 @@ class EditCampaign extends Component{
 		  			const long = addressMatch.coordinates.x;
 		  			const lat =  addressMatch.coordinates.y;
 
-			  		const newLocation = {
-			  			latitude : lat,
-			  			longitude : long,
-			  			address : loc,
-			  			qNa : {},
-			  			id : this.state.locations.length,
-			  			_id:"",
-			  			index : -1,
-			  			anonymous:false,
-			  			visited : false
+		  			let validLocation = true;
+		  			
+		  			for(let i=0; i<this.state.locations.length; i++){
+			  			let loc = this.state.locations[i]
+			  			if(loc.latitude===lat && loc.longitude===long){
+			  				validLocation = false;
+			  				break;
+			  			}
 			  		}
 
-			  		console.log('Add Location', newLocation)
+			  		if(validLocation){
+				  		const newLocation = {
+				  			latitude : lat,
+				  			longitude : long,
+				  			address : loc,
+				  			qNa : {},
+				  			id : this.state.locations.length,
+				  			_id:"",
+				  			index : -1,
+				  			anonymous:false,
+				  			visited : false
+				  		}
 
-			  		this.setState((prevState)=>({
-			  			locations : [...prevState.locations, newLocation],
-			  			newLocation : ''
-		  			}))
+				  		console.log('Add Location', newLocation)
+
+				  		this.setState((prevState)=>({
+				  			locations : [...prevState.locations, newLocation],
+				  			newLocation : ''
+			  			}))
+				  	} else{
+		  				this.showMessageBox('The location is already added');
+				  	}
 
 		  		}).catch(err=>{
 		  			//invalid date pop up
@@ -129,19 +165,40 @@ class EditCampaign extends Component{
 	  		}
 	  }
 
-	  addQuestionnaireHandler = (event) =>{
-	  		if(this.state.newQuestion==''){
-	  			//show modal
-	  		}else{
-		  		let newQuestion = {
-		  			question : this.state.newQuestionnaire, 
-		  			id : this.state.questionnaire.length
-		  		}
+	  showMessageBox = (message) => {
+	    this.setState({ show: true , message : message});
+	  }
 
-		  		this.setState((prevState)=>({
-		  			questionnaire : [...prevState.questionnaire, newQuestion],
-		  			newQuestionnaire : ''
-		  		}));
+	  closeMessageBox = () => {
+	    this.setState({ show: false });
+	  }
+
+	  addQuestionnaireHandler = (event) =>{
+	  		if(this.state.newQuestionnaire==''){
+	  			//show modal
+	  			this.showMessageBox('Type new question to add it in your questionnaire list.');
+	  		}else{
+	  			let validQuestion = true;
+	  			for(let i =0; i<this.state.questionnaire.length; i++){
+	  				let q = this.state.questionnaire[i];
+	  				if(q.question == this.state.newQuestionnaire){
+	  					validQuestion = false;
+	  				}
+	  			}
+
+	  			if(validQuestion){
+			  		let newQuestion = {
+			  			question : this.state.newQuestionnaire, 
+			  			id : this.state.questionnaire.length
+			  		}
+
+			  		this.setState((prevState)=>({
+			  			questionnaire : [...prevState.questionnaire, newQuestion],
+			  			newQuestionnaire : ''
+			  		}));
+			  	} else{
+			  		this.showMessageBox('This question is already added.');
+			  	}
 	  		}
 	  }
 
@@ -172,7 +229,7 @@ class EditCampaign extends Component{
 	  			//if(locs[i]._id!)
 	  			let loc = {
 	  				latitude : locs[i].latitude,
-	  				longitude : locs[i].latitude,
+	  				longitude : locs[i].longitude,
 	  				address : locs[i].address,
 	  				qNa : locs[i].qNa,
 	  				visited:locs[i].visited,
@@ -188,27 +245,40 @@ class EditCampaign extends Component{
 	  			realQuestions.push(questions[i].question);
 	  		}
 
-	  		const campaign = {
-		  		name : this.state.campaignTitle,
-				managers : this.state.managers,
-				startDate : this.state.startDate.format('YYYY-MM-DD'),
-				endDate : this.state.endDate.format('YYYY-MM-DD'),
-				talkingPoints : this.state.talkingPoint,
-				questions : realQuestions,
-				locations : this.state.realLocs,
-				avgDuration : this.state.visitMin,
-				status : "INACTIVE",
-				tasks : [],
-				canvassers : [],
-				questionnaire : [],
-			}
+	  		if(this.state.campaignTitle==''||this.state.visitMin==''||this.state.talkingPoint==''){
+	  			this.showMessageBox('There is one more empty text field');
+	  		} else if(!parseInt(this.state.visitMin)){
+	  			this.showMessageBox('Visit duration cannot be string value.');
+	  		} else if((!this.state.startDate.isSame(this.state.endDate,'day'))&&this.state.startDate.isAfter(this.state.endDate)){
+				this.showMessageBox('Start Date Must Be Prior to the End Date.');
+	  		} else if(realQuestions.length==0||realLocs.length==0){
+	  			this.showMessageBox('Questionnaire and Locations must be one more.');
+	  		}  else{
 
-	  		//If I use push it generates auto key
-	  		//axios.push ('/campaigns.json', campaign).then( response => {
-	  		console.log('[[EDITED]',campaign);
-	  		axios.post('/manager/campaign/edit', campaign).then(response=>{
-	  			console.log(['Edit Campaign'], campaign);
-	  		})
+		  		const campaign = {
+			  		name : this.state.campaignTitle,
+					managers : this.state.managers,
+					startDate : this.state.startDate.format('YYYY-MM-DD'),
+					endDate : this.state.endDate.format('YYYY-MM-DD'),
+					talkingPoints : this.state.talkingPoint,
+					questions : realQuestions,
+					locations : realLocs,
+					avgDuration : this.state.visitMin,
+					status : "INACTIVE",
+					tasks : this.state.tasks,
+					canvassers : [],
+					questionnaire : [],
+					_id : this.state._id
+				}
+
+		  		//If I use push it generates auto key
+		  		//axios.push ('/campaigns.json', campaign).then( response => {
+		  		console.log('[[EDITED]',campaign);
+		  		axios.post('/manager/campaign/edit', campaign).then(response=>{
+		  			console.log(['Edit Campaign'], campaign);
+		  			this.props.history.push('/manager/campaign/view');
+		  		})
+		  	}
 
 	  }
 
@@ -223,15 +293,9 @@ class EditCampaign extends Component{
 
 			  axios.get('/manager/campaign/view/?_id='+cmpId).then(response=>{
            
-		          const responseData = response.data
-		          const dataLength = responseData.length;
-		          const newCampaign = responseData[0];
-
-		          let managerArray = [];
-		          for(let i=1; i<dataLength; i++){
-		            managerArray.push(responseData[i]);
-		          }
-
+		          const newCampaign = response.data[0];
+		        	
+		         
 
 		          let newQuestionnaire = [];
 		          for(let i=0; i<newCampaign.questions.length; i++){
@@ -257,20 +321,21 @@ class EditCampaign extends Component{
 		          }
 
 
-
-
-
 		          if(this.state.isMounted){
 		            console.log('ViewCampaign', 'UPLOADED', newCampaign);
+
+
 		            this.setState({campaignTitle:newCampaign.name,
-		                           managers:managerArray,
+		                           managers:newCampaign.managers,
 		                           startDate : moment(newCampaign.startDate),
 		                           endDate : moment(newCampaign.endDate),
 		                           talkingPoint : newCampaign.talkingPoints,
 		                    	   questionnaire : newQuestionnaire,
 		                    	   locations : locationArray,
+		                    	   tasks : newCampaign.tasks,
 		                    	   visitMin : newCampaign.avgDuration,
-		                       	   manager_id:userID});
+		                       	   manager_id:userID,
+		                       	   _id : newCampaign._id});
 		          }
 		        }).catch(error=>{
 		          console.log(error)
@@ -286,7 +351,7 @@ class EditCampaign extends Component{
 		console.log(['Edit Campaign Render']);
 		return(
 			<div className='container'>
-					
+					<MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
 					<PageHead title='Edit Campaign'/>
 					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
 						onChange = {(event) => this.handleInputChange(event)}/>
@@ -317,4 +382,4 @@ class EditCampaign extends Component{
 
 }
 
-export default EditCampaign;
+export default withRouter(EditCampaign);

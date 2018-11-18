@@ -13,58 +13,46 @@ class TaskAssignment extends Component{
 		campaigns : null,
 		tasks : null,
 		loadTasks : false,
+		isMounted : false
 	}
+
 
 	componentDidMount(){
-		if(!this.state.campaigns&&this.props.campaignList){
+		//console.log(['Manager componentDidMount'], this.state.campaignList);
+		 let x = null
+		 //userID is id from session store
+		 const userInfoData= JSON.parse(sessionStorage.getItem('userInfo'));
+		//const data = sessionStorage.getItem('userInfo');
+		 const userID = userInfoData._id;
+		 //const userID = getSessionStore.
+		 this.setState( { isMounted: true }, () => {
+
+	         axios.get('/manager/campaign/list/?_id='+userID).then(response=>{
+		          
+		          const data = response.data;
+		          
+		          const length = data.length;
+		          let newCampaigns = []
+		          for(let i=0; i<length; i++){
+		            newCampaigns.push(data[i]);
+		          }
+		          if(this.state.isMounted){
+		            this.setState({campaigns:newCampaigns});
+		          }
+	        }).catch(error=>{
+	          console.log('USER ID Error', userID);
+	          console.log(error)
+	        })
+    	} );
       
-	      axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
-	          let x= response.data 
-	          let campaignIndexes = this.props.campaignList;
-	          let newCampaigns = [];
-	          for(let c in campaignIndexes){
-	            if(x){
-	              newCampaigns.push(x[campaignIndexes[c]]);
-	            }
-	          }
+  	}
 
-	          this.setState((prevState)=>({campaigns : newCampaigns}));
-	      });     
-	    }
-	}
-
-
-  componentDidUpdate(){
-    //console.log(['List componentDidUpdate'], this.props);
-    if(!this.state.campaigns&&this.state.campaignList){
-      axios.get('https://cse308-de3df.firebaseio.com/campaigns.json').then(response=>{
-          let x= response.data 
-          let campaignIndexes = this.state.campaignList;
-          let newCampaigns = [];
-          for(let c in campaignIndexes){
-            if(x){
-              newCampaigns.push(x[campaignIndexes[c]]);
-            }
-          }
-
-          this.setState((prevState)=>({campaigns : newCampaigns}));
-      });     
-    }
-    
-  }
-
-  componentWillReceiveProps(nextProps){
-
-    //console.log(['componentWillReceiveProps List'], nextProps.campaignList);
-
-    if(!this.state.campaignList){
-      this.setState({campaignList : nextProps.campaignList});
-    }
-  }
-
+	  componentWillUnMount(){
+	    this.setState({isMounted:false});
+	  }	
   //when user select a campaign, this method is called from Task Assignment Header
   selectedCampaignHandler = (campaign) =>{
-  	this.setState({selectedCampaign : campaign, loadTasks : false});
+  	this.setState({selectedCampaign : campaign, loadTasks : false, tasks:campaign.tasks});
   }
 
   //when Tasks are loaded this method is called from Task AssignmentList
@@ -73,7 +61,7 @@ class TaskAssignment extends Component{
   }
 
 	render(){
-		console.log(['Task Assignment'],this.props)
+		console.log(['Task Assignment'], this.props)
 		return <div>
 					<PageHead title='View Task Assignment'/>
 					<div className={classes.TaskAssignmentHead}>

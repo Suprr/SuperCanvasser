@@ -14,36 +14,29 @@ class TaskDetail extends Component{
 	}
 
 	componentDidMount(){
-		if(!this.state.tasks){		
-			axios.get('https://cse308-de3df.firebaseio.com/tasks/'+this.props.match.params.tid+'/.json').then(response=>{
-				const newTasks = response.data;
-				//console.log(task : )
-				this.setState({task:newTasks})
-			});
-		}
-
-
+	
 		const taskId = sessionStorage.getItem('taskID')
 	    console.log(['View Campaign did mount'], taskId);
 
 	    this.setState( { isMounted: true }, () => {
 	    	  //change this url
-	          axios.get('/manager/campaign/view/?_id='+taskId).then(response=>{
+	          axios.get('task/getById/?_id='+taskId).then(response=>{
 	           
 	          const responseData = response.data;
-	          const newTask = responseData[0];
+	          console.log(['View Task Data'],responseData);
 
-
-	          console.log(['View Task Data'],newTask);
 	          if(this.state.isMounted){
-	            console.log('View Task', 'UPLOADED');
-	            this.setState({task:newTask});
+	            this.setState({task:responseData});
 	          }
 	        }).catch(error=>{
 	          console.log(error)
 	        })
 	    });
 
+	}
+
+	componentWillUnMount(){
+		this.setState({isMounted:false});
 	}
 
 	openModalHandelr = () => {
@@ -60,7 +53,7 @@ class TaskDetail extends Component{
           		<Locations locations={this.state.task.locations}/>
         	</Modal>
         	
-			<TaskDetailHead title={this.state.task.title}/>
+			<TaskDetailHead title='Task'/>
 			<TaskDetailBody task = {this.state.task} modalOpen = {this.openModalHandelr}/>
 		</div>:null);
 		return <div>{comp}</div>
