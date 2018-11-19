@@ -19,6 +19,7 @@ public class Task {
     private Status taskStatus;
     private String recommendedLoc;
     private String canvasserId;
+    private int rating;
 
     public Task(List<String> locations, String rec) {
         this.locations = new ArrayList<String>(locations);

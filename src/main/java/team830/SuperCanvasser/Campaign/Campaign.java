@@ -9,8 +9,11 @@ import team830.SuperCanvasser.Location.Location;
 
 
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Document(collection = "campaigns")
 @Data
@@ -34,10 +37,9 @@ public class Campaign {
     @Indexed(unique = true)
     private String name;
     private double avgDuration;
-    private int averageRating;
     private String talkingPoints;
     private Status status;
-
+    private transient Timer statusTimer;
 
     public Campaign(List<String> managersList, String start, String end,
                     List<String> canvassersList, List<Location> locationsList,
@@ -132,14 +134,6 @@ public class Campaign {
         this.avgDuration = avgDuration;
     }
 
-    public int getAverageRating() {
-        return averageRating;
-    }
-
-    public void setAverageRating(int averageRating) {
-        this.averageRating = averageRating;
-    }
-
     public String getTalkingPoints() {
         return talkingPoints;
     }
@@ -155,4 +149,44 @@ public class Campaign {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    // this automatically triggers the campaign to turn complete or active when the date is reached
+    public void scheduleTimerForDate(){
+        this.statusTimer = new Timer();
+        StartTimerTask startTimerTask = new StartTimerTask(this);
+        EndTimerTask endTimerTask = new EndTimerTask(this);
+
+        Date startDate = Date.valueOf(this.startDate);
+        Date endDate = Date.valueOf(this.endDate);
+
+        this.statusTimer.schedule(startTimerTask, startDate);
+        this.statusTimer.schedule(endTimerTask, endDate);
+    }
+
+    public void stopStatusTimer(){
+        this.statusTimer.cancel();
+    }
+
+    class StartTimerTask extends TimerTask{
+        Campaign campaign;
+        StartTimerTask(Campaign campaign){
+            this.campaign = campaign;
+        }
+        @Override
+        public void run() {
+            campaign.setStatus(Status.ACTIVE);
+        }
+    }
+
+    class EndTimerTask extends TimerTask{
+        Campaign campaign;
+        EndTimerTask(Campaign campaign){
+            this.campaign = campaign;
+        }
+        @Override
+        public void run() {
+            campaign.setStatus(Status.COMPLETED);
+        }
+    }
+
 }
