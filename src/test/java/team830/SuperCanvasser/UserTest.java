@@ -66,4 +66,6 @@ public class UserTest {
         Assert.assertEquals(user1, userRepo.findByEmail("b@gmail.com"));
     }
 
+    //TODO : have to make some test
+
 }

@@ -80,16 +80,20 @@ public class CampaignController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, BindingResult result) {
-        // checking whether campaign exist in DB
-        if(campaignService.findBy_Id(campaign.get_id()) == null || campaign.getStatus().equals(Status.INACTIVE)){
+
+        Campaign originalCampaign = campaignService.findBy_Id(campaign.get_id());
+
+        if(!campaign.getStatus().equals(Status.INACTIVE)){
             log.info("CampaignController :: Campaign is Active or finished.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campaign Cannot be edited");
-        } else if (result.hasErrors()) {
+        } // checking whether campaign exist in DB
+        else if (originalCampaign == null || result.hasErrors()) {
             log.info("CampaignController :: Campaign Not Found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
-        } else {
+        }
+        else {
             log.info("CampaignController :: Campaign has been edited");
-            return ResponseEntity.ok(campaignService.editCampaign(campaign));
+            return ResponseEntity.ok(campaignService.editCampaign(originalCampaign, campaign));
         }
     }
 
