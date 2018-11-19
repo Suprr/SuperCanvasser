@@ -1,5 +1,6 @@
 package team830.SuperCanvasser.Task;
 
+import com.google.common.primitives.Doubles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,14 +62,6 @@ public class TaskService implements TaskInterface {
     }
 
     @Override
-    public List<Location> findLocationsById(List<String> locs){
-        List<Location> locations = new ArrayList<>();
-        for(String loc : locs){
-            locations.add(locationRepo.findLocationBy_id(loc));
-        }
-        return locations;
-    }
-    @Override
     public Task findTodayTask(String _id){
         List<Task> tasks = taskRepo.findAll();
         Date date = new Date();
@@ -89,9 +82,30 @@ public class TaskService implements TaskInterface {
         return tasks;
     }
 
-    // for view task.. returns the user id and gets the user -> this is used in campaign controller
+    @Override
+    public List<Location> findLocationsById(List<String> locs){
+        List<Location> locations = new ArrayList<>();
+        for(String loc : locs){
+            locations.add(locationRepo.findLocationBy_id(loc));
+        }
+        return locations;
+    }
+
+    // for view task.. returns the user id and gets the user
     public User getCanvasserById(String _id){
         log.info("TaskService :: getting canvasser by id");
         return userRepo.findBy_id(_id);
     }
+
+    public double [] getAllRatings(List<Task> tasks){
+        List<Double> ratings = new ArrayList<>();
+        for(int i = 0; i < tasks.size(); i++){
+            List<Location> locations = findLocationsById(tasks.get(i).getLocations());
+            for(int k = 0; k < locations.size(); k++){
+                ratings.add((double)locations.get(k).getRating());
+            }
+        }
+        return Doubles.toArray(ratings);
+    }
+
 }

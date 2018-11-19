@@ -20,6 +20,7 @@ public class Location {
     private Map<String, Boolean> qNa;
     private boolean anonymous;
     private int index;
+    private int rating;
 
     public Location(String _id, double latitude, double longitude, String address, boolean visited, Map<String, Boolean> qNa, boolean anonymous, int index) {
         this._id = _id;
@@ -98,5 +99,13 @@ public class Location {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

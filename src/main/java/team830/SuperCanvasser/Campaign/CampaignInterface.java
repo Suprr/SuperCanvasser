@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 @Service
 public interface CampaignInterface {
-    Campaign editCampaign(Campaign originalCampaign, Campaign campaign)
+    Campaign editCampaign(Campaign originalCampaign, Campaign campaign);
     List<Campaign> findAllbyManager(String managerId);
     Campaign addCampaign(Campaign campaign);
     Campaign findBy_Id(String id);
