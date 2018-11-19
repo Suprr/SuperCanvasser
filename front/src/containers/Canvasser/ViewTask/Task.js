@@ -23,7 +23,7 @@ class Task extends Component {
         />
       );
     } else {
-      let color = this.props.task.type == "Questionnaire" ? "recLoc" : "visLoc";
+      let color = this.props.task.visited ? "visLoc" : "recLoc";
       let button = this.props.task.visited ? (
         <button
           onClick={event => {

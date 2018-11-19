@@ -81,6 +81,26 @@ public class Algorithm {
         return taskIDs;
     }
 
+    public static ArrayList<Location> recList(ArrayList<Location> locations) {
+        ArrayList<Location> recommendedLocations = new ArrayList();
+        recommendedLocations.add(locations.get(0));
+        locations.remove(0);
+        while (locations.size() > 0) {
+            double dist = Double.MAX_VALUE;
+            int index = 0;
+            for (int i = 0; i < locations.size(); i++){
+                Location loc = locations.get(i);
+                if (dist > manhattanDistance(loc, recommendedLocations.get(recommendedLocations.size() - 1))) {
+                    dist = manhattanDistance(loc, recommendedLocations.get(recommendedLocations.size() - 1));
+                    index = i;
+                }
+            }
+            recommendedLocations.add(locations.get(index));
+            locations.remove(index);
+        }
+        return recommendedLocations;
+    }
+
     List<Task> getTasks () {
         return tasks;
     }

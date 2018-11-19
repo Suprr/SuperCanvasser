@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Task from "./Task";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import axios from "../../../axios";
+import Modal from "./QModal";
+import QuestionnaireList from "../../../components/Campaign/ViewCampaign/QuestionnaireList";
 
 class ViewTask extends Component {
   state = {
@@ -9,7 +11,9 @@ class ViewTask extends Component {
     locations: [],
     visitedLoc: [],
     positions: [],
-    zoom: 13
+    zoom: 13,
+    show: true,
+    questions: null
   };
 
   componentDidMount() {
@@ -17,7 +21,7 @@ class ViewTask extends Component {
     //examples of locations
     const addresses = [
       {
-        number: "141",
+        number: "142",
         street: "Main Street",
         unit: "",
         city: "Setauket",
@@ -102,13 +106,20 @@ class ViewTask extends Component {
         });
     }
   }
+
+  modalCloseHandler = () => {
+    this.setState({ show: false });
+  };
+
   render() {
     return (
       <div>
+        <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
+          <QuestionnaireList questionnaire={this.state.questions} />
+        </Modal>
         <h1>View Task</h1>
         <div className="nest">
           <h2>Nov 11, 2018</h2>
-          <h2>Task1</h2>
           <Map center={this.state.positions[0]} zoom={this.state.zoom}>
             <TileLayer
               attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
