@@ -1,0 +1,47 @@
+.QuestionnaireItem{
+	border-left : 1px solid black;
+	border-right : 1px solid black;
+	border-bottom : 1px solid black;
+}
+
+.Question{
+	border-right:1px solid black;
+	text-align: center;
+}
+
+.Answer{
+	text-align: center;
+}
+
+.QuestionnaireHead{
+	border:1px solid black;
+	
+}
+
+.TableViewTask{
+	margin-top:30px;
+}
+
+.LocationSection{
+	margin-bottom:20px;
+}
+
+.ShowBtn{
+	background-color: #cb4d58; 
+}
+
+.ShowBtn:hover{
+	background-color: white;
+	border:1px solid #cb4d58; 
+	color : #cb4d58;
+}
+
+.TableViewHead{
+	color:#cb4d58;
+	font-weight: bold;
+	margin-bottom: 10px
+}
+
+.TableViewItem{
+	margin-bottom: 10px;
+}

@@ -99,12 +99,13 @@ public class CampaignController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity createCampaign(@RequestBody Campaign campaign, BindingResult result) {
-            if(!result.hasErrors()){
-                log.info("CampaignController :: Campaign has been created");
-                return ResponseEntity.ok(campaignService.addCampaign(campaign));
-            }
-            log.info("CampaignController :: Campaign Not Found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create campaign");
+
+        if(!result.hasErrors()){
+            log.info("CampaignController :: Campaign has been created");
+            return ResponseEntity.ok(campaignService.addCampaign(campaign));
+        }
+        log.info("CampaignController :: Campaign Not Found");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create campaign");
     }
 
     @RequestMapping(value = "/create/manlist", method = RequestMethod.GET)

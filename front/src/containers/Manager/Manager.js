@@ -3,6 +3,8 @@ import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
 
 import Sidebar from '../../components/Navigation/Sidebar'
 import CampaignList from './CampaignList/CampaignList'
+import CampaignResultList from './CampaignResult/CampaignResultList'
+
 
 import classes from './Manager.module.css'
 import CampaignModel from './CampaignList/CampaignModel'
@@ -12,7 +14,13 @@ import EditCampaign from './EditCampaign/EditCampaign'
 import AssignTask from './CampaignList/ViewCampaign/AssignTask/AssignTask'
 import TaskAssignment from './TaskAssignment/TaskAssignment'
 import TaskDetail from './TaskAssignment/TaskDetail/TaskDetail'
+import ResultTableView from './CampaignResult/ResultTableView'
+import ResultMapView from './CampaignResult/ResultMapView'
+import ResultStatView from './CampaignResult/ResultStatView'
+
 import axios from '../../axios'
+
+
 class Manager extends Component{
 	
 	state = {
@@ -63,8 +71,6 @@ class Manager extends Component{
 	    this.setState({isMounted:false});
 	  }	
 
-	componentDidUpdate(){
-	}
 
 
 	render(){
@@ -76,12 +82,14 @@ class Manager extends Component{
 						<Route path={this.props.match.url+'/campaign/list'} exact component = {CampaignList}/>
 						<Route path={this.props.match.url+'/campaign/create'} component = {CreateCampaign}/>
 						<Route path={this.props.match.url+'/campaign/edit'} component = {EditCampaign}/>
-						<Route path={this.props.match.url+'/assign-task/:cid/:tid'} 
-							render = {() => <AssignTask/>}/>
-						<Route path={this.props.match.url+'/campaign/view'} 
-                         render={()=> <ViewCampaign/>}/>
+						<Route path={this.props.match.url+'/assign-task/:cid/:tid'} component={AssignTask}/>
+						<Route path={this.props.match.url+'/campaign/view'} component={ViewCampaign}/>
                          <Route path={this.props.match.url+'/view/task'} component = {TaskDetail}/>
                          <Route path={this.props.match.url+'/task-assignment/'} component = {TaskAssignment}/>
+                         <Route path={this.props.match.url+'/campaign/result'} component ={CampaignResultList}/>
+                         <Route path={this.props.match.url+'/result/tableView'} component ={ResultTableView}/>
+                         <Route path={this.props.match.url+'/result/mapView'} component ={ResultMapView}/>
+                         <Route path={this.props.match.url+'/result/statView'} component ={ResultStatView}/>
 
 						<Redirect from={this.props.match.url} to = {this.props.match.url+'/campaign/list'}/>
 					</Switch>

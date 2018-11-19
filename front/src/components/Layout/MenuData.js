@@ -19,7 +19,7 @@ const menuData = {
 				},
 				{
 					title : 'Campaign Result',
-					path : 'campaign-result',
+					path : 'campaign/result',
 					id : 'mddd'
 				}	
 			],

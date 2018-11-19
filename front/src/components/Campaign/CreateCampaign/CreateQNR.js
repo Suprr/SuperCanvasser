@@ -21,7 +21,7 @@ class CreateQNR extends Component{
 
 				<div className='col-2 text-center'> 
 					<div className='row'>
-						<button className = 'btn btn-light' onClick = {this.props.onClick}>Add</button>
+						<button className = {['btn', 'btn-danger', classes.Btn].join(' ')} onClick = {this.props.onClick}>Add</button>
 					</div>
 				</div>
 			</div>
