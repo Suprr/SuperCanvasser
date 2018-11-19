@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import Campaign from "../../../components/Campaign/Campaign";
 import PageHead from "../../../components/Layout/PageHead/PageHead";
-import ViewCampaign from "./ViewCampaign/ViewCampaign"
+//import ViewCampaign from "./ViewCampaign/ViewCampaign"
 import {withRouter, Route, Switch} from 'react-router-dom'
 
 import axios from '../../../axios'
-class CampaignList extends Component {
+
+class CampaignResultList extends Component {
   state = {
     campaigns: null,
     clicked : false, 
@@ -14,14 +15,11 @@ class CampaignList extends Component {
   };
   
   componentDidMount(){
-    //console.log(['Manager componentDidMount'], this.state.campaignList);
-     let x = null
-     //userID is id from session store
+    
      const userInfoData= JSON.parse(sessionStorage.getItem('userInfo'));
-    //const data = sessionStorage.getItem('userInfo');
+    
      const userID = userInfoData._id;
-     console.log('USER ID', userID);
-     //const userID = getSessionStore.
+     
      this.setState( { isMounted: true }, () => {
          axios.get('/manager/campaign/list/?_id='+userID).then(response=>{
             
@@ -30,16 +28,15 @@ class CampaignList extends Component {
             const length = data.length;
             let newCampaigns = []
             for(let i=0; i<length; i++){
-              newCampaigns.push(data[i]);
+              if(data[i].status=='COMPLETED')
+                newCampaigns.push(data[i]);
             }
 
             if(this.state.isMounted){
 
-              console.log('CampaignList', 'UPLOADED');
               this.setState({campaigns:newCampaigns});
             }
         }).catch(error=>{
-          console.log('USER ID Error', userID);
           console.log(error)
         })
     } );
@@ -57,17 +54,17 @@ class CampaignList extends Component {
 	  		let count = 0;
 		    campaigns = this.state.campaigns.map(cpg => {
 		      let campaign = null;
-		      campaign = <Campaign campaignView={true} key={cpg._id} id={cpg._id} url={this.props.match.url} name = {count++} campaign={cpg}/>;
+		      campaign = <Campaign campaignView={false} key={cpg._id} id={cpg._id} url={this.props.match.url} name = {count++} campaign={cpg}/>;
 		      return campaign;
 		    });  
 		} else{
-			campaigns = <h1> No campaing List</h1>
+			campaigns = <h1> No Campaing Result List</h1>
 		}
 
   console.log('[List]',this.props.match.url);
     return (
       <div>
-        <PageHead title="Campaign List" />
+        <PageHead title="Campaign Result List" />
         <div className="row">{campaigns}</div>
       </div>
 
@@ -75,4 +72,4 @@ class CampaignList extends Component {
   }
 }
 
-export default withRouter(CampaignList);
+export default withRouter(CampaignResultList);

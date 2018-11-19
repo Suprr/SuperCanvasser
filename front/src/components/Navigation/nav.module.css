@@ -40,6 +40,23 @@
 	margin-right:20px;
 }
 
+.Name{
+	color : #cb4d58;
+}
+
+.Name:hover{
+	color : #777;
+	cursor: pointer;
+}
+
+.SignOut:hover{
+	color : #777;
+	cursor: pointer;
+}
+
+
+
+
 
 .RoleDropDown{
 	list-style: none;
@@ -51,7 +68,7 @@
 .RoleDropDown ul{
 	padding:0px;
 	margin:0px;
-	z-index: 10;
+	/*z-index: 10;*/
 
 }
 

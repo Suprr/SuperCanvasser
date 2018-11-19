@@ -28,7 +28,7 @@ class TaskCard extends Component{
 					
 					<div className={["container-fluid", classes.TaskCardBody].join(' ')}>
 						<div className="row d-flex justify-content-center">
-								<button className = 'btn btn-light' name={this.props.task} onClick={this.viewClickHandler}>View</button>
+								<button className = {['btn', 'btn-danger', classes.TaskCardBtn].join(' ')} name={this.props.task} onClick={this.viewClickHandler}>View</button>
 						</div>
 					</div>
 				</div>

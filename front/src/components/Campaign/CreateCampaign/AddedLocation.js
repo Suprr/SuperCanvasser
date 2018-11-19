@@ -9,7 +9,9 @@ class AddedLocations extends Component{
 		showProgressCircle : false
 	}
 	render(){
+		//console.log(['AddedLocations'], this.props.locations)
 		let locations = this.props.locations.map(loc => {
+			//console.log(loc)
 			let location = (
 				<div className = 'row' key={loc.id}>
 					<div className={[classes.QuestionnaireItem, 'col-10'].join(' ')}> 

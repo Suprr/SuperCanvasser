@@ -27,7 +27,15 @@ public class TaskService implements TaskInterface {
     @Override
     public Task editTask(Task task) {
         log.debug("Executing edit task - service");
-        return taskRepo.save(task);
+        if (task.get_id() != null) {
+            if (taskRepo.existsById(task.get_id())) {
+                log.debug("Task Exists");
+                return taskRepo.save(task);
+            }
+        } else {
+            log.debug("Task doesn't exist");
+        }
+        return null;
     }
 
     @Override

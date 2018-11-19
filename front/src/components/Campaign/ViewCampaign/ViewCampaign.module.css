@@ -117,11 +117,20 @@
 	text-align: center;
 	margin:10px;
 }
+
 .TaskCardBody{
 	width:100%;
 	margin-top:30%;
 }
+.TaskCardBtn{
+	background-color: #cb4d58;
+}
 
+.TaskCardBtn:hover{
+	background-color: white;
+	border:1px solid #cb4d58;
+	color:#cb4d58;
+}
 
 
 /**Edit**/
