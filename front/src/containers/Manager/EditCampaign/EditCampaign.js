@@ -111,14 +111,6 @@ class EditCampaign extends Component{
 
 	  		}else{
 		  		let newManager = this.state.newManagerObj._id;
-<<<<<<< HEAD
-		  		
-		  		this.setState((prevState)=>({
-		  			managers : [...prevState.managers, newManager],
-		  			newManager : '',
-		  			newManagerObj : null
-		  		}))
-=======
 		  		let valid = true;
 		  		for(let i=0; i<this.state.managers.length; i++){
 		  			console.log(['AddManager Handler'], newManager, this.state.managers[i]);
@@ -141,7 +133,6 @@ class EditCampaign extends Component{
 			  			newManagerObj : null
 			  		}));
 		  		}
->>>>>>> wonguen-front
 	  		}
 	  }
 

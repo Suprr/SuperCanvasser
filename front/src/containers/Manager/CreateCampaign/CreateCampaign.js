@@ -70,11 +70,7 @@ class CreateCampaign extends Component{
 	}
 
 	 handleStartDateChange = (newDate)=>{
-<<<<<<< HEAD
-	    this.setState({
-	      startDate: newDate
-	    });
-=======
+
 	    if((!newDate.isSame(moment(),'day'))&&moment().isAfter(newDate)){
 	 		this.showMessageBox('The Start Date Must Be After Today');
 	 	} else{
@@ -83,7 +79,6 @@ class CreateCampaign extends Component{
 		      startDate: newDate
 		    });
 	 	}
->>>>>>> wonguen-front
 	  }
 
 
@@ -107,23 +102,15 @@ class CreateCampaign extends Component{
 	  }
 
 	  addManagerHandler = (event) =>{
-<<<<<<< HEAD
-=======
+
 	  		//console.log(['AddManager Handler']);
->>>>>>> wonguen-front
+
 	  		if(!this.state.newManagerObj){
 	  			//show modal
 	  			this.showMessageBox('Manager is not selected from the search list. You must not modify the selected manager from the input textfield.');
 	  		}else{
 		  		let newManager = this.state.newManagerObj._id;
-<<<<<<< HEAD
-		  		
-		  		this.setState((prevState)=>({
-		  			managers : [...prevState.managers, newManager],
-		  			newManager : '',
-		  			newManagerObj : null
-		  		}))
-=======
+
 		  		let valid = true;
 		  		for(let i=0; i<this.state.managers.length; i++){
 		  			//console.log(['AddManager Handler'], newManager, this.state.managers[i]);
@@ -147,7 +134,6 @@ class CreateCampaign extends Component{
 			  			newManagerObj : null
 			  		}));
 		  		}
->>>>>>> wonguen-front
 	  		}
 	  }
 	  getAxios=(url)=>{
@@ -376,11 +362,8 @@ class CreateCampaign extends Component{
 
            axios.get('/manager/campaign/create/manlist?regex='+this.state.newManager).then(response=>{
 	          	  const managerList = response.data;
-<<<<<<< HEAD
-	          	  console.log(['ManagerList'], managerList)
-=======
+
 	          	  //console.log(['ManagerList'], managerList)
->>>>>>> wonguen-front
 		          this.setState({searchedManagerList: managerList, managerList : true});
 	        }).catch(error=>{
 	          console.log(error)
