@@ -13,9 +13,7 @@ import team830.SuperCanvasser.User.User;
 import team830.SuperCanvasser.User.UserRepo;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class TaskService implements TaskInterface {
@@ -90,7 +88,17 @@ public class TaskService implements TaskInterface {
         }
         return locations;
     }
+    // get all locations for all tasks
+    public List<Location> getAllLoctionsForAllTasks(List<Task> tasks){
+        Set<Location> locationSet = new HashSet<>();
 
+        for(int i = 0; i<tasks.size(); i++){
+            List<Location> locations = findLocationsById(tasks.get(i).getLocations());
+            locationSet.addAll(locations);
+        }
+        List<Location> locations = new ArrayList<>(locationSet);
+        return locations;
+    }
     // for view task.. returns the user id and gets the user
     public User getCanvasserById(String _id){
         log.info("TaskService :: getting canvasser by id");
