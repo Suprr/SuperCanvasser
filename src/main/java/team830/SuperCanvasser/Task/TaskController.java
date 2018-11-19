@@ -40,7 +40,7 @@ public class TaskController {
             log.info("TaskController : Task adding failed");
             return null;
         } else {
-            log.info("TaskController : Tagit statusk has been added");
+            log.info("TaskController : Task has been added");
             task.setTaskStatus(Status.INACTIVE);
             return (taskService.addTask(task));
         }
@@ -79,5 +79,16 @@ public class TaskController {
         log.info("TaskController :: No ActiveTask Found");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No ActiveTask Found");
     }
-}
 
+    // ViewTask getting the user for the task
+    @RequestMapping(value = "/canvasser", method = RequestMethod.GET)
+    public ResponseEntity getAssignedCanvasser(@RequestParam String _id, BindingResult result){
+        if(result.hasErrors()){
+            log.info("TaskController :: User Not Found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
+        }
+        log.info("TaskController :: Grabbing canvsser by Id for view task");
+        return ResponseEntity.ok(taskService.getCanvasserById(_id));
+    }
+
+}

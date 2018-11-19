@@ -17,6 +17,17 @@ class AddLocation extends Component{
 		    
 	   	 	this.setState({[name]: value });
 		}
+		
+		addLocation=()=>{
+			this.props.onClick(this.state)
+			this.setState({
+				address1 : '',
+				address2 : '',
+				city : '',
+				state : '',
+				zipcode : ''
+			})
+		}
 
 		render(){
 		return(
@@ -94,7 +105,7 @@ class AddLocation extends Component{
 
 							<div className='col-3 text-center'> 
 									<div className='row'>
-										<button className = 'btn btn-light' onClick = {(event)=>this.props.onClick(this.state, event)}>Add Location</button>
+										<button className = 'btn btn-light' onClick = {this.addLocation}>Add Location</button>
 									</div>
 							</div>
 						</div>

@@ -80,6 +80,7 @@ class ViewCampaign extends Component {
   }
 
   render() {
+
   	let cmpaign = this.state.campaign ? (<div className={[classes.ViewCampaign].join(" ")}>
         <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
           <QuestionnaireList questionnaire={this.state.questions} id={this.state.campaign._id} />
@@ -88,7 +89,7 @@ class ViewCampaign extends Component {
 
         <div className={[classes.Components, "container"].join(" ")}>
           <div className="row">
-            <button className={['btn','btn-light', classes.EditBtn].join(' ')} onClick={this.editButtonClickHandler}>Edit</button>
+           {this.state.campaign.status=='INACTIVE'?<button className={['btn','btn-light', classes.EditBtn].join(' ')} onClick={this.editButtonClickHandler}>Edit</button> : null}
           </div>
           <div className="row justify-content-center">
             <ManagerSection managers={this.state.campaign.managers} id={this.state.campaign._id}/>

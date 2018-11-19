@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import classes from './CreateCampaign.module.css'
 import axios from '../../../axios'
+import RemoveIcon from '../../../assets/images/minus.png'
 class AddedManagers extends Component{
 	state = {
 		isMounted :false,
@@ -43,7 +44,7 @@ class AddedManagers extends Component{
 	render(){
 		console.log(this.state.managers)
 		let managers = this.state.managers.map(manager => {
-			let mng = <div key={manager._id}> {manager.firstName + " "+ manager.lastName} </div>
+			let mng = <div key={manager._id}> {manager.firstName + " "+ manager.lastName} <input type="image" className={classes.RemoveBtn} onClick={(event)=>this.props.removeHandler(event)} name = {manager._id} src={RemoveIcon}/></div>
 			return mng ;
 		});
 

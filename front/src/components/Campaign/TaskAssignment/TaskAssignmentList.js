@@ -11,35 +11,35 @@ class TaskAssignmentList extends Component{
 		isMounted:false,
 	}
 
-	componentDidUpdate(){
-			//console.log(['TaskAssignmentList'], this.state.load, this.state.tasks);
-				//get Tasks from server
-			if(this.props.campaign){
-			//console.log(['TaskAssignmentList'], this.state.load, this.state.tasks);
+	// componentDidUpdate(){
+	// 		//console.log(['TaskAssignmentList'], this.state.load, this.state.tasks);
+	// 			//get Tasks from server
+	// 		if(this.props.campaign){
+	// 		//console.log(['TaskAssignmentList'], this.state.load, this.state.tasks);
 			
-			if(!this.props.load){
-				//get Tasks from server
-				axios.get('https://cse308-de3df.firebaseio.com/tasks.json').then(response=>{
-			          let taskData= response.data 
-			          //get tasks id from campaign
-			          let taskIndex = this.props.campaign.tasks;
+	// 		if(!this.props.load){
+	// 			//get Tasks from server
+	// 			axios.get('https://cse308-de3df.firebaseio.com/tasks.json').then(response=>{
+	// 		          let taskData= response.data 
+	// 		          //get tasks id from campaign
+	// 		          let taskIndex = this.props.campaign.tasks;
 			          
-			          let newTasks = [];
+	// 		          let newTasks = [];
 			          
-			          for(let i in taskIndex){
-				           for(let t in taskData){
-				           	  if(parseInt(taskData[t].id)==parseInt(taskIndex[i].id)){
-				              		newTasks.push(taskData[t]);
-				            	}
-			          		}
+	// 		          for(let i in taskIndex){
+	// 			           for(let t in taskData){
+	// 			           	  if(parseInt(taskData[t].id)==parseInt(taskIndex[i].id)){
+	// 			              		newTasks.push(taskData[t]);
+	// 			            	}
+	// 		          		}
 			          
-		           		}
-			           this.setState((prevState)=>({tasks : newTasks}), this.props.updateHandler());
-	     	 	});     
-			}
-		}
+	// 	           		}
+	// 		           this.setState((prevState)=>({tasks : newTasks}), this.props.updateHandler());
+	//      	 	});     
+	// 		}
+	// 	}
 	
-	}
+	// }
 
 	componentDidUpdate(){
 

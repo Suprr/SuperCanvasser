@@ -1,11 +1,10 @@
-package team830.SuperCanvasser.Canvasser;
+package team830.SuperCanvasser.Availability;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.SuperCanvasserApplication;
-import team830.SuperCanvasser.Variable.Variable;
 
 import java.util.List;
 
@@ -18,7 +17,15 @@ public class AvailabilityService implements AvailabilityInterface {
     @Override
     public Availability editAvailability(Availability availability) {
         log.info("Edit Availability - Service");
-        return availabilityRepo.save(availability);
+        if (availability.get_id() != null){
+            if (availabilityRepo.existsById(availability.get_id())){
+                log.debug("Availability exists");
+                return availabilityRepo.save(availability);
+            }
+        }else{
+            log.debug("Availability doesn't exist");
+        }
+        return null;
     }
 
     public Availability addAvailability(Availability availability) {

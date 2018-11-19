@@ -12,7 +12,7 @@ import TalkingPoint from '../../../components/Campaign/CreateCampaign/TalkingPoi
 
 import CreateQNR from '../../../components/Campaign/CreateCampaign/CreateQNR'
 import AddedQuestionnaire from '../../../components/Campaign/CreateCampaign/AddedQuestionnaire'
-import AddLocation from '../../../components/Campaign/CreateCampaign/AddLocation'
+import AddLocation from '../../../components/Campaign/CreateCampaign/AddLocation2'
 import AddedLocation from '../../../components/Campaign/CreateCampaign/AddedLocation'
 import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDuration'
 
@@ -37,36 +37,48 @@ class CreateCampaign extends Component{
 		locations : [],
 		visitMin : '',
 		newManager : '',
+		newManagerObj : null,
 		newQuestionnaire :'',
-		newLocation : '',
+		newLocations : '',
 		id : null,
 		manager_id : null,
 		isMounted : false,
 		show : false,
 		message : null,
-		managerList : false
+		managerList : false,
+		searchedManagerList : [],
 	}
 
 	handleInputChange = (event)=> {
 	    const target = event.target;
 	    const value = target.value;
 	    const name = target.name;
+	    
 	    if(target.validity.valid){
-   	 		this.setState({[name]: value });
+	    	if(target.name=='newManager'){
+   	 			this.setState({newManager : value, 
+   	 				newManagerObj : null})
+   	 		} else{
+   	 			this.setState({[name]: value });
+   	 		}
    	 	} else{
    	 		if(target.name=='visitMin')
    	 			this.showMessageBox('Visit duration must be integer.');
-   	 		else
+ 			else
    	 			this.showMessageBox('Invalid Type');
-   	 	}
-		
+   	 	}	
 	}
 
 	 handleStartDateChange = (newDate)=>{
-	   
-	    this.setState({
-	      startDate: newDate
-	    });
+
+	    if((!newDate.isSame(moment(),'day'))&&moment().isAfter(newDate)){
+	 		this.showMessageBox('The Start Date Must Be After Today');
+	 	} else{
+	 		//valid date
+	 		this.setState({
+		      startDate: newDate
+		    });
+	 	}
 	  }
 
 
@@ -80,82 +92,261 @@ class CreateCampaign extends Component{
 		    });
 	 	}
 
-	    
 	  }
 
 	  selectManager = (manager) =>{
-	  	this.setState({newManager : manager});
+	  	console.log(['Selected Manager'], manager);
+	  	this.setState({newManager : manager.firstName+ " " + manager.lastName,
+	  					newManagerObj : manager,
+	  					managerList : false});
 	  }
 
 	  addManagerHandler = (event) =>{
-	  		if(this.state.newManager==''){
-	  			//show modal
-	  		}else{
-		  		let newManager = this.state.newManager;
-		  		
-		  		this.setState((prevState)=>({
-		  			managers : [...prevState.managers, newManager]
-		  		}))
 
-		  		this.setState({
-		  			newManager : ''
-		  		});
+	  		//console.log(['AddManager Handler']);
+
+	  		if(!this.state.newManagerObj){
+	  			//show modal
+	  			this.showMessageBox('Manager is not selected from the search list. You must not modify the selected manager from the input textfield.');
+	  		}else{
+		  		let newManager = this.state.newManagerObj._id;
+
+		  		let valid = true;
+		  		for(let i=0; i<this.state.managers.length; i++){
+		  			//console.log(['AddManager Handler'], newManager, this.state.managers[i]);
+		  			if(newManager==this.state.managers[i]){
+		  				valid=false;
+		  				break;
+		  			}
+		  		}
+
+		  		if(valid){
+			  		this.setState((prevState)=>({
+			  			managers : [...prevState.managers, newManager],
+			  			newManager : '',
+			  			newManagerObj : null
+			  		}))
+
+		  		} else {
+		  			this.showMessageBox('The manager is already on the list.');
+		  			this.setState((prevState)=>({
+			  			newManager : '',
+			  			newManagerObj : null
+			  		}));
+		  		}
 	  		}
 	  }
-
+	  getAxios=(url)=>{
+	  	return axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+url+`&benchmark=9&format=json`);
+	  }
+	  
 	  addLocationHandler = (address, event) =>{
-	  		let loc ='';
-	  		if(address.address1=='' || address.city=='' || address.state=='' || address.zipcode==''){
-	  				this.showMessageBox('Fill the location info please.');
+	  		const locations =address.newLocations;
+	  		console.log(' add location handler ', locations);
+	  		
+	  		if(locations==''){
+	  			this.showMessageBox('Fill the location info please.');
 	  		} else{
-	  			if(address.address2!='')
-		  			loc = address.address1+ ", "+ address.address2 +", "+ address.city +", "+ address.state + ", "+ address.zipcode
-		  		else
-	  				loc = address.address1+ ", "+ address.city +", "+ address.state + ", "+ address.zipcode
-		  		
-		  		const addressx = address.address1.split(' ').join('+')+'%2C+'+address.address2.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
-		  		//x is long, y is lat
-		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
-			  		then(res=>{
-			  			const addressMatch = res.data.result.addressMatches[0];
-			  			const long = addressMatch.coordinates.x;
-			  			const lat =  addressMatch.coordinates.y;
+	  			const locationArray = locations.split('\n');
+	  			if(locationArray.length==100){
+	  				this.showMessageBox('Number of locations must be smaller than 100');
+	  			} else{
+	  				
+	  				let axiosArray=[];
+	  				for(let i=0; i<locationArray.length; i++){
+	  					let location = locationArray[i].split(',');
+	  					let url = location[0]+'+';
 
-			  			let validLocation = true;
-			  			
-			  			for(let i=0; i<this.state.locations.length; i++){
-				  			let loc = this.state.locations[i]
-				  			if(loc.latitude===lat && loc.longitude===long){
-				  				validLocation = false;
-				  				break;
-				  			}
-				  		}
+	  					for(let j=1; j<location.length-1; j++){
+	  						let l = location[j].split(' ').join('+')+'%2C+';
+	  						url+=l.substring(1);
+	  					}
 
-				  		if(validLocation){
-				  			const newLocation = {
-				  				latitude : lat,
-					  			longitude : long,
-				  				address : loc,
-				  				id : this.state.locations.length,
-				  			}
+	  					url=url + location[location.length-1].substring(1);
+
+	  					// console.log(url);
+	  					axiosArray.push(this.getAxios(url));
+  						
+  						// axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+url+`&benchmark=9&format=json`).
+					  	// 	then(res=>{
+					  			// const addressMatch = res.data.result.addressMatches[0];
+					  			// const long = addressMatch.coordinates.x;
+					  			// const lat =  addressMatch.coordinates.y;
+
+					  			// let validLocation = true;
+					  			
+					  			// for(let i=0; i<this.state.locations.length; i++){
+						  		// 	let loc = this.state.locations[i]
+						  		// 	if(loc.latitude===lat && loc.longitude===long){
+						  		// 		validLocation = false;
+						  		// 		break;
+						  		// 	}
+						  		// }
+
+						  		// for(let i=0; i<locs.length; i++){
+						  		// 	let loc = locs[i]
+						  		// 	if(loc.latitude===lat && loc.longitude===long){
+						  		// 		validLocation = false;
+						  		// 		break;
+						  		// 	}
+						  		// }
+
+						  		// if(validLocation){
+						  		// 	const newLocation = {
+						  		// 		latitude : lat,
+							  	// 		longitude : long,
+						  		// 		address : locationArray[i],
+						  		// 		id : locationArray[i],
+						  		// 	}
+								  		
+							  	// 	//console.log('Add Location', newLocation)
+							  	// 	locs.push(newLocation);
+						  		// }
+
+						  		// if(i==locationArray.length-1){
+						  		// 	//console.log('Add Location', locs)
+						  		// 	let newlocs = [];
+						  		// 	for(let i=0; i<this.state.locations.length; i++){
+						  		// 		newlocs.push(this.state.locations[i])
+						  		// 	}
+						  		// 	for(let j=0; j<locs.length; j++){
+						  		// 		newlocs.push(locs[j])
+						  		// 	}
+
+						  		// 	this.showMessageBox(locs.length+' locations are added. If there are redundancy locations, it will not be added.');
+						  		// 	this.setState((prevState)=>({
+						  		// 	locations : newlocs,
+							  	// 		newLocations : ''
+						  		// 	}))
+						  // 		}
 					  		
-					  		console.log('Add Location', newLocation)
+					  	// 	}).catch(err=>{
+					  	// 		//invalid date pop up
+					  	// 		console.log(['addLocationHandler Err'],err)
+					  	// 		this.showMessageBox('Invalid Location '+locationArray[i]+', Try again');
+					  	// 	})
+					  		
+	  				}
 
-					  		this.setState((prevState)=>({
-					  			locations : [...prevState.locations, newLocation],
-					  			newLocation : ''
-				  			}))
+	  				//For concurrancy I used Promise.all
+	  				Promise.all(axiosArray).then(result => {
+	  						let locs = [];
+					        
+					        for (let i = 0; i < result.length; i++) {
+					            // myObject[args[i].config.params.saveLocation] = args[i].data;
+					            console.log(result[i]);
+					            const res = result[i];
+			            		const addressMatch = res.data.result.addressMatches[0];
+					  			const long = addressMatch.coordinates.x;
+					  			const lat =  addressMatch.coordinates.y;
+					  			const addr = addressMatch.matchedAddress;
 
-			  			} else{
-			  				this.showMessageBox('The location is already added');
-			  			}
+					  			let validLocation = true;
+					  			
+					  			for(let i=0; i<this.state.locations.length; i++){
+						  			let loc = this.state.locations[i]
+						  			if(loc.latitude===lat && loc.longitude===long){
+						  				validLocation = false;
+						  				break;
+						  			}
+						  		}
 
-			  		}).catch(err=>{
-			  			//invalid date pop up
-			  			console.log(['addLocationHandler Err'],err)
-			  			this.showMessageBox('Invalid Location, Try again');
-			  		})
+						  		for(let i=0; i<locs.length; i++){
+						  			let loc = locs[i]
+						  			if(loc.latitude===lat && loc.longitude===long){
+						  				validLocation = false;
+						  				break;
+						  			}
+						  		}
+
+						  		if(validLocation){
+						  			const newLocation = {
+						  				latitude : lat,
+							  			longitude : long,
+						  				address : addr,
+						  				id : addr,
+						  			}
+								  		
+							  		locs.push(newLocation);
+						  		}
+
+						  		if(i==result.length-1){
+						  			//console.log('Add Location', locs)
+						  			let newlocs = [];
+						  			for(let i=0; i<this.state.locations.length; i++){
+						  				newlocs.push(this.state.locations[i])
+						  			}
+						  			for(let j=0; j<locs.length; j++){
+						  				newlocs.push(locs[j])
+						  			}
+
+						  			this.showMessageBox(locs.length+' locations are added. If there are redundancy locations, it will not be added.');
+						  			this.setState((prevState)=>({
+						  			locations : newlocs,
+							  			newLocations : ''
+						  			}))
+					        	}
+					    }}).catch(err=>{
+					    	this.showMessageBox('There are invalid format of location please check it, then input again.\n'+
+					    		'Input ex) 40, Piedmont Drive, Apartment 16B, Brookhaven, NY, 11776');
+					    });
+	  				
+	  			}
 	  		}
+
+
+	  		// let loc ='';
+	  		// if(address.address1=='' || address.city=='' || address.state=='' || address.zipcode==''){
+	  		// 		this.showMessageBox('Fill the location info please.');
+	  		// } else{
+	  		// 	if(address.address2!='')
+		  	// 		loc = address.address1+ ", "+ address.address2 +", "+ address.city +", "+ address.state + ", "+ address.zipcode
+		  	// 	else
+	  		// 		loc = address.address1+ ", "+ address.city +", "+ address.state + ", "+ address.zipcode
+		  		
+		  	// 	const addressx = address.address1.split(' ').join('+')+'%2C+'+address.address2.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
+		  	// 	//x is long, y is lat
+		  		// axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
+			  	// 	then(res=>{
+			  	// 		const addressMatch = res.data.result.addressMatches[0];
+			  	// 		const long = addressMatch.coordinates.x;
+			  	// 		const lat =  addressMatch.coordinates.y;
+
+			  	// 		let validLocation = true;
+			  			
+			  	// 		for(let i=0; i<this.state.locations.length; i++){
+				  // 			let loc = this.state.locations[i]
+				  // 			if(loc.latitude===lat && loc.longitude===long){
+				  // 				validLocation = false;
+				  // 				break;
+				  // 			}
+				  // 		}
+
+				  // 		if(validLocation){
+				  // 			const newLocation = {
+				  // 				latitude : lat,
+					 //  			longitude : long,
+				  // 				address : loc,
+				  // 				id : this.state.locations.length,
+				  // 			}
+					  		
+					 //  		console.log('Add Location', newLocation)
+
+					 //  		this.setState((prevState)=>({
+					 //  			locations : [...prevState.locations, newLocation],
+					 //  			newLocation : ''
+				  // 			}))
+
+			  	// 		} else{
+			  	// 			this.showMessageBox('The location is already added');
+			  	// 		}
+
+			  	// 	}).catch(err=>{
+			  	// 		//invalid date pop up
+			  	// 		console.log(['addLocationHandler Err'],err)
+			  	// 		this.showMessageBox('Invalid Location, Try again');
+			  	// 	})
+	  		//}
 	  }
 
 
@@ -168,7 +359,16 @@ class CreateCampaign extends Component{
 	  }
 
 	  openSearchModal = () =>{
-	  	this.setState({managerList : true})
+
+           axios.get('/manager/campaign/create/manlist?regex='+this.state.newManager).then(response=>{
+	          	  const managerList = response.data;
+
+	          	  //console.log(['ManagerList'], managerList)
+		          this.setState({searchedManagerList: managerList, managerList : true});
+	        }).catch(error=>{
+	          console.log(error)
+	        });	
+	        
 	  }
 
 	  closeSearchModal = () =>{
@@ -217,6 +417,18 @@ class CreateCampaign extends Component{
 		  	this.setState((prevState)=>({
 		  		locations : removedList		
 		  	}));
+	  }
+
+	  removeManagerHandler = (event) =>{
+	  		console.log(['Remove Handler'], event.target.name);
+	  		if(event.target.name==this.state.manager_id){
+	  			this.showMessageBox('This manager cannot be deleted becuase he/she is creating this campaign.');
+	  		} else{
+	  			const removedList = this.state.managers.filter(ele=>{return ele != event.target.name});
+			  	this.setState((prevState)=>({
+			  		managers : removedList		
+			  	}));
+		  	}
 	  }
 
 
@@ -304,7 +516,7 @@ class CreateCampaign extends Component{
 		return(
 			<div className='container'>
 					<Modal show={this.state.managerList} modalClosed={this.closeSearchModal}>
-			          <ManagerList selectManager={this.selectManager}/>
+			          <ManagerList selectManager={this.selectManager} searchedManagers = {this.state.searchedManagerList} />
 			        </Modal>
 
 					<MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
@@ -313,7 +525,7 @@ class CreateCampaign extends Component{
 						onChange = {(event) => this.handleInputChange(event)}/>
 					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)} openSearchModal={this.openSearchModal} 
 						manager = {this.state.newManager}/>
-					<AddedManagers managers = {this.state.managers}/>
+					<AddedManagers managers = {this.state.managers} removeHandler = {this.removeManagerHandler}/>
 					
 					<DateSection name = 'startDate' date = {this.state.startDate} onChange = {this.handleStartDateChange}/>
 					<DateSection name = 'endDate' date = {this.state.endDate} onChange = {this.handleEndDateChange}/>
@@ -321,7 +533,7 @@ class CreateCampaign extends Component{
 					<CreateQNR questionnaire={this.state.newQuestionnaire} onChange={(event)=>this.handleInputChange(event)}
 						onClick = {(event)=>this.addQuestionnaireHandler(event)}/>
 					<AddedQuestionnaire questionnaire = {this.state.questionnaire} onClick={this.removeQuestionnaireHandler}/>
-					<AddLocation location={this.state.newLocation} onChange={this.handleInputChange}
+					<AddLocation location={this.state.newLocations} onChange={this.handleInputChange}
 							onClick = {(event)=>this.addLocationHandler(event)}/>
 					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
 					<VisitDuration visitMin = {this.state.visitMin} onChange = {(event) => this.handleInputChange(event)}/>

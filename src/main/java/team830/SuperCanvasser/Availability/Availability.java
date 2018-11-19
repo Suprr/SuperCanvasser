@@ -1,20 +1,15 @@
-package team830.SuperCanvasser.Canvasser;
+package team830.SuperCanvasser.Availability;
 
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import team830.SuperCanvasser.SuperCanvasserApplication;
-import team830.SuperCanvasser.Task.Task;
 
 import javax.validation.constraints.NotNull;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Document(collection = "availabilities")

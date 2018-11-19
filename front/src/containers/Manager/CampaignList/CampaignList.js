@@ -12,14 +12,6 @@ class CampaignList extends Component {
     index : '',
     isMounted : false
   };
-
-  campaignViewClickHandler=(event)=>{
-  		const target = event.target;
-  		const count = target.name;
-
-  		this.setState({index : count});
-  		this.setState({clicked:true});
-  }
   
   componentDidMount(){
     //console.log(['Manager componentDidMount'], this.state.campaignList);
@@ -65,7 +57,7 @@ class CampaignList extends Component {
 	  		let count = 0;
 		    campaigns = this.state.campaigns.map(cpg => {
 		      let campaign = null;
-		      campaign = <Campaign key={cpg._id} id={cpg._id} url={this.props.match.url} name = {count++} campaign={cpg} onClick={this.campaignViewClickHandler}/>;
+		      campaign = <Campaign campaignView={true} key={cpg._id} id={cpg._id} url={this.props.match.url} name = {count++} campaign={cpg}/>;
 		      return campaign;
 		    });  
 		} else{

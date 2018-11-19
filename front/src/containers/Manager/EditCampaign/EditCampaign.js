@@ -12,12 +12,13 @@ import TalkingPoint from '../../../components/Campaign/CreateCampaign/TalkingPoi
 
 import CreateQNR from '../../../components/Campaign/CreateCampaign/CreateQNR'
 import AddedQuestionnaire from '../../../components/Campaign/CreateCampaign/AddedQuestionnaire'
-import AddLocation from '../../../components/Campaign/CreateCampaign/AddLocation'
+import AddLocation from '../../../components/Campaign/CreateCampaign/AddLocation2'
 import AddedLocation from '../../../components/Campaign/CreateCampaign/AddedLocation'
 import VisitDuration from '../../../components/Campaign/CreateCampaign/VisitDuration'
 
 import axios from '../../../axios'
 import Modal from '../../../components/UI/Modal/Modal'
+import ManagerList from '../../../components/Campaign/CreateCampaign/ManagerList'
 
 import Geocode from 'react-geocode'
 
@@ -39,13 +40,15 @@ class EditCampaign extends Component{
 		visitMin : '',
 		newManager : '',
 		newQuestionnaire :'',
-		newLocation : '',
+		newLocations : '',
 		id : null,
 		manager_id : null,
 		isMounted : false,
 		_id : null,
 		show : false,
-		message : null
+		message : null,
+		managerList : false,
+		searchedManagerList : [],
 	}
 
 	handleInputChange = (event)=> {
@@ -54,7 +57,12 @@ class EditCampaign extends Component{
 	    const name = target.name;
 	    
 	    if(target.validity.valid){
-   	 		this.setState({[name]: value });
+   	 		if(target.name=='newManager'){
+   	 			this.setState({newManager : value, 
+   	 				newManagerObj : null})
+   	 		} else{
+   	 			this.setState({[name]: value });
+   	 		}
    	 	} else{
    	 		if(target.name=='visitMin')
    	 			this.showMessageBox('Visit duration must be integer.');
@@ -67,9 +75,14 @@ class EditCampaign extends Component{
 
 	 handleStartDateChange = (newDate)=>{
 	   
-	    this.setState({
-	      startDate: newDate
-	    });
+	   if((!newDate.isSame(moment(),'day'))&&moment().isAfter(newDate)){
+	 		this.showMessageBox('The Start Date Must Be After Today');
+	 	} else{
+	 		//valid date
+	 		this.setState({
+		      startDate: newDate
+		    });
+	 	}
 	  }
 
 
@@ -84,84 +97,147 @@ class EditCampaign extends Component{
 	 	}
 	  }
 
-	  addManagerHandler = (event) =>{
-	  		if(this.state.newManager==''){
-	  			//show modal
-	  		}else{
-		  		let newManager = {
-		  			name : this.state.newManager, 
-		  			id : this.state.managers.length
-		  		}
-		  		this.setState((prevState)=>({
-		  			managers : [...prevState.managers, newManager]
-		  		}))
+     selectManager = (manager) =>{
+	  	console.log(['Selected Manager'], manager);
+	  	this.setState({newManager : manager.firstName+ " " + manager.lastName,
+	  					newManagerObj : manager,
+	  					managerList : false});
+	  }
 
-		  		this.setState({
-		  			newManager : ''
-		  		});
+	  addManagerHandler = (event) =>{
+	  		if(!this.state.newManagerObj){
+	  			//show modal
+	  			this.showMessageBox('Manager is not selected from the search list. You must not modify the selected manager from the input textfield.');
+
+	  		}else{
+		  		let newManager = this.state.newManagerObj._id;
+		  		let valid = true;
+		  		for(let i=0; i<this.state.managers.length; i++){
+		  			console.log(['AddManager Handler'], newManager, this.state.managers[i]);
+		  			if(newManager==this.state.managers[i]){
+		  				valid=false;
+		  				break;
+		  			}
+		  		}
+
+		  		if(valid){
+			  		this.setState((prevState)=>({
+			  			managers : [...prevState.managers, newManager],
+			  			newManager : '',
+			  			newManagerObj : null
+			  		}))
+		  		} else {
+		  			this.showMessageBox('The manager is already on the list.');
+		  			this.setState((prevState)=>({
+			  			newManager : '',
+			  			newManagerObj : null
+			  		}));
+		  		}
 	  		}
 	  }
 
+	  
+	  getAxios=(url)=>{
+	  	return axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+url+`&benchmark=9&format=json`);
+	  }
+
 	  addLocationHandler = (address, event) =>{
+	  		console.log(this.state.locations)
 	  		let loc ='';
 
-  			if(address.address1=='' || address.city=='' || address.state=='' || address.zipcode==''){
-  				//show modal
-  				this.showMessageBox('Fill the location info please.');
+	  		const locations =address.newLocations;
+	  		console.log(' add location handler ', locations);
+	  		
+	  		if(locations==''){
+	  			this.showMessageBox('Fill the location info please.');
 	  		} else{
-	  			if(address.address2!='')
-		  			loc = address.address1+ ", "+ address.address2 +", "+ address.city +", "+ address.state + ", "+ address.zipcode
-		  		else
-	  				loc = address.address1+ ", "+ address.city +", "+ address.state + ", "+ address.zipcode
-		  		
-		  		const addressx = address.address1.split(' ').join('+')+'%2C+'+address.address2.split(' ').join('+')+'%2c+'+address.city.split(' ').join('+')+'%2c+'+address.state+'+%2c+'+address.zipcode.split(' ').join('+');
-		  		//x is long, y is lat
-		  		axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=`+addressx+`&benchmark=9&format=json`).
-		  		then(res=>{
-		  			const addressMatch = res.data.result.addressMatches[0];
-		  			const long = addressMatch.coordinates.x;
-		  			const lat =  addressMatch.coordinates.y;
+	  			const locationArray = locations.split('\n');
+	  			if(locationArray.length==100){
+	  				this.showMessageBox('Number of locations must be smaller than 100');
+	  			} else{
 
-		  			let validLocation = true;
-		  			
-		  			for(let i=0; i<this.state.locations.length; i++){
-			  			let loc = this.state.locations[i]
-			  			if(loc.latitude===lat && loc.longitude===long){
-			  				validLocation = false;
-			  				break;
-			  			}
-			  		}
+	  				let axiosArray=[];
+	  				for(let i=0; i<locationArray.length; i++){
+	  					let location = locationArray[i].split(',');
+	  					let url = location[0]+'+';
 
-			  		if(validLocation){
-				  		const newLocation = {
-				  			latitude : lat,
-				  			longitude : long,
-				  			address : loc,
-				  			qNa : {},
-				  			id : this.state.locations.length,
-				  			_id:"",
-				  			index : -1,
-				  			anonymous:false,
-				  			visited : false
-				  		}
+	  					for(let j=1; j<location.length-1; j++){
+	  						let l = location[j].split(' ').join('+')+'%2C+';
+	  						url+=l.substring(1);
+	  					}
 
-				  		console.log('Add Location', newLocation)
+	  					url=url + location[location.length-1].substring(1);
 
-				  		this.setState((prevState)=>({
-				  			locations : [...prevState.locations, newLocation],
-				  			newLocation : ''
-			  			}))
-				  	} else{
-		  				this.showMessageBox('The location is already added');
-				  	}
+	  					axiosArray.push(this.getAxios(url));					  		
+	  				}
 
-		  		}).catch(err=>{
-		  			//invalid date pop up
-		  			console.log(['addLocationHandler Err'],err)
-		  		})
+	  				Promise.all(axiosArray).then(result => {
+	  						let locs = [];
 
-		  		
-		  		
+					        for (let i = 0; i < result.length; i++) {
+					            // myObject[args[i].config.params.saveLocation] = args[i].data;
+					            console.log(result[i]);
+					            const res = result[i];
+			            		const addressMatch = res.data.result.addressMatches[0];
+					  			const long = addressMatch.coordinates.x;
+					  			const lat =  addressMatch.coordinates.y;
+					  			const addr = addressMatch.matchedAddress;
+
+					  			let validLocation = true;
+					  			
+					  			for(let i=0; i<this.state.locations.length; i++){
+						  			let loc = this.state.locations[i]
+						  			if(loc.latitude===lat && loc.longitude===long){
+						  				validLocation = false;
+						  				break;
+						  			}
+						  		}
+
+						  		for(let i=0; i<locs.length; i++){
+						  			let loc = locs[i]
+						  			if(loc.latitude===lat && loc.longitude===long){
+						  				validLocation = false;
+						  				break;
+						  			}
+						  		}
+
+						  		if(validLocation){
+						  			const newLocation = {
+							  			latitude : lat,
+							  			longitude : long,
+							  			address : addr,
+							  			qNa : {},
+							  			id : addr,
+							  			_id:"",
+							  			index : -1,
+							  			anonymous:false,
+							  			visited : false
+							  		}
+								  		
+							  		locs.push(newLocation);
+						  		}
+
+						  		if(i==result.length-1){
+						  			//console.log('Add Location', locs)
+						  			let newlocs = [];
+						  			for(let i=0; i<this.state.locations.length; i++){
+						  				newlocs.push(this.state.locations[i])
+						  			}
+						  			for(let j=0; j<locs.length; j++){
+						  				newlocs.push(locs[j])
+						  			}
+
+						  			this.showMessageBox(locs.length+' locations are added. If there are redundancy locations, it will not be added.');
+						  			this.setState((prevState)=>({
+						  			locations : newlocs,
+							  			newLocations : ''
+						  			}))
+					        	}
+					    }}).catch(err=>{
+					    	this.showMessageBox('There are invalid format of location please check it, then input again.\n'+
+					    		'Input ex) 40, Piedmont Drive, Apartment 16B, Brookhaven, NY, 11776');
+					    });
+	  			}
 	  		}
 	  }
 
@@ -171,6 +247,20 @@ class EditCampaign extends Component{
 
 	  closeMessageBox = () => {
 	    this.setState({ show: false });
+	  }
+
+	  openSearchModal = () =>{
+           axios.get('/manager/campaign/create/manlist?regex='+this.state.newManager).then(response=>{
+	          	  const managerList = response.data;
+	          	  console.log(['ManagerList'], managerList)
+		          this.setState({searchedManagerList: managerList, managerList : true});
+	        }).catch(error=>{
+	          console.log(error)
+	        });	
+	  }
+
+	  closeSearchModal = () =>{
+	  	this.setState({managerList:false})
 	  }
 
 	  addQuestionnaireHandler = (event) =>{
@@ -203,6 +293,7 @@ class EditCampaign extends Component{
 	  }
 
 	  removeQuestionnaireHandler = (event) =>{
+
   			const removedList = this.state.questionnaire.filter(ele=>{return ele.id != event.target.name});
 		  	this.setState((prevState)=>({
 		  		questionnaire : removedList		
@@ -210,11 +301,22 @@ class EditCampaign extends Component{
 	  }
 
 	  removeLocationHandler = (event) =>{
-
   			const removedList = this.state.locations.filter(ele=>{return ele.id != event.target.name});
 		  	this.setState((prevState)=>({
 		  		locations : removedList		
 		  	}));
+	  }
+
+	  removeManagerHandler = (event) =>{
+	  		console.log(['Remove Handler'], event.target.name);
+	  		if(this.state.managers.length<=1){
+	  			this.showMessageBox('Number of manager must be at least one');
+	  		} else{
+	  			const removedList = this.state.managers.filter(ele=>{return ele != event.target.name});
+			  	this.setState((prevState)=>({
+			  		managers : removedList		
+			  	}));
+		  	}
 	  }
 
 
@@ -352,12 +454,16 @@ class EditCampaign extends Component{
 		return(
 			<div className='container'>
 					<MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
+					<Modal show={this.state.managerList} modalClosed={this.closeSearchModal}>
+			          <ManagerList selectManager={this.selectManager} searchedManagers = {this.state.searchedManagerList}/>
+			        </Modal>
 					<PageHead title='Edit Campaign'/>
 					<CampaignTitle  campaignTitle = {this.state.campaignTitle} 
 						onChange = {(event) => this.handleInputChange(event)}/>
-					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)}  
+
+					<AddManager onChange = {(event) => this.handleInputChange(event)} onClick = {(event)=>this.addManagerHandler(event)} openSearchModal={this.openSearchModal} 
 						manager = {this.state.newManager}/>
-					<AddedManagers managers = {this.state.managers}/>
+					<AddedManagers managers = {this.state.managers} removeHandler = {this.removeManagerHandler}/>
 					
 					<DateSection name = 'startDate' date = {this.state.startDate} onChange = {this.handleStartDateChange}/>
 					<DateSection name = 'endDate' date = {this.state.endDate} onChange = {this.handleEndDateChange}/>
@@ -365,7 +471,7 @@ class EditCampaign extends Component{
 					<CreateQNR questionnaire={this.state.newQuestionnaire} onChange={(event)=>this.handleInputChange(event)}
 						onClick = {(event)=>this.addQuestionnaireHandler(event)}/>
 					<AddedQuestionnaire questionnaire = {this.state.questionnaire} onClick={this.removeQuestionnaireHandler}/>
-					<AddLocation location={this.state.newLocation} onChange={this.handleInputChange}
+					<AddLocation location={this.state.newLocations} onChange={this.handleInputChange}
 							onClick = {(event)=>this.addLocationHandler(event)}/>
 					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
 					<VisitDuration visitMin = {this.state.visitMin} onChange = {(event) => this.handleInputChange(event)}/>

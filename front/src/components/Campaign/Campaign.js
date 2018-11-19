@@ -14,7 +14,10 @@ class Campaign extends Component{
 		console.log(['viewClickHandler'], campaign_id, 'props : ',this.props);
 
 		sessionStorage.setItem('campaignID', campaign_id);
-		this.props.history.push('/manager/campaign/view');
+		if(this.props.campaignView)
+			this.props.history.push('/manager/campaign/view');
+		else
+			this.props.history.push('/manager/result/tableView');
 	}
 
 	render(){
@@ -30,7 +33,10 @@ class Campaign extends Component{
 				img = <img src={Finish}/>
 		}
 
+		const btnText = this.props.campaignView? "View" : "Result";
+		
 		return(
+			
 			<div className = {["card", classes.Campaign].join(' ')}>
 				<div className={["card-body"].join(' ')}>
 					<div className={['row', 'card-title', 'd-flex','justify-content-center', classes.CardHead].join(' ')}>
@@ -52,7 +58,7 @@ class Campaign extends Component{
 
 					<div>
 						<button className = {["btn btn-danger"].join(' ')} name={this.props.campaign._id} onClick={this.viewClickHandler}>
-									View
+									{btnText}
 						</button>
 				
 					</div>

@@ -2,12 +2,11 @@ package team830.SuperCanvasser.Campaign;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import team830.SuperCanvasser.Canvasser.AvailabilityService;
+import team830.SuperCanvasser.Availability.AvailabilityService;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Task.Task;
 import team830.SuperCanvasser.Task.TaskService;
@@ -19,7 +18,9 @@ import team830.SuperCanvasser.Task.TaskService;
 public class Algorithm {
     @Autowired
     static TaskService taskService;
+    @Autowired
     static CampaignService campaignService;
+    @Autowired
     static AvailabilityService availabilityService;
     // Walking speed in respect to Latitude and Longitude is 0.05/69
     // degrees of Latitude/Longitude a minute
@@ -104,96 +105,10 @@ public class Algorithm {
     List<Task> getTasks () {
         return tasks;
     }
-
     List<String> getTaskIDs() {
         return taskIDs;
     }
-    /*
-    public static void main(String[] args) {
-        locations = new Location[NUM_LOCATIONS];
-        
-        // Randomize lattitude and logitude for testing
-        for (int i = 0; i < NUM_LOCATIONS; i++) {
-            locations[i] = new Location(Math.random() * 0.1, Math.random() * 0.1, i);
-        }
-        
-        
-        makeDistanceMatrix();
-        ArrayList<ArrayList<Location>> canvasserVisits = calculate();
-        
-        // Calculates total distance + route of first solution
-        System.out.println("Bad Solution total distance: " + totalDistance + " total canvassers " + canvasserVisits.size());
-        for (int i = 0; i < canvasserVisits.size(); i++) {
-            System.out.print("Canvasser " + i+ ": ");
-            System.out.println(totalDistOfCanvasser(canvasserVisits.get(i)));
-        }
-        
-        // Clones the first solution so we can graph it later
-        for (int i = 0; i < canvasserVisits.size(); i++) {
-            ArrayList tempArr = new ArrayList();
-            for (int j = 0; j < canvasserVisits.get(i).size(); j++) {
-                Location tempLoc = new Location(canvasserVisits.get(i).get(j).x, canvasserVisits.get(i).get(j).y, canvasserVisits.get(i).get(j).id);
-                tempArr.add(tempLoc);
-            }
-            badSol.add(tempArr);
-        }
-        
-        optimize(canvasserVisits);
-        
-        // Calculate if canvassers can complete the campaign
-        int numConsecutiveDates = (int) ((Math.random() * 4) + 4);
-        int numCanvassers = (int) ((Math.random() * 5) + 3);
-        boolean[][] canvasserAvailabilityDates = new boolean[numCanvassers][numConsecutiveDates];
-        for (boolean[] randomDate : canvasserAvailabilityDates) {
-            for (int i = 0; i < randomDate.length; i++) {
-                if (Math.random() > 0.5) {
-                    randomDate[i] = false;
-                }
-                else {
-                    randomDate[i] = true;
-                }
-            }
-        }
-        System.out.println("Canvassers Available: " + numCanvassers + " # Dates Consecutive: " + numConsecutiveDates);
-        System.out.println("Canvasser Availability Dates:");
-        for (int i = 0; i < canvasserAvailabilityDates.length; i++) {
-            System.out.print("Canvasser " + i + " Avail Dates: ");
-            for (boolean dateBool : canvasserAvailabilityDates[i]) {
-                if (dateBool) {
-                    System.out.print("Avail ");
-                }
-                else {
-                    System.out.print("Unavail ");
-                }
-            }
-            System.out.println();
-        }
-        boolean[][] updatedAvailDates = checkAndAssignCanvassers(canvasserAvailabilityDates, bestSol.size());
-        
-        if (updatedAvailDates == null) {
-            System.out.println("Not enough canvasser available dates");
-        }
-        else {
-            for (int i = 0; i < updatedAvailDates.length; i++) {
-                System.out.print("Canvasser " + i + " Changed Schedule: ");
-                for (int j = 0; j < updatedAvailDates[0].length; j++) {
-                    if (updatedAvailDates[i][j] == canvasserAvailabilityDates[i][j]) {
-                        if (updatedAvailDates[i][j]) {
-                            System.out.print("Avail ");
-                        }
-                        else {
-                            System.out.print("Unavail ");
-                        }
-                    }
-                    else {
-                        System.out.print("Booked ");
-                    }
-                }
-                System.out.println();
-            }
-        }
-    }
-    */
+
     
     // Calculate the paths for canvassers by choosing the
     // first location and finding the next not chosen location
@@ -473,7 +388,7 @@ public class Algorithm {
                 bestSol = tempVisits;
                 System.out.println("Optimized distance: " + totalDistance + " # of Canvassers " + visits.size());
                 for (int i = 0; i < visits.size(); i++) {
-                    System.out.print("Canvasser " + i+ ": ");
+                    System.out.print("Availability " + i+ ": ");
                     System.out.println(totalDistOfCanvasser(visits.get(i)));
                 }
             }
@@ -503,3 +418,92 @@ public class Algorithm {
         return true;
     }
 }
+
+
+// don't know what this is
+  /*
+    public static void main(String[] args) {
+        locations = new Location[NUM_LOCATIONS];
+
+        // Randomize lattitude and logitude for testing
+        for (int i = 0; i < NUM_LOCATIONS; i++) {
+            locations[i] = new Location(Math.random() * 0.1, Math.random() * 0.1, i);
+        }
+
+
+        makeDistanceMatrix();
+        ArrayList<ArrayList<Location>> canvasserVisits = calculate();
+
+        // Calculates total distance + route of first solution
+        System.out.println("Bad Solution total distance: " + totalDistance + " total canvassers " + canvasserVisits.size());
+        for (int i = 0; i < canvasserVisits.size(); i++) {
+            System.out.print("Availability " + i+ ": ");
+            System.out.println(totalDistOfCanvasser(canvasserVisits.get(i)));
+        }
+
+        // Clones the first solution so we can graph it later
+        for (int i = 0; i < canvasserVisits.size(); i++) {
+            ArrayList tempArr = new ArrayList();
+            for (int j = 0; j < canvasserVisits.get(i).size(); j++) {
+                Location tempLoc = new Location(canvasserVisits.get(i).get(j).x, canvasserVisits.get(i).get(j).y, canvasserVisits.get(i).get(j).id);
+                tempArr.add(tempLoc);
+            }
+            badSol.add(tempArr);
+        }
+
+        optimize(canvasserVisits);
+
+        // Calculate if canvassers can complete the campaign
+        int numConsecutiveDates = (int) ((Math.random() * 4) + 4);
+        int numCanvassers = (int) ((Math.random() * 5) + 3);
+        boolean[][] canvasserAvailabilityDates = new boolean[numCanvassers][numConsecutiveDates];
+        for (boolean[] randomDate : canvasserAvailabilityDates) {
+            for (int i = 0; i < randomDate.length; i++) {
+                if (Math.random() > 0.5) {
+                    randomDate[i] = false;
+                }
+                else {
+                    randomDate[i] = true;
+                }
+            }
+        }
+        System.out.println("Canvassers Available: " + numCanvassers + " # Dates Consecutive: " + numConsecutiveDates);
+        System.out.println("Availability Availability Dates:");
+        for (int i = 0; i < canvasserAvailabilityDates.length; i++) {
+            System.out.print("Availability " + i + " Avail Dates: ");
+            for (boolean dateBool : canvasserAvailabilityDates[i]) {
+                if (dateBool) {
+                    System.out.print("Avail ");
+                }
+                else {
+                    System.out.print("Unavail ");
+                }
+            }
+            System.out.println();
+        }
+        boolean[][] updatedAvailDates = checkAndAssignCanvassers(canvasserAvailabilityDates, bestSol.size());
+
+        if (updatedAvailDates == null) {
+            System.out.println("Not enough canvasser available dates");
+        }
+        else {
+            for (int i = 0; i < updatedAvailDates.length; i++) {
+                System.out.print("Availability " + i + " Changed Schedule: ");
+                for (int j = 0; j < updatedAvailDates[0].length; j++) {
+                    if (updatedAvailDates[i][j] == canvasserAvailabilityDates[i][j]) {
+                        if (updatedAvailDates[i][j]) {
+                            System.out.print("Avail ");
+                        }
+                        else {
+                            System.out.print("Unavail ");
+                        }
+                    }
+                    else {
+                        System.out.print("Booked ");
+                    }
+                }
+                System.out.println();
+            }
+        }
+    }
+    */

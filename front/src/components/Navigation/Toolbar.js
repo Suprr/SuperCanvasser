@@ -10,8 +10,13 @@ class Toolbar extends Component {
 	}
 
 	signOutHandler = () =>{
-		sessionStorage.setItem('userInfo', null);
-		this.props.history.push('/login');
+		
+		axios.get('/logout').then(response=>{
+			sessionStorage.setItem('userInfo', null);
+			this.props.history.push('/login');
+		}).catch(error=>{
+			console.log(' Log out Error',this.state.selectedRole);
+		});
 	}
 
 	componentDidMount(){
@@ -76,14 +81,14 @@ class Toolbar extends Component {
 									<div className = {[classes.OtherItem].join(' ')}> {this.props.user.firstName + " "+ this.props.user.lastName}</div>
 									<div className = {[classes.OtherItem].join(' ')}> / </div>
 									<div className = {[classes.OtherItem].join(' ')}> 
-										<div onClick={this.clickRoleHandler}>{this.props.role}</div>
+										<div onClick={this.clickRoleHandler} className = {classes.Name}>{this.props.role}</div>
 										<div className={[classes.RoleDropDown, this.state.showDropdown?classes.Visible : classes.Invisible].join(' ')}>
 											<ul >
 												{dropDown}
 											</ul>
 										</div>
 									</div>
-									<div className = {[classes.OtherItem].join(' ')}><div onClick={this.signOutHandler}>Sign Out</div></div>
+									<div className = {[classes.OtherItem].join(' ')}><div className={classes.SignOut} onClick={this.signOutHandler}>Sign Out</div></div>
 							</div>
 						</div>
 				
