@@ -5,8 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team830.SuperCanvasser.Canvasser.Availability;
-import team830.SuperCanvasser.Canvasser.AvailabilityRepo;
+import team830.SuperCanvasser.Availability.Availability;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.SuperCanvasserApplication;
@@ -20,11 +19,8 @@ public class CampaignService implements CampaignInterface {
 
     @Autowired
     private CampaignRepo campaignRepo;
-
     @Autowired
     private LocationRepo locationRepo;
-
-    private AvailabilityRepo availabilityRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
@@ -67,7 +63,7 @@ public class CampaignService implements CampaignInterface {
 
     @Override
     public Campaign addCampaign(Campaign campaign) {
-    // Create Locations
+        // Create Locations
         List<Location> locations = createLocations(campaign, new ArrayList<Location>());
         campaign.setLocations(locations);
         // triggering algo and setting the getting the tasks
@@ -87,7 +83,6 @@ public class CampaignService implements CampaignInterface {
     public List<Campaign> findAll(){
         return campaignRepo.findAll();
     }
-
 
     @Override
     public List<Date> listAvailableDates(String sdate, String edate, Availability availability) {
@@ -122,16 +117,16 @@ public class CampaignService implements CampaignInterface {
                         flag = true;
                     }
                 }
-                    if (!flag) dates.add(startDate);
-                        Calendar c = Calendar.getInstance();
-                        //Setting the date to the given date
-                        c.setTime(startDate);
+                if (!flag) dates.add(startDate);
+                Calendar c = Calendar.getInstance();
+                //Setting the date to the given date
+                c.setTime(startDate);
 
-                        //Number of Days to add
-                        c.add(Calendar.DAY_OF_MONTH, 1);
-                        startDate = c.getTime();
-                        //Date after adding the days to the given date
-    //                  String newDate = formatter.format(c.getTime());
+                //Number of Days to add
+                c.add(Calendar.DAY_OF_MONTH, 1);
+                startDate = c.getTime();
+                //Date after adding the days to the given date
+                //                  String newDate = formatter.format(c.getTime());
             }
         } catch (ParseException e) {
             log.debug("Dates cannot be parsed");

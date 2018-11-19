@@ -8,6 +8,8 @@ import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
+import team830.SuperCanvasser.User.User;
+import team830.SuperCanvasser.User.UserRepo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class TaskService implements TaskInterface {
     private LocationRepo locationRepo;
     @Autowired
     private TaskRepo taskRepo;
+    @Autowired
+    private UserRepo userRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
@@ -40,7 +44,7 @@ public class TaskService implements TaskInterface {
 
     @Override
     public Task addTask(Task task) {
-        log.debug("Executing add task - service");
+        log.info("TaskService :: Executing add task - service");
         return taskRepo.insert(task);
     }
 
@@ -83,5 +87,11 @@ public class TaskService implements TaskInterface {
             tasks.add(taskRepo.findBy_id(t));
         }
         return tasks;
+    }
+
+    // for view task.. returns the user id and gets the user
+    public User getCanvasserById(String _id){
+        log.info("TaskService :: getting canvasser by id");
+        return userRepo.findBy_id(_id);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 import team830.SuperCanvasser.Task.TaskService;
 import team830.SuperCanvasser.User.User;
@@ -50,6 +51,19 @@ public class CampaignController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Campaign Not Found");
     }
 
+    //campaign array(list) will be passed to the front as a responseEntity
+    // _id = managerID
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ResponseEntity getAllCampaigns(@RequestParam String _id, HttpServletRequest request){
+        List<Campaign> campaigns = campaignService.findAllbyManager(_id);
+        if(campaigns != null){
+            log.info("CampaignController :: Campaign is returning all the list found by manager");
+            return ResponseEntity.ok(campaigns);
+        }
+        log.info("CampaignController :: No Campaign exist under this manager");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign.");
+    }
+
     @RequestMapping(value = "/view/man", method = RequestMethod.POST)
     public ResponseEntity getManagerForView(@RequestBody List<String> manId){
         List<User> manList = new ArrayList<>();
@@ -65,34 +79,28 @@ public class CampaignController {
 
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign) {
-                log.info("CampaignController :: Campaign has been edited");
-                return ResponseEntity.ok(campaignService.editCampaign(campaign));
-//            log.info("CampaignController :: Campaign Not Found");
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
+    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, BindingResult result) {
+        // checking whether campaign exist in DB
+        if(campaignService.findBy_Id(campaign.get_id()) == null || campaign.getStatus().equals(Status.INACTIVE)){
+            log.info("CampaignController :: Campaign is Active or finished.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campaign Cannot be edited");
+        } else if (result.hasErrors()) {
+            log.info("CampaignController :: Campaign Not Found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
+        } else {
+            log.info("CampaignController :: Campaign has been edited");
+            return ResponseEntity.ok(campaignService.editCampaign(campaign));
+        }
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity createCampaign(@RequestBody Campaign campaign, BindingResult result) {
-            if(!result.hasErrors()){
-                log.info("CampaignController :: Campaign has been created");
-                return ResponseEntity.ok(campaignService.addCampaign(campaign));
-            }
-            log.info("CampaignController :: Campaign Not Found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create campaign");
-    }
-
-    //campaign array(list) will be passed to the front as a responseEntity
-    // _id = managerID
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity getAllCampaigns(@RequestParam String _id, HttpServletRequest request){
-        List<Campaign> campaigns = campaignService.findAllbyManager(_id);
-        if(campaigns != null){
-            log.info("CampaignController :: Campaign is returning all the list found by manager");
-            return ResponseEntity.ok(campaigns);
+        if(!result.hasErrors()){
+            log.info("CampaignController :: Campaign has been created");
+            return ResponseEntity.ok(campaignService.addCampaign(campaign));
         }
-        log.info("CampaignController :: No Campaign exist under this manager");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to bring all the list for campaign.");
+        log.info("CampaignController :: Campaign Not Found");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create campaign");
     }
 
     @RequestMapping(value = "/create/manlist", method = RequestMethod.GET)
