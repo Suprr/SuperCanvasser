@@ -26,7 +26,7 @@ class AssignTask extends Component{
 
 	setSelectCanvasser = (canv) =>{
 		this.setState({selectedCanvasser : canv});
-		console.log(['Selected Canvasser '], canv);
+		console.log(['Selected Availability '], canv);
 	}
 
 	render(){

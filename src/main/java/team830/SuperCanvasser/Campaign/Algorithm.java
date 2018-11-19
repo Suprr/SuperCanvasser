@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import team830.SuperCanvasser.Canvasser.AvailabilityService;
+import team830.SuperCanvasser.Availability.AvailabilityService;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Task.Task;
 import team830.SuperCanvasser.Task.TaskService;
@@ -368,7 +368,7 @@ public class Algorithm {
                 bestSol = tempVisits;
                 System.out.println("Optimized distance: " + totalDistance + " # of Canvassers " + visits.size());
                 for (int i = 0; i < visits.size(); i++) {
-                    System.out.print("Canvasser " + i+ ": ");
+                    System.out.print("Availability " + i+ ": ");
                     System.out.println(totalDistOfCanvasser(visits.get(i)));
                 }
             }
@@ -417,7 +417,7 @@ public class Algorithm {
         // Calculates total distance + route of first solution
         System.out.println("Bad Solution total distance: " + totalDistance + " total canvassers " + canvasserVisits.size());
         for (int i = 0; i < canvasserVisits.size(); i++) {
-            System.out.print("Canvasser " + i+ ": ");
+            System.out.print("Availability " + i+ ": ");
             System.out.println(totalDistOfCanvasser(canvasserVisits.get(i)));
         }
 
@@ -448,9 +448,9 @@ public class Algorithm {
             }
         }
         System.out.println("Canvassers Available: " + numCanvassers + " # Dates Consecutive: " + numConsecutiveDates);
-        System.out.println("Canvasser Availability Dates:");
+        System.out.println("Availability Availability Dates:");
         for (int i = 0; i < canvasserAvailabilityDates.length; i++) {
-            System.out.print("Canvasser " + i + " Avail Dates: ");
+            System.out.print("Availability " + i + " Avail Dates: ");
             for (boolean dateBool : canvasserAvailabilityDates[i]) {
                 if (dateBool) {
                     System.out.print("Avail ");
@@ -468,7 +468,7 @@ public class Algorithm {
         }
         else {
             for (int i = 0; i < updatedAvailDates.length; i++) {
-                System.out.print("Canvasser " + i + " Changed Schedule: ");
+                System.out.print("Availability " + i + " Changed Schedule: ");
                 for (int j = 0; j < updatedAvailDates[0].length; j++) {
                     if (updatedAvailDates[i][j] == canvasserAvailabilityDates[i][j]) {
                         if (updatedAvailDates[i][j]) {

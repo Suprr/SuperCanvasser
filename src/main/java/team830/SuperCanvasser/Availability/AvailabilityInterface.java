@@ -1,7 +1,6 @@
-package team830.SuperCanvasser.Canvasser;
+package team830.SuperCanvasser.Availability;
 
 import org.springframework.stereotype.Service;
-import team830.SuperCanvasser.Variable.Variable;
 
 import java.util.List;
 

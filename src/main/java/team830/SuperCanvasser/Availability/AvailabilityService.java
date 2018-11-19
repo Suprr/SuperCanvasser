@@ -1,11 +1,10 @@
-package team830.SuperCanvasser.Canvasser;
+package team830.SuperCanvasser.Availability;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.SuperCanvasserApplication;
-import team830.SuperCanvasser.Variable.Variable;
 
 import java.util.List;
 
