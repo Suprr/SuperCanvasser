@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResultRepo extends MongoRepository<Result, String> {
+    Result findResultByCampaignId(String campaignId);
 }

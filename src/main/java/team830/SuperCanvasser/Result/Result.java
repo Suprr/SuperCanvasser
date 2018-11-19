@@ -17,9 +17,12 @@ public class Result {
     private double sdRating;
     private double avgRating;
     private Map<String, Double> qNaPercentage = new HashMap<>();
+    private double [] ratings;
 
     Result(String _id, Campaign campaign, double [] ratings){
+        this._id = _id;
         this.campaignId = campaign.get_id();
+        this.ratings = ratings;
         calculateAvg(ratings);
         calculateStd(ratings);
     }
@@ -62,6 +65,14 @@ public class Result {
 
     public void setqNaPercentage(Map<String, Double> qNaPercentage) {
         this.qNaPercentage = qNaPercentage;
+    }
+
+    public double[] getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(double[] ratings) {
+        this.ratings = ratings;
     }
 
     // calculate standard deviation of rating

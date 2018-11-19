@@ -12,5 +12,8 @@ public class ResultService implements ResultInterface{
         return resultRepo.insert(result);
     }
 
+    public Result findByCampaignId(String campaignId){
+        return resultRepo.findResultByCampaignId(campaignId);
+    }
 
 }
