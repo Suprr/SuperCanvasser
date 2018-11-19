@@ -10,6 +10,15 @@ class Sidebar extends Component{
 		menus : this.props.menus
 	}
 
+	 componentDidUpdate(prevProps) {
+	  
+	    if (this.props.menus !== prevProps.menus) {
+	      this.setState(prevState=>({
+	        menus : this.props.menus
+	      }));
+	    }
+	  }
+
 	render(){
 
 	    let menus = this.state.menus.map(menu =>{

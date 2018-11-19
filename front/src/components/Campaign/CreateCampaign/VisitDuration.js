@@ -15,6 +15,7 @@ class VisitDuration extends Component{
 				<div className = {['col-3', classes.InputSection].join(' ')}>
 					<input 	
 							name = 'visitMin'
+							pattern="[0-9]*"
 							value = {this.props.visitMin}
 							className = {[classes.TextField].join(' ')}
 							placeholder = 'Min'

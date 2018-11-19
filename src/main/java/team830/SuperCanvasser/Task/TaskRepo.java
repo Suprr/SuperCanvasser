@@ -10,5 +10,4 @@ import java.util.List;
 public interface TaskRepo extends MongoRepository<Task, String> {
     Task findBy_id(String id);
     List<Task> findByCanvasserIdAndTaskStatus(String id, Status status);
-
 }

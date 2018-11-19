@@ -10,9 +10,12 @@ import java.util.Optional;
 public interface UserInterface {
     User editUser(User user);
     User addUser(User user);
+    void deleteUser(String userId);
+
     User getUserByEmail(String email);
     User getUserBy_id(String id);
-    public List<User> getAllUSer();
+    List<User> getAllUSer();
+
     User loginUser(User user) throws UnsupportedEncodingException;
 
 }

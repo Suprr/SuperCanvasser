@@ -1,0 +1,10 @@
+{
+    "_id" : ObjectId("5bdfdea13bab5bed899b57ce"),
+    "locations" : [ 
+        "5be0195e5af982083f8e570b"
+    ],
+    "date" : "2018-10-01",
+    "taskStatus" : "INACTIVE",
+    "recommendedLoc" : "",
+    "canvasserId" : "5bdbd11de4e562c16f08a30f"
+}

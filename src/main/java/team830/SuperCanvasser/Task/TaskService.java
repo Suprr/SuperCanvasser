@@ -1,5 +1,6 @@
 package team830.SuperCanvasser.Task;
 
+import com.google.common.primitives.Doubles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,11 @@ import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
+import team830.SuperCanvasser.User.User;
+import team830.SuperCanvasser.User.UserRepo;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class TaskService implements TaskInterface {
@@ -21,18 +22,28 @@ public class TaskService implements TaskInterface {
     private LocationRepo locationRepo;
     @Autowired
     private TaskRepo taskRepo;
+    @Autowired
+    private UserRepo userRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     @Override
     public Task editTask(Task task) {
         log.debug("Executing edit task - service");
-        return taskRepo.save(task);
+        if (task.get_id() != null) {
+            if (taskRepo.existsById(task.get_id())) {
+                log.debug("Task Exists");
+                return taskRepo.save(task);
+            }
+        } else {
+            log.debug("Task doesn't exist");
+        }
+        return null;
     }
 
     @Override
     public Task addTask(Task task) {
-        log.debug("Executing add task - service");
+        log.info("TaskService :: Executing add task - service");
         return taskRepo.insert(task);
     }
 
@@ -48,14 +59,6 @@ public class TaskService implements TaskInterface {
         return taskRepo.findByCanvasserIdAndTaskStatus(id, status);
     }
 
-    @Override
-    public List<Location> findLocationsById(List<String> locs){
-        List<Location> locations = new ArrayList<>();
-        for(String loc : locs){
-            locations.add(locationRepo.findLocationBy_id(loc));
-        }
-        return locations;
-    }
     @Override
     public Task findTodayTask(String _id){
         List<Task> tasks = taskRepo.findAll();
@@ -76,4 +79,42 @@ public class TaskService implements TaskInterface {
         }
         return tasks;
     }
+
+    @Override
+    public List<Location> findLocationsById(List<String> locs){
+        List<Location> locations = new ArrayList<>();
+        for(String loc : locs){
+            locations.add(locationRepo.findLocationBy_id(loc));
+        }
+        return locations;
+    }
+    // get all locations for all tasks
+    public List<Location> getAllLoctionsForAllTasks(List<Task> tasks){
+        Set<Location> locationSet = new HashSet<>();
+
+        for(int i = 0; i<tasks.size(); i++){
+            List<Location> locations = findLocationsById(tasks.get(i).getLocations());
+            locationSet.addAll(locations);
+        }
+        List<Location> locations = new ArrayList<>(locationSet);
+        return locations;
+    }
+    // for view task.. returns the user id and gets the user
+    public User getCanvasserById(String _id){
+        log.info("TaskService :: getting canvasser by id");
+        return userRepo.findBy_id(_id);
+    }
+
+    public double [] getAllRatings(List<Task> tasks){
+        List<Double> ratings = new ArrayList<>();
+        for(int i = 0; i < tasks.size(); i++){
+            List<Location> locations = findLocationsById(tasks.get(i).getLocations());
+            for(int k = 0; k < locations.size(); k++){
+                ratings.add((double)locations.get(k).getRating());
+            }
+        }
+        return Doubles.toArray(ratings);
+    }
+
 }
+

@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -63,23 +65,39 @@ public class UserController {
     @RequestMapping(value = "/sysad/add", method = RequestMethod.POST)
     public ResponseEntity addUser(@RequestBody User user, HttpServletRequest request){
         if(getRoleInSession(request).equals(Role.ADMIN)){
-            log.info("UserController : User has been added");
+            log.info("UserController :: User has been added");
             return ResponseEntity.ok(userService.addUser(user));
         }
-
         log.info("UserController :: Does not have authority to add the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
 
     }
 
     @RequestMapping(value = "/sysad/view" , method = RequestMethod.GET)
-    public ResponseEntity viewUser(@RequestParam("email") String email, HttpServletRequest request) {
+    public ResponseEntity viewUser(@RequestParam String email, HttpServletRequest request) {
         if (getRoleInSession(request).equals(Role.ADMIN)) {
-            log.info("UserController : Got user information");
+            log.info("UserController :: Got user information");
             return ResponseEntity.ok(userService.getUserByEmail(email));
         }
         log.info("UserController :: Does not have authority to view the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
+    }
+
+    @RequestMapping(value = "/sysad/delete", method = RequestMethod.GET)
+    public ResponseEntity deleteUser(@RequestParam String _id, BindingResult result, HttpServletRequest request){
+        if(result.hasErrors()){
+            log.info("UserController ::  Failed to delete");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Could not process delete user");
+        }
+        else if(getRoleInSession(request).equals(Role.ADMIN)){
+            log.info("UserController :: Does not have authority to add the users");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
+        }
+        else{
+            log.info("UserController :: User has been deleted");
+            userService.deleteUser(_id);
+            return ResponseEntity.ok().body("User deleted");
+        }
     }
 
     @RequestMapping(value = "/sysad/viewAll" , method = RequestMethod.GET)

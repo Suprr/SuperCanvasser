@@ -15,8 +15,6 @@ class TaskDetail extends Component{
 
 	componentDidMount(){
 	
-
-
 		const taskId = sessionStorage.getItem('taskID')
 	    console.log(['View Campaign did mount'], taskId);
 
@@ -28,7 +26,6 @@ class TaskDetail extends Component{
 	          console.log(['View Task Data'],responseData);
 
 	          if(this.state.isMounted){
-	            console.log('View Task', 'UPLOADED');
 	            this.setState({task:responseData});
 	          }
 	        }).catch(error=>{

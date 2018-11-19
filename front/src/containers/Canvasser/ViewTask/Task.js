@@ -9,13 +9,12 @@ class Task extends Component {
   };
 
   handleQuestionaire = event => {
-    if (!this.props.task.visited) {
+    if (this.props.task.type === "Questionnaire") {
       this.setState({ navigate: true });
     }
   };
 
   render() {
-    const type = this.props.task.visited?"View":"Questionnaire";
     if (this.state.navigate) {
       return (
         <Redirect
@@ -24,26 +23,44 @@ class Task extends Component {
         />
       );
     } else {
+      let color = this.props.task.visited ? "visLoc" : "recLoc";
+      let button = this.props.task.visited ? (
+        <button
+          onClick={event => {
+            this.handleQuestionaire(event);
+          }}
+          className="btn"
+        >
+          Visited
+        </button>
+      ) : (
+        <button
+          onClick={event => {
+            this.handleQuestionaire(event);
+          }}
+          className="btn"
+        >
+          Questionnaire
+        </button>
+      );
       return (
         <div className="row task-row">
           <div className="col-sm">
-            <span>{this.props.task.id}</span>
+            <div className={color}>{this.props.task.id}</div>
           </div>
           <div className="col-sm">
             <div>
-              <span>{this.props.task.address}</span>
+              <span>
+                {this.props.task.number + " " + this.props.task.street}
+              </span>
+            </div>
+            <div>
+              <span>
+                {this.props.task.city + ", " + this.props.task.zipcode}
+              </span>
             </div>
           </div>
-          <div className="col-sm">
-            <button
-              onClick={event => {
-                this.handleQuestionaire(event);
-              }}
-              className="btn"
-            >
-              {type}
-            </button>
-          </div>
+          <div className="col-sm">{button}</div>
         </div>
       );
     }

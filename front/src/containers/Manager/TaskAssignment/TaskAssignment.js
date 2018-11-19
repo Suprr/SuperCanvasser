@@ -10,15 +10,48 @@ import TaskDetail from './TaskDetail/TaskDetail'
 class TaskAssignment extends Component{
 	state ={
 		selectedCampaign: null,
-		campaigns : this.props.campaignList,
+		campaigns : null,
 		tasks : null,
 		loadTasks : false,
+		isMounted : false
 	}
 
 
+	componentDidMount(){
+		//console.log(['Manager componentDidMount'], this.state.campaignList);
+		 let x = null
+		 //userID is id from session store
+		 const userInfoData= JSON.parse(sessionStorage.getItem('userInfo'));
+		//const data = sessionStorage.getItem('userInfo');
+		 const userID = userInfoData._id;
+		 //const userID = getSessionStore.
+		 this.setState( { isMounted: true }, () => {
+
+	         axios.get('/manager/campaign/list/?_id='+userID).then(response=>{
+		          
+		          const data = response.data;
+		          
+		          const length = data.length;
+		          let newCampaigns = []
+		          for(let i=0; i<length; i++){
+		            newCampaigns.push(data[i]);
+		          }
+		          if(this.state.isMounted){
+		            this.setState({campaigns:newCampaigns});
+		          }
+	        }).catch(error=>{
+	          console.log('USER ID Error', userID);
+	          console.log(error)
+	        })
+    	} );
+      
+  	}
+
+	  componentWillUnMount(){
+	    this.setState({isMounted:false});
+	  }	
   //when user select a campaign, this method is called from Task Assignment Header
   selectedCampaignHandler = (campaign) =>{
-  	console.log(['TaskAssignment'],campaign);
   	this.setState({selectedCampaign : campaign, loadTasks : false, tasks:campaign.tasks});
   }
 

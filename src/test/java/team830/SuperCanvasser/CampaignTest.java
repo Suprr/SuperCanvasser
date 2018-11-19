@@ -25,13 +25,8 @@ public class CampaignTest {
 
     }
 
-    @Test
-    public void testRepoFindBy_id(){
-
-    }
-
-    @Test
-    public void testService(){
+    //TODO for Kat: Create tests for campaign
+    //TODO for Chris: Create test for Algorithm
 
     }
 }

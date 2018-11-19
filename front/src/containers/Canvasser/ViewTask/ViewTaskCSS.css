@@ -10,3 +10,58 @@
 .nest {
   padding-left: 50px;
 }
+
+.recLoc {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  padding: 8px;
+  color: white;
+  text-align: center;
+  font: 32px Arial, sans-serif;
+  display: inline-block;
+  background: #cb4d58;
+}
+
+.visLoc {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  padding: 8px;
+  color: white;
+  text-align: center;
+  font: 32px Arial, sans-serif;
+  display: inline-block;
+  background: grey;
+}
+
+.leaflet-container {
+  height: 400px;
+  width: 100%;
+}
+
+.QModal {
+  position: fixed;
+  z-index: 500;
+  background-color: white;
+  width: 80%;
+  height: 80%;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px black;
+  padding: 16px;
+  left: 15%;
+  top: 10%;
+  box-sizing: border-box;
+  transition: all 0.3s ease-out;
+  overflow-y: scroll;
+}
+.QModalBtn {
+  margin: 5% 0;
+  width: 100%;
+}
+@media (min-width: 600px) {
+  .QModal {
+    width: 60%;
+    left: calc(50% - 30%);
+  }
+}

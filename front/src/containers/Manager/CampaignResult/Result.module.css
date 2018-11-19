@@ -1,0 +1,52 @@
+.LocationContainer{
+	text-align: center;
+}
+
+.MapHeader{
+	color:#cb4d58;
+	font-size:20px;
+	margin-top:10px;
+	margin-bottom: 20px;
+}
+.MapZone{
+	width:100%;
+	height:500px;
+}
+
+.LocationList{
+	text-align: center;
+
+}
+.LocationListHeader{
+	color:#cb4d58;
+	font-size:20px;
+	margin-top:50px;
+	margin-bottom: 20px;
+}
+
+.LocationListBody{
+	text-align: center;
+	display: inline-block;
+
+}
+
+.LocationItem{
+	border-bottom:1px solid black;
+	margin-bottom:20px;
+
+}
+
+.BtnSection{
+	margin-bottom: 10px;
+}
+
+.BtnSection button{
+	margin-left:10px;
+	background-color: #cb4d58; 
+}
+
+.BtnSection button:hover{
+	background-color: white;
+	border:1px solid #cb4d58; 
+	color : #cb4d58;
+}

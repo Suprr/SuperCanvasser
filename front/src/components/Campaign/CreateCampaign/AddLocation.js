@@ -3,9 +3,8 @@ import classes from './CreateCampaign.module.css'
 
 class AddLocation extends Component{
 		state={
-					number : '',
-					street : '',
-					unit : '',
+					address1 : '',
+					address2 : '',
 					city : '',
 					state : '',
 					zipcode : ''
@@ -17,6 +16,17 @@ class AddLocation extends Component{
 		    const name = target.name;
 		    
 	   	 	this.setState({[name]: value });
+		}
+		
+		addLocation=()=>{
+			this.props.onClick(this.state)
+			this.setState({
+				address1 : '',
+				address2 : '',
+				city : '',
+				state : '',
+				zipcode : ''
+			})
 		}
 
 		render(){
@@ -33,21 +43,13 @@ class AddLocation extends Component{
 					</div>
 					<div className={[classes.AddLocation,'col-10'].join(' ')}>
 						<div className={['row'].join(' ')}>
-							<div className = {['col-4', classes.InputSection].join(' ')}>
-								<input 	
-										name = 'number'
-										placeholder='Number'
-										value = {this.state.number}
-										className = {[classes.TextField].join(' ')}
-										onChange={(event)=>this.handleInputChange(event)}
-										/>
-							</div>
+						
 
 							<div className = {['col-7', classes.InputSection].join(' ')}>
 								<input 	
-										name = 'street'
-										placeholder='Street'
-										value = {this.state.street}
+										name = 'address1'
+										placeholder='Address1'
+										value = {this.state.address1}
 										className = {[classes.TextField].join(' ')}
 										onChange={(event)=>this.handleInputChange(event)}
 										/>
@@ -59,9 +61,9 @@ class AddLocation extends Component{
 						
 							<div className = {['col-7', classes.InputSection].join(' ')}>
 								<input 	
-										name = 'unit'
-										placeholder='Unit'
-										value = {this.state.unit}
+										name = 'address2'
+										placeholder='Address2'
+										value = {this.state.address2}
 										className = {[classes.TextField].join(' ')}
 										onChange={(event)=>this.handleInputChange(event)}
 										/>
@@ -103,7 +105,7 @@ class AddLocation extends Component{
 
 							<div className='col-3 text-center'> 
 									<div className='row'>
-										<button className = 'btn btn-light' onClick = {(event)=>this.props.onClick(this.state, event)}>Add Location</button>
+										<button className = 'btn btn-light' onClick = {this.addLocation}>Add Location</button>
 									</div>
 							</div>
 						</div>

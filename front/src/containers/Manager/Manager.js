@@ -3,6 +3,8 @@ import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
 
 import Sidebar from '../../components/Navigation/Sidebar'
 import CampaignList from './CampaignList/CampaignList'
+import CampaignResultList from './CampaignResult/CampaignResultList'
+
 
 import classes from './Manager.module.css'
 import CampaignModel from './CampaignList/CampaignModel'
@@ -12,7 +14,13 @@ import EditCampaign from './EditCampaign/EditCampaign'
 import AssignTask from './CampaignList/ViewCampaign/AssignTask/AssignTask'
 import TaskAssignment from './TaskAssignment/TaskAssignment'
 import TaskDetail from './TaskAssignment/TaskDetail/TaskDetail'
+import ResultTableView from './CampaignResult/ResultTableView'
+import ResultMapView from './CampaignResult/ResultMapView'
+import ResultStatView from './CampaignResult/ResultStatView'
+
 import axios from '../../axios'
+
+
 class Manager extends Component{
 	
 	state = {
@@ -48,7 +56,7 @@ class Manager extends Component{
 	          console.log('CampaignList', newCampaigns);
 	          if(this.state.isMounted){
 
-	          console.log('CampaignList', 'UPLOADED');
+	          	console.log('CampaignList', 'UPLOADED');
 	            this.setState({campaigns:newCampaigns});
 	          }
         }).catch(error=>{
@@ -59,45 +67,29 @@ class Manager extends Component{
       
   }
 
-  componentWillUnMount(){
-    this.setState({isMounted:false});
-  }
-	// 	if(!this.state.campaignList){
-	// 		 axios.get('https://cse308-de3df.firebaseio.com/managers/'+this.state.managerID+'.json').then(response=>{
-	// 	          x= response.data 
-	// 	        //  console.log('[Manager componentDidMount]',x.campaigns)
-	// 	          this.setState((prevState)=>({campaignList : response.data.campaigns}));
-	// 	      });    
-	// 	}	
-	// }
-	
-
-	componentDidUpdate(){
-		//console.log(['Manager componentDidUpdate'], this.state.campaignList);
-	}
+	  componentWillUnMount(){
+	    this.setState({isMounted:false});
+	  }	
 
 
-	// realCampianSet=(realCamp)=>{
-	// 	//console.log('[Real Camp]',realCamp)
-	// 	this.setState({campaigns : realCamp});
-	// }
 
 	render(){
 		console.log(['Manager Props'], this.props.match.params);
-		//console.log(['Manager render'],this.state.campaigns, '[campaignList]', this.state.campaignList);
 		return(	
 				
 				<div className={["col-10", "fixed-center", classes.Manager].join(' ')}>
 					<Switch>
-						<Route path={this.props.match.url+'/campaign/list'} exact render = {() =><CampaignList campaignList={this.state.campaigns}/>}/>
+						<Route path={this.props.match.url+'/campaign/list'} exact component = {CampaignList}/>
 						<Route path={this.props.match.url+'/campaign/create'} component = {CreateCampaign}/>
 						<Route path={this.props.match.url+'/campaign/edit'} component = {EditCampaign}/>
-						<Route path={this.props.match.url+'/assign-task/:cid/:tid'} 
-							render = {() => <AssignTask/>}/>
-						<Route path={this.props.match.url+'/campaign/view'} 
-                         render={()=> <ViewCampaign/>}/>
-                         <Route path={this.props.match.url+'/view/task'} render = {()=><TaskDetail/>}/>
-                         <Route path={this.props.match.url+'/task-assignment/'} render = {()=><TaskAssignment campaignList={this.state.campaigns}/>}/>
+						<Route path={this.props.match.url+'/assign-task/:cid/:tid'} component={AssignTask}/>
+						<Route path={this.props.match.url+'/campaign/view'} component={ViewCampaign}/>
+                         <Route path={this.props.match.url+'/view/task'} component = {TaskDetail}/>
+                         <Route path={this.props.match.url+'/task-assignment/'} component = {TaskAssignment}/>
+                         <Route path={this.props.match.url+'/campaign/result'} component ={CampaignResultList}/>
+                         <Route path={this.props.match.url+'/result/tableView'} component ={ResultTableView}/>
+                         <Route path={this.props.match.url+'/result/mapView'} component ={ResultMapView}/>
+                         <Route path={this.props.match.url+'/result/statView'} component ={ResultStatView}/>
 
 						<Redirect from={this.props.match.url} to = {this.props.match.url+'/campaign/list'}/>
 					</Switch>

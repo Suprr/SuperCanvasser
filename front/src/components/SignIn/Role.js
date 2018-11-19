@@ -29,16 +29,7 @@ class Role extends Component{
         	role : this.state.selectedRole,
     	}
 		//Real Login
-		//axios.post('/login/role.json', this.state.selectedRole)
-		// axios.post('/login/role', selectedRole)
-		// 		.then(response => {
-		// 				console.log(roleName)
-		// 				//12 is placeholder for URL ID, I will fix it
-		// 				this.props.history.push('/'+roleName+'/'+'12')
-		// 		}).catch(error=>{
-		// 			console.log('Error',selectedRole);
-		// 			console.log("Error", error);
-		// 		});
+		
 		axios.get('/login/role/?role='+this.state.selectedRole).then(response=>{
 				console.log(role, roleName)
 						//12 is placeholder for URL ID, I will fix it
@@ -59,7 +50,6 @@ class Role extends Component{
 		//get roles from the server.
 		const data = JSON.parse(sessionStorage.getItem('userInfo'));
 		//const data = sessionStorage.getItem('userInfo');
-		console.log(['Role ComponentDidmonut'], data);
 		this.setState({options:data.role});
 	}
 

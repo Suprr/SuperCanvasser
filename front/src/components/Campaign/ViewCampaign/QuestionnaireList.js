@@ -12,7 +12,34 @@ class QuestionnaireList extends Component{
 	}
 
 
-	
+	render(){
+
+		let questionnaire =  this.state.questionnaire? this.state.questionnaire.map(qnr =>{
+			let question = (<QuestionnaireComponent key = {qnr.key} btnID = {qnr.key} question={qnr.question}/> )
+		    return question;
+		  }) : null;
+		
+		//let displayedComponent = this.state.showAdd? <EditQNR editedQuestion = {this.state.editedQuestion} onClick = {this.addQuestionHandler} onChange={this.addedQuestionChange} type='add' />  : null ;
+		return(
+			<div className='row justify-content-center'>
+				<div className = {[classes.QNRListSection, 'col-10', 'text-center'].join(' ')}>
+					<div className = {['row'].join(' ')}>
+						<h4 className={['col-10', classes.Title].join(' ')}>Questionnaire</h4> 
+					</div>
+					{/*displayedComponent*/}
+					<div className = 'row justify-content-center'>
+						<div className = {['text-center', classes.QNRListBody].join(' ')}>
+							{questionnaire}
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
+}
+
+export default QuestionnaireList;
 	
 
 	// onChangeHandler=(event)=>{
@@ -91,31 +118,4 @@ class QuestionnaireList extends Component{
 	// }
 
 
-	render(){
-
-		let questionnaire =  this.state.questionnaire? this.state.questionnaire.map(qnr =>{
-			let question = (<QuestionnaireComponent key = {qnr.key} btnID = {qnr.key} question={qnr.question}/> )
-		    return question;
-		  }) : null;
-		
-		//let displayedComponent = this.state.showAdd? <EditQNR editedQuestion = {this.state.editedQuestion} onClick = {this.addQuestionHandler} onChange={this.addedQuestionChange} type='add' />  : null ;
-		return(
-			<div className='row justify-content-center'>
-				<div className = {[classes.QNRListSection, 'col-10', 'text-center'].join(' ')}>
-					<div className = {['row'].join(' ')}>
-						<h4 className={['col-10', classes.Title].join(' ')}>Questionnaire</h4> 
-					</div>
-					{/*displayedComponent*/}
-					<div className = 'row justify-content-center'>
-						<div className = {['text-center', classes.QNRListBody].join(' ')}>
-							{questionnaire}
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-}
-
-export default QuestionnaireList;
+	

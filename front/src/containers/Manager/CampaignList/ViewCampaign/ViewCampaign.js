@@ -40,8 +40,6 @@ class ViewCampaign extends Component {
 
   componentDidMount(){
     const cmpId = sessionStorage.getItem('campaignID')
-    console.log(['View Campaign did mount'], cmpId);
-
     this.setState( { isMounted: true }, () => {
           axios.get('/manager/campaign/view/?_id='+cmpId).then(response=>{
            
@@ -50,6 +48,7 @@ class ViewCampaign extends Component {
           const newCampaign = responseData[0];
 
           let managerArray = [];
+
           for(let i=1; i<dataLength; i++){
             managerArray.push(responseData[i]);
           }
@@ -61,7 +60,6 @@ class ViewCampaign extends Component {
           }
 
           if(this.state.isMounted){
-            console.log('ViewCampaign', 'UPLOADED', newQuestionnaire);
             this.setState({campaign:newCampaign,
                            managers:managerArray,
                            questions : newQuestionnaire});
@@ -71,27 +69,6 @@ class ViewCampaign extends Component {
         })
     });
 
-
-    ////////
-     // let cmpIndex = this.props.match.params.id;
-     // axios.get('https://cse308-de3df.firebaseio.com/campaigns/'+cmpIndex+'.json').then(response=>{
-     //      let x= response.data
-     //      let newCampaign = x;
-     //      // let newCampaigns = [];
-     //      //console.log(['ViewCmp componentDidMount'], newCampaign);
-     //      // for(let c in campaignIndexes){
-     //      //   if(x[c]){
-     //      //     newCampaigns.push(x[c]);
-     //      //   }
-     //      // }
-     //      this.setState({campaign:newCampaign});
-     //      // this.setState({campaigns : newCampaigns});
-     //      // this.props.campaignSet(newCampaigns);
-     //      //this.setState({campaigns : response.data.campaigns})
-     //  });     
-      
-     // console.log(['View Task'], this.props);
-
    }
   
   componentWillUnMount(){
@@ -99,16 +76,11 @@ class ViewCampaign extends Component {
   }
   
   editButtonClickHandler=(event)=>{
-    //console.log(['viewClickHandler'], campaign_id, 'props : ',this.props);
-    // const cmpId = sessionStorage.getItem('campaignID');
-    //sessionStorage.setItem('campaignID', cmpId);
     this.props.history.push('/manager/campaign/edit');
   }
 
   render() {
-    //console.log('[Veiw Campaign]', this.state.campaign)
-    console.log(['View Campaign Props'], this.props);
-   // let campaign = this.props.campaign[parseInt(this.props.match.params.index)];
+
   	let cmpaign = this.state.campaign ? (<div className={[classes.ViewCampaign].join(" ")}>
         <Modal show={this.state.show} modalClosed={this.modalCloseHandler}>
           <QuestionnaireList questionnaire={this.state.questions} id={this.state.campaign._id} />
@@ -117,7 +89,7 @@ class ViewCampaign extends Component {
 
         <div className={[classes.Components, "container"].join(" ")}>
           <div className="row">
-            <button onClick={this.editButtonClickHandler}>Edit</button>
+           {this.state.campaign.status=='INACTIVE'?<button className={['btn','btn-light', classes.EditBtn].join(' ')} onClick={this.editButtonClickHandler}>Edit</button> : null}
           </div>
           <div className="row justify-content-center">
             <ManagerSection managers={this.state.campaign.managers} id={this.state.campaign._id}/>
