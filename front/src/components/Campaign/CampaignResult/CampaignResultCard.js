@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import classes from './Campaign.module.css'
 import {Link, withRouter} from 'react-router-dom'
-import Inactive from '../../assets/images/inactivity.png'
-import Active from '../../assets/images/inprogress.png'
-import Finish from '../../assets/images/finish.png'
-class Campaign extends Component{
+import classes from '../Campaign.module.css'
+import Inactive from '../../../assets/images/inactivity.png'
+import Active from '../../../assets/images/inprogress.png'
+import Finish from '../../../assets/images/finish.png'
+class CampaignResultCard extends Component{
 	state ={
 		...this.props.campaign
 	}
@@ -14,10 +14,7 @@ class Campaign extends Component{
 		console.log(['viewClickHandler'], campaign_id, 'props : ',this.props);
 
 		sessionStorage.setItem('campaignID', campaign_id);
-		if(this.props.campaignView)
-			this.props.history.push('/manager/campaign/view');
-		else
-			this.props.history.push('/manager/result/tableView');
+		this.props.history.push('/manager/result/tableView');
 	}
 
 	render(){
@@ -33,10 +30,7 @@ class Campaign extends Component{
 				img = <img src={Finish}/>
 		}
 
-		const btnText = this.props.campaignView? "View" : "Result";
-		
 		return(
-			
 			<div className = {["card", classes.Campaign].join(' ')}>
 				<div className={["card-body"].join(' ')}>
 					<div className={['row', 'card-title', 'd-flex','justify-content-center', classes.CardHead].join(' ')}>
@@ -58,7 +52,7 @@ class Campaign extends Component{
 
 					<div>
 						<button className = {["btn btn-danger"].join(' ')} name={this.props.campaign._id} onClick={this.viewClickHandler}>
-									{btnText}
+									Result
 						</button>
 				
 					</div>
@@ -68,4 +62,4 @@ class Campaign extends Component{
 	}
 }
 
-export default withRouter(Campaign);
+export default withRouter(CampaignResultCard);

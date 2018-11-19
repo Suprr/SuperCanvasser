@@ -3,7 +3,8 @@
 }
 .HiddenSection{
 	margin-top:1%;
-
+	height:100px;
+	overflow-y: scroll;
 }
 
 .TextField{
@@ -27,6 +28,17 @@
 	
 }
 
+.Btn{
+	background-color: #cb4d58;
+	margin-left:10px;
+}
+
+.Btn:hover{
+	background-color: white;
+	border:1px solid #cb4d58;
+	color : #cb4d58;
+}
+
 .DatePicker{
 	border:0;
 	border-bottom: black solid 1px;
@@ -47,4 +59,28 @@
 	width:20px;
 	height:20px;
 	margin-left:20px;
+<<<<<<< HEAD
+=======
+}
+
+.ManagerItem{
+	margin-bottom: 10px;
+}
+.ManagerListName{
+	text-align: center;
+}
+
+.ManagerListBtn{
+	text-align: center;
+}
+
+.ManagerListBtn button{
+	background-color: #cb4d58;
+}
+
+.ManagerListBtn button:hover{
+	background-color: white;
+	border:1px solid #cb4d58;
+	color : #cb4d58;
+>>>>>>> wonguen-front
 }

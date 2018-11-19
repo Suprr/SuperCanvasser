@@ -117,6 +117,7 @@ public class CampaignService implements CampaignInterface {
                         flag = true;
                     }
                 }
+
                     if (!flag) dates.add(startDate);
                         Calendar c = Calendar.getInstance();
                         //Setting the date to the given date
@@ -127,6 +128,7 @@ public class CampaignService implements CampaignInterface {
                         startDate = c.getTime();
                         //Date after adding the days to the given date
     //                  String newDate = formatter.format(c.getTime());
+
             }
         } catch (ParseException e) {
             log.debug("Dates cannot be parsed");

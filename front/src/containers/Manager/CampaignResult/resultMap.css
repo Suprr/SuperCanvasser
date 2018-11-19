@@ -1,0 +1,17 @@
+#mapid { height: 180px; }
+
+.leaflet-container{
+	width:100%;
+	height: 100%;
+}
+
+img.leaflet-marker-icon{
+	display: none;
+}
+
+.leaflet-tooltip{
+	border-radius : 100px;
+	background-color: #cb4d58;
+	color : white;
+	padding:10px;
+}
