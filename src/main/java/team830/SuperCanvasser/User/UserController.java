@@ -84,12 +84,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/sysad/delete", method = RequestMethod.GET)
-    public ResponseEntity deleteUser(@RequestParam String _id, BindingResult result, HttpServletRequest request){
-        if(result.hasErrors()){
-            log.info("UserController ::  Failed to delete");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Could not process delete user");
-        }
-        else if(getRoleInSession(request).equals(Role.ADMIN)){
+    public ResponseEntity deleteUser(@RequestParam String _id, HttpServletRequest request){
+        if(getRoleInSession(request).equals(Role.ADMIN)){
             log.info("UserController :: Does not have authority to add the users");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
         }
