@@ -1,0 +1,57 @@
+.InputSection{
+	margin-left:20px;
+	margin-top:10px;
+
+}
+
+.InputName{
+
+}
+
+.Input{
+}
+
+.Input input{
+	border:none;
+	border-bottom: 1px solid #aaa;
+	width:100%;
+}
+
+.BtnSection{
+	margin-top:20px;
+	text-align: right;
+}
+
+.CheckBox{
+	margin-left:5px;
+}
+
+.RemoveBtn{
+	width:20px;
+	height:20px;
+	margin-left:20px;
+}
+
+.RoleBtn{
+	background: #cb4d58;
+	color:white;
+	border : none;
+	margin-right:20px;
+}
+
+.RoleBtn:hover{
+	background: white;
+	color:#cb4d58;
+	border : 1px solid #cb4d58;
+}
+
+.RoleBtnNagative{
+	background: white;
+	color:#cb4d58;
+	border : 1px solid #cb4d58;
+}
+
+.UserItem{
+	padding:5px;
+	margin-bottom: 10px;
+}

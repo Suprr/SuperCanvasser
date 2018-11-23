@@ -10,7 +10,7 @@
 }
 .MapZone{
 	width:100%;
-	height:500px;
+	height:420px;
 }
 
 .LocationList{
@@ -50,3 +50,48 @@
 	border:1px solid #cb4d58; 
 	color : #cb4d58;
 }
+
+
+
+/*MAP VIEW*/
+
+.CircleSection{
+}
+
+.CircleLine{
+	margin-bottom: 10px;
+}
+
+.CircleSectionTitle{
+	color: #CD4B56;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.Circle{
+	width:21px;
+	height:21px;
+	border-radius: 50%;
+	margin-top:3px;
+}
+
+.Red{
+	background-color: #CD4B56;
+}
+
+.Yellow{
+	background-color: #F8E730;
+}
+
+.Green{
+	background-color: #ABD27C;
+}
+
+.Blue{
+	background-color: #657FB0;
+}
+
+.Purple{
+	background-color: #8B4AC4;
+}
+

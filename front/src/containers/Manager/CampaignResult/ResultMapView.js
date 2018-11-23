@@ -4,7 +4,7 @@ import {withRouter, Route, Switch} from 'react-router-dom'
 import axios from '../../../axios'
 import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
 import './resultMap.css'
-import LocationItem from '../../../components/Campaign/TaskAssignment/TaskDetail/LocationItem'
+import ResultLocationItem from '../../../components/Campaign/CampaignResult/ResultLocationItem'
 import classes from './Result.module.css'
 
 class ResultMapView extends Component{
@@ -76,11 +76,13 @@ class ResultMapView extends Component{
 			                </Tooltip>
 						   </Marker>;
 		    return marker;
+
 		}) : null;
 
 		let num = 1;
 		const locations = this.state.locations&&this.state.locations.length>0? this.state.locations.map(loc =>{
-			let location = <LocationItem key= {loc._id} number = {num++} location={loc.address}/> 
+			const color = this.setClassName(loc.rating);
+			let location = <ResultLocationItem key= {loc._id} number = {num++} color={color} rating={loc.rating} location={loc.address}/> 
 		    return location;
 		}): null;
 
@@ -100,6 +102,46 @@ class ResultMapView extends Component{
 					          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
 					    {markers}
 				  	</Map>		
+				</div>
+
+				<div className={classes.CircleSection}>
+					<div className={classes.CircleSectionTitle}>
+						Rating
+					</div>
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Red].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>5</div>
+					</div>
+
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Yellow].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>4</div>
+					</div>
+
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Green].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>3</div>
+					</div>
+					
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Blue].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>2</div>
+					</div>
+
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Purple].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>1</div>
+					</div>
 				</div>
 
 
