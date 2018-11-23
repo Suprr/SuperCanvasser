@@ -51,7 +51,6 @@ public class Algorithm {
             Task newTask = new Task(locations, locations.get(0));
             newTask.set_id(ObjectId.get().toHexString());
             taskIDs.add(newTask.get_id());
-            taskService.addTask(newTask);
             tasks.add(newTask);
         }
 
@@ -79,27 +78,26 @@ public class Algorithm {
                 }
             }
         }
+        for (Task t : tasks) {
+            taskService.addTask(t);
+        }
         return taskIDs;
     }
 
     public static ArrayList<Location> recList(ArrayList<Location> locations) {
         ArrayList<Location> recommendedLocations = new ArrayList();
-        recommendedLocations.add(locations.get(0));
-        locations.remove(0);
-        while (locations.size() > 0) {
-            double dist = Double.MAX_VALUE;
-            int index = 0;
-            for (int i = 0; i < locations.size(); i++){
-                Location loc = locations.get(i);
-                if (dist > manhattanDistance(loc, recommendedLocations.get(recommendedLocations.size() - 1))) {
-                    dist = manhattanDistance(loc, recommendedLocations.get(recommendedLocations.size() - 1));
-                    index = i;
-                }
+        if (manhattanDistance(locations.get(0), locations.get(1)) > manhattanDistance(locations.get(0), locations.get(locations.size()))) {
+            int startInd = 1;
+            int endInd = locations.size() - 1;
+            while (startInd < endInd) {
+                Location loc = locations.get(startInd);
+                locations.add(startInd, locations.get(endInd));
+                locations.add(endInd, loc);
+                startInd++;
+                endInd--;
             }
-            recommendedLocations.add(locations.get(index));
-            locations.remove(index);
         }
-        return recommendedLocations;
+        return locations;
     }
 
     List<Task> getTasks () {

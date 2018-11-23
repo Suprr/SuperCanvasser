@@ -8,7 +8,11 @@ class EditAvailability extends Component {
 
   onCalendarClick = e => {
     let newInavDates = this.state.inAvailableDates;
-    newInavDates.push(e);
+    if (newInavDates.includes(e)) {
+      newInavDates.splice(newInavDates.indexOf(e), 1);
+    } else {
+      newInavDates.push(e);
+    }
     this.setState({ inAvailableDates: newInavDates });
     // send inavail dates to backend
   };

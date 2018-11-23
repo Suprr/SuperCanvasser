@@ -1,3 +1,4 @@
+/*
 package team830.SuperCanvasser;
 
 import org.junit.Test;
@@ -30,3 +31,4 @@ public class CampaignTest {
 
     }
 }
+*/
