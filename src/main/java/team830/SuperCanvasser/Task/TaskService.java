@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Location.LocationRepo;
+import team830.SuperCanvasser.Location.LocationService;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 import team830.SuperCanvasser.User.User;
@@ -19,7 +20,7 @@ import java.util.*;
 public class TaskService implements TaskInterface {
 
     @Autowired
-    private LocationRepo locationRepo;
+    private LocationService locationService;
     @Autowired
     private TaskRepo taskRepo;
     @Autowired
@@ -80,20 +81,11 @@ public class TaskService implements TaskInterface {
         return tasks;
     }
 
-    @Override
-    public List<Location> findLocationsById(List<String> locs){
-        List<Location> locations = new ArrayList<>();
-        for(String loc : locs){
-            locations.add(locationRepo.findLocationBy_id(loc));
-        }
-        return locations;
-    }
     // get all locations for all tasks
     public List<Location> getAllLoctionsForAllTasks(List<Task> tasks){
         Set<Location> locationSet = new HashSet<>();
-
         for(int i = 0; i<tasks.size(); i++){
-            List<Location> locations = findLocationsById(tasks.get(i).getLocations());
+            List<Location> locations = locationService.findLocationsById(tasks.get(i).getLocations());
             locationSet.addAll(locations);
         }
         List<Location> locations = new ArrayList<>(locationSet);
@@ -103,17 +95,6 @@ public class TaskService implements TaskInterface {
     public User getCanvasserById(String _id){
         log.info("TaskService :: getting canvasser by id");
         return userRepo.findBy_id(_id);
-    }
-
-    public double [] getAllRatings(List<Task> tasks){
-        List<Double> ratings = new ArrayList<>();
-        for(int i = 0; i < tasks.size(); i++){
-            List<Location> locations = findLocationsById(tasks.get(i).getLocations());
-            for(int k = 0; k < locations.size(); k++){
-                ratings.add((double)locations.get(k).getRating());
-            }
-        }
-        return Doubles.toArray(ratings);
     }
 
 }

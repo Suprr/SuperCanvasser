@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import team830.SuperCanvasser.Location.Location;
+import team830.SuperCanvasser.Location.LocationService;
 import team830.SuperCanvasser.Status;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
@@ -20,6 +22,8 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private LocationService locationService;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
@@ -60,7 +64,7 @@ public class TaskController {
     @RequestMapping(value = "/locations", method = RequestMethod.POST)
     public ResponseEntity getLocationsById(@RequestBody List<String> locations){
         log.info("TaskController :: Grabbing locations by id");
-        return ResponseEntity.ok(taskService.findLocationsById(locations));
+        return ResponseEntity.ok(locationService.findLocationsById(locations));
     }
 
     @RequestMapping(value = "/tasks", method = RequestMethod.POST)
@@ -88,5 +92,19 @@ public class TaskController {
     }
 
     // TODO Post @RequestBody Location object . RETURN = updated Location Object
+    // this is after canvasser finished answer questionnaire
+
+    @RequestMapping(value = "/updateLoc", method = RequestMethod.POST)
+    public ResponseEntity getAssignedCanvasser(@RequestBody Location location, BindingResult result){
+        Location updatedLoc = locationService.updateLocation(location);
+        if(result.hasErrors() || updatedLoc == null){
+            log.info("TaskController :: Location not found in DB");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Location Not Found");
+        }
+        else{
+            log.info("TaskController :: Save Updated Location");
+            return ResponseEntity.ok(updatedLoc);
+        }
+    }
 
 }
