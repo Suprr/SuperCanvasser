@@ -1,18 +1,14 @@
 import React, { Component } from "react";
+import RemoveIcon from '../../../assets/images/minus.png'
+import classes from './ManageUsers.module.css'
 class User extends Component {
   state = {};
   render() {
     return (
-      <div className="d-flex edit-row">
+      <div className={[classes.UserItem, "d-flex","edit-row"].join(' ')}>
         <span>{this.props.user.firstName+" "+this.props.user.lastName}</span>
         <div className="ml-auto">
-          <button
-            onClick={() => this.props.onDelete(this.props.user._id)}
-            className="btn-circle"
-          >
-            -
-          </button>
-          <button className="btn btn-danger">edit</button>
+          <input type='image' src={RemoveIcon} className={classes.RemoveBtn} onClick={() => this.props.onDelete(this.props.user._id)}/>
         </div>
       </div>
     );
