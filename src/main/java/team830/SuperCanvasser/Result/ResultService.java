@@ -16,4 +16,6 @@ public class ResultService implements ResultInterface{
         return resultRepo.findResultByCampaignId(campaignId);
     }
 
+
+
 }

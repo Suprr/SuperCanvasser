@@ -5,7 +5,10 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import team830.SuperCanvasser.Campaign.Campaign;
+import team830.SuperCanvasser.Location.Location;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Document(collection = "results")
@@ -16,13 +19,15 @@ public class Result {
     private String campaignId;
     private double sdRating;
     private double avgRating;
-    private Map<String, Double> qNaPercentage = new HashMap<>();
+    private Map<String, Integer> qNaCount = new HashMap<>(); // List<Integer>
     private double [] ratings;
 
     Result(String _id, Campaign campaign, double [] ratings){
         this._id = _id;
         this.campaignId = campaign.get_id();
         this.ratings = ratings;
+        setqNaCount(campaign.getQuestions());
+        countYesQnA(campaign.getQuestions(), campaign.getLocations());
         calculateAvg(ratings);
         calculateStd(ratings);
     }
@@ -59,12 +64,14 @@ public class Result {
         this.avgRating = avgRating;
     }
 
-    public Map<String, Double> getqNaPercentage() {
-        return qNaPercentage;
+    public Map<String, Integer> getqNaCount() {
+        return qNaCount;
     }
 
-    public void setqNaPercentage(Map<String, Double> qNaPercentage) {
-        this.qNaPercentage = qNaPercentage;
+    public void setqNaCount(List<String> questions) {
+        for(String q : questions){
+            qNaCount.put(q, 0);
+        }
     }
 
     public double[] getRatings() {
@@ -75,16 +82,29 @@ public class Result {
         this.ratings = ratings;
     }
 
-    // calculate standard deviation of rating
+    // calculate standard deviation rating
     public double calculateStd(double [] ratings){
         this.sdRating = Stats.of(ratings).sampleStandardDeviation();
         return this.sdRating;
     }
 
-    // calculate averate of raiting
+    // calculate average rating
     public double calculateAvg(double [] ratings){
         this.avgRating = Stats.of(ratings).mean();
         return this.avgRating;
     }
-
+    // count yes for each questions in all locations
+    public void countYesQnA(List<String> questions, List<Location> locationList){
+        for(Location location: locationList){
+            if(location.isVisited()) {
+                Map<String, Boolean> qNa = location.getqNa();
+                for (String q : questions) {
+                    if (qNa.get(q)) {
+                        int oldVal = qNaCount.get(q);
+                        qNaCount.replace(q, oldVal + 1);
+                    }
+                }
+            }
+        }
+    }
 }
