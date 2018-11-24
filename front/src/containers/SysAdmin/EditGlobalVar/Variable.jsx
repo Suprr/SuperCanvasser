@@ -5,34 +5,26 @@ class Variable extends Component {
   state = {
     newValue: 0
   };
+
   handleVarChange = e => {
     this.setState({ newValue: e.target.value });
   };
 
   handleEdit = event => {
     let newVariable = {
-      type: this.props.variable.type,
-      _id: this.props.variable._id,
+      name: this.props.variable.name,
+      id: this.props.variable.id,
       value: this.state.newValue
     };
 
-    console.log(["HANDLE EDIT"], newVariable);
     axios
-      .post("/sysad/var/edit", newVariable)
+      .put("/global-variable/" + this.props.variable.id + ".json/", newVariable)
       .then(response => {
-        console.log(["handleEdit"], "Done");
+        console.log("edit gbv success");
       })
       .catch(error => {
         console.log("Error", error);
       });
-    // axios.put('/global-variable/'+this.props.variable._id+'.json/',newVariable).then( response => {
-
-    //   console.log("edit gbv success");
-
-    // })
-    // .catch( error => {
-    //     console.log("Error", error);
-    // });
   };
 
   render() {
@@ -40,7 +32,7 @@ class Variable extends Component {
     return (
       <div className="row var-row nest">
         <div className="col-sm">
-          <span>{this.props.variable.type}</span>
+          <span>{this.props.variable.name}</span>
         </div>
         <div className="col-sm">
           <input

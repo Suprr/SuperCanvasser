@@ -1,4 +1,4 @@
-package team830.SuperCanvasser;
+/*package team830.SuperCanvasser;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -69,3 +69,4 @@ public class UserTest {
     //TODO : have to make some test
 
 }
+*/
