@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
-import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -102,10 +104,23 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
-//    public static User getUserInSession(HttpServletRequest request){
-//        HttpSession session= request.getSession();
-//        return (User) session.getAttribute("user");
-//    }
+    // when they request to change the role from the dropdown
+    // returns user
+    @RequestMapping(value = "/changeRole", method = RequestMethod.GET)
+    public ResponseEntity changeRole(@RequestParam Role role, HttpServletRequest request){
+        User user = getUserInSession(request);
+        if(user.getRole().contains(role)){
+            request.getSession().setAttribute("role", role);
+            return ResponseEntity.ok(user);
+        }
+        log.info("UserController :: Does not have selected role for this user");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
+    }
+
+    public static User getUserInSession(HttpServletRequest request){
+        HttpSession session= request.getSession();
+        return (User) session.getAttribute("user");
+    }
 
     public static Role getRoleInSession(HttpServletRequest request){
         HttpSession session = request.getSession();

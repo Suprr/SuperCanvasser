@@ -16,44 +16,38 @@ import java.util.Set;
 
 @Component
 @Service
-public class UserService implements UserInterface{
+public class UserService{
 
     @Autowired
     private UserRepo userRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
-    @Override
     public User editUser(User user) {
         log.info("UserService :: Edit User");
         return userRepo.save(user);
     }
 
-    @Override
     public User addUser(User user) {
         log.info("UserService :: Add User");
         return userRepo.insert(user);
     }
 
-    @Override
     public void deleteUser(String userId){
         log.info("UserService :: Delete User");
         userRepo.deleteById(userId);
     }
 
-    @Override
     public User getUserByEmail(String email) {
         log.info("UserService :: Get User");
         return userRepo.findByEmail(email);
     }
 
-    @Override
     public User getUserBy_id(String _id) {
         log.info("UserService :: Get User by ID");
         return userRepo.findBy_id(_id);
     }
 
-    @Override
     public List<User> getAllUSer() {
         log.info("UserService :: Get All the Users");
         return userRepo.findAll();

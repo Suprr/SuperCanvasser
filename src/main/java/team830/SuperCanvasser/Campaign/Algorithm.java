@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.Availability.AvailabilityService;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Task.Task;
@@ -15,6 +16,8 @@ import team830.SuperCanvasser.Task.TaskService;
  *
  * @author Chris
  */
+
+@Service
 public class Algorithm {
     @Autowired
     static TaskService taskService;
@@ -405,7 +408,7 @@ public class Algorithm {
         }
         return (tempDist/CANVASSER_SPEED) + (TIME_PER_VISIT * canvasser.size());
     }
-    
+
     // Checks if there is a canvasser of time longer than CANVASSER_WORKDAY
     static boolean canvasserIsValid(ArrayList<ArrayList<Location>> canvassers) {
         for (ArrayList canvasser : canvassers) {

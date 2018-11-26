@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class CampaignService implements CampaignInterface {
+public class CampaignService{
 
     @Autowired
     private CampaignRepo campaignRepo;
@@ -24,7 +24,6 @@ public class CampaignService implements CampaignInterface {
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
-    @Override
     public Campaign editCampaign(Campaign originalCampaign, Campaign campaign) {
         List<Location> locations = campaign.getLocations();
         boolean locationEdited = false;
@@ -63,7 +62,6 @@ public class CampaignService implements CampaignInterface {
         return campaignRepo.save(campaign);
     }
 
-    @Override
     public Campaign addCampaign(Campaign campaign) {
         // Create Locations
         List<Location> locations = createLocations(campaign, new ArrayList<Location>());
@@ -77,17 +75,14 @@ public class CampaignService implements CampaignInterface {
 
     }
 
-    @Override
     public Campaign findBy_Id(String _id) {
         return campaignRepo.findBy_id(_id);
     }
 
-    @Override
     public List<Campaign> findAll(){
         return campaignRepo.findAll();
     }
 
-    @Override
     public List<Campaign> findAllbyManager(String managerId){
         List<Campaign> campaigns = campaignRepo.findAll();
         List<Campaign> foundCampaigns = new ArrayList<>();
@@ -122,7 +117,6 @@ public class CampaignService implements CampaignInterface {
         return locations;
     }
 
-    @Override
     public List<Date> listAvailableDates(String sdate, String edate, Availability availability) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         List<String> sdates = new ArrayList<>(availability.getAvailabilityDates());

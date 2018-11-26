@@ -31,8 +31,8 @@ public class LocationService implements LocationInterface{
             return updatedLocation;
         }
         return updatedLocation;
-
     }
+
     public double [] getAllRatings(List<Task> tasks){
         List<Double> ratings = new ArrayList<>();
         for(int i = 0; i < tasks.size(); i++){
