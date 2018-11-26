@@ -34,7 +34,6 @@ public class UserController {
 
         log.info("UserController :: Invalid Credentials :: " +
                 "Email: " + user.getEmail() + " Pwd: " + user.getPwd());
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
     }
 
@@ -86,14 +85,12 @@ public class UserController {
     @RequestMapping(value = "/sysad/delete", method = RequestMethod.GET)
     public ResponseEntity deleteUser(@RequestParam String _id, HttpServletRequest request){
         if(getRoleInSession(request).equals(Role.ADMIN)){
-            log.info("UserController :: Does not have authority to add the users");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
-        }
-        else{
             log.info("UserController :: User has been deleted");
             userService.deleteUser(_id);
             return ResponseEntity.ok().body("User deleted");
         }
+        log.info("UserController :: Does not have authority to add the users");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
     @RequestMapping(value = "/sysad/viewAll" , method = RequestMethod.GET)

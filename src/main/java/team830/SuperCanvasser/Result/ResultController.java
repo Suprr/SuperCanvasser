@@ -35,12 +35,23 @@ public class ResultController {
     @RequestMapping(value = "/tableView", method = RequestMethod.POST)
     public ResponseEntity tableViewResult(@RequestBody Campaign campaign){
         // Find all the task by ID
-        return ResponseEntity.ok(taskService.findAllTasksById(campaign.getTasks()));
+        List<Task> tasks = taskService.findAllTasksById(campaign.getTasks());
+        if(tasks == null){
+            log.info("ResultController :: Failed to gather tasks for tableView");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request Failed");
+        }
+        return ResponseEntity.ok(tasks);
     }
     // this is for qNa. RETURN = list of locations for requested task
     @RequestMapping(value = "/tableView/locList", method = RequestMethod.GET)
     public ResponseEntity locationListResult(@RequestParam String taskId){
-        return ResponseEntity.ok(locationService.findLocationsById(taskService.findBy_Id(taskId).getLocations()));
+        List<Location> locations = locationService.findLocationsById(taskService.findBy_Id(taskId).getLocations());
+        if(locations == null){
+            log.info("ResultController :: Failed to gather locations for Result");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request Failed");
+        }
+        log.info("ResultController :: locationResult for tableView");
+        return ResponseEntity.ok(locations);
     }
     // TODO have to calculate the questionnaire
     @RequestMapping(value = "/statView", method = RequestMethod.POST)
@@ -48,8 +59,13 @@ public class ResultController {
         List<Task> tasks = taskService.findAllTasksById(campaign.getTasks());
         // create and save result
         Result result = new Result(ObjectId.get().toHexString(), campaign, locationService.getAllRatings(tasks));
-        log.info("ResultController :: Result for StatView");
-        return ResponseEntity.ok(resultService.createResult(result));
+        if(result == null){
+            log.info("ResultController :: Failed to gather Result");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request Failed");
+        }
+            log.info("ResultController :: Result for StatView");
+            return ResponseEntity.ok(resultService.createResult(result));
+
     }
     // Mapview param = campaignID RETURN = list of all locations from all the tasks
     @RequestMapping(value = "/mapView", method = RequestMethod.GET)

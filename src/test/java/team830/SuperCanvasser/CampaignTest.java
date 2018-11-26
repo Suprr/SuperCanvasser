@@ -1,4 +1,4 @@
-/*
+
 package team830.SuperCanvasser;
 
 import org.junit.Test;
@@ -29,6 +29,5 @@ public class CampaignTest {
     //TODO for Kat: Create tests for campaign
     //TODO for Chris: Create test for Algorithm
 
-    }
 }
-*/
+
