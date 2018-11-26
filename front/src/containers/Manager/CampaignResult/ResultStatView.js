@@ -36,7 +36,7 @@ class ResultStatView extends Component{
 	          	let questionnaireList = [];
 	          	let answerList = [];
 
-	          	for (let pair of resultData.qNaPercentage) {
+	          	for (let pair of resultData.qNaCount) {
 				    let [key, value] = pair;
 				    questionnaireList.push(key);
 				    answerList.push(value);
