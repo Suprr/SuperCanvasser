@@ -1,4 +1,14 @@
+.Btn{
+	background-color: #cb4d58;
+	margin-left:10px;
+	color:white;
+}
 
+.Btn:hover{
+	background-color: white;
+	border:1px solid #cb4d58;
+	color : #cb4d58;
+}
 
 /* Manager*/
 .ManagerBody{

@@ -18,7 +18,7 @@ class QuestionnaireSection extends Component{
 				
 				<div className = 'row justify-content-center'>
 					<div className = {['text-center', classes.QNRBody].join(' ')}>
-						<button className = 'btn btn-light ViewBtn' onClick={this.state.clickedHandler}>View</button>
+						<button className = {['btn','btn-light', classes.Btn].join(' ')} onClick={this.state.clickedHandler}>View</button>
 					</div>
 				</div>
 			</div>
