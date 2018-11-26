@@ -4,6 +4,7 @@ import Aux from "../../../hoc/Auxx";
 import Backdrop from "../../../components/UI/Backdrop/Backdrop";
 
 class QModal extends Component {
+  state = {};
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.show !== this.props.show ||

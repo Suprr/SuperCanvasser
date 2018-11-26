@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import EditAvailability from "./EditAvailability/EditAvailability";
-import UpcomingTask from "./UpcomingTask";
+import UpcomingTask from "./UpcomingTasks/UpcomingTasks";
 import ViewTask from "./ViewTask/ViewTask";
 import Questionnaire from "./ViewTask/Questionnaire";
 import { Route, Redirect, withRouter, Switch } from "react-router-dom";

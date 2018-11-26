@@ -62,7 +62,6 @@ public class Algorithm {
         if (totalCanvasserDates < tasks.size()) {
             //error
         }
-
         else {
             int canvasserIndex = 0;
             while (totalCanvasserDates > 0) {
@@ -72,6 +71,7 @@ public class Algorithm {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String format = formatter.format(campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).get(0));
                     availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex)).getAvailabilityDates().add(format);
+                    tasks.get(totalCanvasserDates).setDate(format);
                 }
                 else {
                     canvasserIndex++;
@@ -289,105 +289,110 @@ public class Algorithm {
     // Combines canvassers if the lowest 2 distances can be combined to one
     static void combineCanvassers(ArrayList<ArrayList<Location>> visits) {
         while (true) {
-            double shortestDist = Double.MAX_VALUE;
-            int visitsInd1 = -1;
-            int visitsInd2 = -1;
-            int mode = -1;
-            for (int i = 0; i < visits.size(); i++) {
-                for (int j = i + 1; j < visits.size(); j++) {
-                    double combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(0), visits.get(j).get(0))/CANVASSER_SPEED;
-                    if (combinedDist < shortestDist) {
-                        shortestDist = combinedDist;
-                        visitsInd1 = i;
-                        visitsInd2 = j;
-                        mode = 0;
-                    }
-                    
-                    combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(visits.get(i).size() - 1), visits.get(j).get(0))/CANVASSER_SPEED;
-                    if (combinedDist < shortestDist) {
-                        shortestDist = combinedDist;
-                        visitsInd1 = i;
-                        visitsInd2 = j;
-                        mode = 1;
-                    }
-                    
-                    combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(0), visits.get(j).get(visits.get(j).size() - 1))/CANVASSER_SPEED;
-                    if (combinedDist < shortestDist) {
-                        shortestDist = combinedDist;
-                        visitsInd1 = i;
-                        visitsInd2 = j;
-                        mode = 2;
-                    }
-                    
-                    combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(visits.get(i).size() - 1), visits.get(j).get(visits.get(j).size() - 1))/CANVASSER_SPEED;
-                    if (combinedDist < shortestDist) {
-                        shortestDist = combinedDist;
-                        visitsInd1 = i;
-                        visitsInd2 = j;
-                        mode = 3;
+            if (visits.size() > 1) {
+                double shortestDist = Double.MAX_VALUE;
+                int visitsInd1 = -1;
+                int visitsInd2 = -1;
+                int mode = -1;
+                for (int i = 0; i < visits.size(); i++) {
+                    for (int j = i + 1; j < visits.size(); j++) {
+                        double combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(0), visits.get(j).get(0))/CANVASSER_SPEED;
+                        if (combinedDist < shortestDist) {
+                            shortestDist = combinedDist;
+                            visitsInd1 = i;
+                            visitsInd2 = j;
+                            mode = 0;
+                        }
+                        
+                        combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(visits.get(i).size() - 1), visits.get(j).get(0))/CANVASSER_SPEED;
+                        if (combinedDist < shortestDist) {
+                            shortestDist = combinedDist;
+                            visitsInd1 = i;
+                            visitsInd2 = j;
+                            mode = 1;
+                        }
+                        
+                        combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(0), visits.get(j).get(visits.get(j).size() - 1))/CANVASSER_SPEED;
+                        if (combinedDist < shortestDist) {
+                            shortestDist = combinedDist;
+                            visitsInd1 = i;
+                            visitsInd2 = j;
+                            mode = 2;
+                        }
+                        
+                        combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(visits.get(i).size() - 1), visits.get(j).get(visits.get(j).size() - 1))/CANVASSER_SPEED;
+                        if (combinedDist < shortestDist) {
+                            shortestDist = combinedDist;
+                            visitsInd1 = i;
+                            visitsInd2 = j;
+                            mode = 3;
+                        }
                     }
                 }
-            }
-            
-            ArrayList<ArrayList<Location>> tempVisits = new ArrayList();
-            for (int i = 0; i < visits.size(); i++) {
-                ArrayList tempArr = new ArrayList();
-                for (int j = 0; j < visits.get(i).size(); j++) {
-                    tempArr.add(visits.get(i).get(j));
+                
+                ArrayList<ArrayList<Location>> tempVisits = new ArrayList();
+                for (int i = 0; i < visits.size(); i++) {
+                    ArrayList tempArr = new ArrayList();
+                    for (int j = 0; j < visits.get(i).size(); j++) {
+                        tempArr.add(visits.get(i).get(j));
+                    }
+                    tempVisits.add(tempArr);
                 }
-                tempVisits.add(tempArr);
-            }
-            
-            if (mode == 0) {
-                ArrayList<Location> newPath = new ArrayList();
-                for (int i = tempVisits.get(visitsInd1).size() - 1; i >= 0; i--) {
-                    newPath.add(tempVisits.get(visitsInd1).get(i));
+                
+                if (mode == 0) {
+                    ArrayList<Location> newPath = new ArrayList();
+                    for (int i = tempVisits.get(visitsInd1).size() - 1; i >= 0; i--) {
+                        newPath.add(tempVisits.get(visitsInd1).get(i));
+                    }
+                    for (int i = 0; i < tempVisits.get(visitsInd2).size(); i++) {
+                        newPath.add(tempVisits.get(visitsInd2).get(i));
+                    }
+                    if (visitsInd1 > visitsInd2) {
+                        tempVisits.remove(visitsInd1);
+                        tempVisits.remove(visitsInd2);
+                    }
+                    else {
+                        tempVisits.remove(visitsInd2);
+                        tempVisits.remove(visitsInd1);
+                    }
+                    tempVisits.add(newPath);
                 }
-                for (int i = 0; i < tempVisits.get(visitsInd2).size(); i++) {
-                    newPath.add(tempVisits.get(visitsInd2).get(i));
-                }
-                if (visitsInd1 > visitsInd2) {
-                    tempVisits.remove(visitsInd1);
+
+                if (mode == 1) {
+                    for (int i = 0; i < tempVisits.get(visitsInd2).size(); i++) {
+                        tempVisits.get(visitsInd1).add(tempVisits.get(visitsInd2).get(i));
+                    }
                     tempVisits.remove(visitsInd2);
+                }
+
+                if (mode == 2) {
+                    for (int i = 0; i < tempVisits.get(visitsInd1).size(); i++) {
+                        tempVisits.get(visitsInd2).add(tempVisits.get(visitsInd1).get(i));
+                    }
+                    tempVisits.remove(visitsInd1);
+
+                }
+
+                if (mode == 3) {
+                    for (int i = tempVisits.get(visitsInd2).size() - 1; i >= 0; i--) {
+                        tempVisits.get(visitsInd1).add(tempVisits.get(visitsInd2).get(i));
+                    }
+                    tempVisits.remove(visitsInd2); 
+                }
+                
+                optimizeHelper(tempVisits);
+                
+                if (canvasserIsValid(tempVisits)) {
+                    visits = tempVisits;
+                    bestSol = tempVisits;
+                    System.out.println("Optimized distance: " + totalDistance + " # of Canvassers " + visits.size());
+                    for (int i = 0; i < visits.size(); i++) {
+                        System.out.print("Availability " + i+ ": ");
+                        System.out.println(totalDistOfCanvasser(visits.get(i)));
+                    }
                 }
                 else {
-                    tempVisits.remove(visitsInd2);
-                    tempVisits.remove(visitsInd1);
-                }
-                tempVisits.add(newPath);
-            }
-
-            if (mode == 1) {
-                for (int i = 0; i < tempVisits.get(visitsInd2).size(); i++) {
-                    tempVisits.get(visitsInd1).add(tempVisits.get(visitsInd2).get(i));
-                }
-                tempVisits.remove(visitsInd2);
-            }
-
-            if (mode == 2) {
-                for (int i = 0; i < tempVisits.get(visitsInd1).size(); i++) {
-                    tempVisits.get(visitsInd2).add(tempVisits.get(visitsInd1).get(i));
-                }
-                tempVisits.remove(visitsInd1);
-
-            }
-
-            if (mode == 3) {
-                for (int i = tempVisits.get(visitsInd2).size() - 1; i >= 0; i--) {
-                    tempVisits.get(visitsInd1).add(tempVisits.get(visitsInd2).get(i));
-                }
-                tempVisits.remove(visitsInd2); 
-            }
-            
-            optimizeHelper(tempVisits);
-            
-            if (canvasserIsValid(tempVisits)) {
-                visits = tempVisits;
-                bestSol = tempVisits;
-                System.out.println("Optimized distance: " + totalDistance + " # of Canvassers " + visits.size());
-                for (int i = 0; i < visits.size(); i++) {
-                    System.out.print("Availability " + i+ ": ");
-                    System.out.println(totalDistOfCanvasser(visits.get(i)));
+                    break;
                 }
             }
             else {

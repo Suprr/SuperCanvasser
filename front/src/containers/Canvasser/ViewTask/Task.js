@@ -2,16 +2,28 @@ import React, { Component } from "react";
 import { Route, Redirect, withRouter, Switch } from "react-router-dom";
 import Questionnaire from "./Questionnaire";
 import "./ViewTaskCSS.css";
+import Modal from "./QModal";
+import QuestionnaireList from "../../../components/Campaign/ViewCampaign/QuestionnaireList";
 
 class Task extends Component {
   state = {
-    navigate: false
+    navigate: false,
+    show: false
   };
 
   handleQuestionaire = event => {
-    if (this.props.task.type === "Questionnaire") {
-      this.setState({ navigate: true });
+    if (!this.props.task.visited) {
+      this.setState({ show: true });
     }
+  };
+
+  modalCloseHandler = () => {
+    this.setState({ show: false });
+  };
+
+  modalAcceptHandler = () => {
+    this.setState({ show: false });
+    this.props.submit;
   };
 
   render() {
@@ -45,6 +57,13 @@ class Task extends Component {
       );
       return (
         <div className="row task-row">
+          <Modal
+            show={this.state.show}
+            modalClosed={this.modalCloseHandler}
+            modalAccept={this.modalAcceptHandler}
+          >
+            <QuestionnaireList questionnaire={this.state.questions} />
+          </Modal>
           <div className="col-sm">
             <div className={color}>{this.props.task.id}</div>
           </div>
