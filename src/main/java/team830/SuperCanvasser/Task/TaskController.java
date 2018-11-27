@@ -82,7 +82,7 @@ public class TaskController {
 
     @RequestMapping(value = "/tasks", method = RequestMethod.POST)
     public ResponseEntity getTasksById(@RequestBody List<String> tasks, HttpServletRequest request) {
-        if (!UserController.getRoleInSession(request).equals(Role.MANAGER)) {
+        if (UserController.getRoleInSession(request).equals(Role.MANAGER)) {
             log.info("TaskController :: Grabbing tasks by id");
             return ResponseEntity.ok(taskService.findAllTasksById(tasks));
         }
