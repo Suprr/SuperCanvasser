@@ -1,5 +1,5 @@
 
-/target/
+###/target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -16,14 +16,7 @@
 *.iws
 *.iml
 *.ipr
-
-### NetBeans ###
-/nbproject/private/
-/build/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+log/*
 
 # Add any directories, files, or patterns you don't want to be tracked by version control
 .DS_STORE

@@ -2,68 +2,182 @@ import React, { Component } from "react";
 import { Route, Redirect, withRouter, Switch } from "react-router-dom";
 import Questionnaire from "./Questionnaire";
 import "./ViewTaskCSS.css";
+import Modal from "./QModal";
+import QuestionnaireList from "../../../components/Campaign/ViewCampaign/QuestionnaireList";
 
 class Task extends Component {
   state = {
-    navigate: false
+    mounted: false,
+    show: false,
+    questions: [],
+    modalData: "",
+    curTask: this.props.task
   };
 
   handleQuestionaire = event => {
-    if (this.props.task.type === "Questionnaire") {
-      this.setState({ navigate: true });
+    if (!this.state.curTask.visited) {
+      this.setState({ show: true });
     }
   };
 
+  modalCloseHandler = () => {
+    this.setState({ show: false });
+  };
+
+  modalAcceptHandler = () => {
+    this.setState({ show: false });
+    this.props.submit(this.state.curTask);
+  };
+
+  setAnon = e => {
+    let tempCurTest = this.state.curTask;
+    tempCurTest.anonymous = e;
+    this.setState({ curTask: tempCurTest });
+  };
+
+  setRating = e => {
+    let tempCurTest = this.state.curTask;
+    tempCurTest.rating = e;
+    this.setState({ curTask: tempCurTest });
+  };
+
+  setQuestion = (e, x) => {
+    let tempCurTest = this.state.curTask;
+    tempCurTest.qNa[e] = x;
+    this.setState({ curTask: tempCurTest });
+  };
+
   render() {
-    if (this.state.navigate) {
-      return (
-        <Redirect
-          from={this.props.match.url}
-          to={this.props.match.url + "/questionnaire"}
-        />
-      );
-    } else {
-      let color = this.props.task.visited ? "visLoc" : "recLoc";
-      let button = this.props.task.visited ? (
-        <button
-          onClick={event => {
-            this.handleQuestionaire(event);
-          }}
-          className="btn"
-        >
-          Visited
-        </button>
-      ) : (
-        <button
-          onClick={event => {
-            this.handleQuestionaire(event);
-          }}
-          className="btn"
-        >
-          Questionnaire
-        </button>
-      );
-      return (
-        <div className="row task-row">
-          <div className="col-sm">
-            <div className={color}>{this.props.task.id}</div>
-          </div>
-          <div className="col-sm">
-            <div>
-              <span>
-                {this.props.task.number + " " + this.props.task.street}
-              </span>
-            </div>
-            <div>
-              <span>
-                {this.props.task.city + ", " + this.props.task.zipcode}
-              </span>
+    let color = this.state.curTask.visited ? "visLoc" : "recLoc";
+    let button = this.state.curTask.visited ? (
+      <h4>Visited</h4>
+    ) : (
+      <button
+        onClick={event => {
+          this.handleQuestionaire(event);
+        }}
+        className="btn"
+      >
+        Questionnaire
+      </button>
+    );
+    let child = (
+      <div className="container">
+        {Object.keys(this.state.curTask.qNa).map(key => (
+          <div className="row">
+            <div className="col-sm">{key}</div>
+            <div className="col-sm">
+              <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                <label
+                  className="btn btn-secondary active"
+                  onClick={() => this.setQuestion(key, false)}
+                >
+                  <input type="radio" name="options" id="option1" />
+                  No
+                </label>
+                <label
+                  className="btn btn-secondary"
+                  onClick={() => this.setQuestion(key, true)}
+                >
+                  <input type="radio" name="options" id="option2" />
+                  Yes
+                </label>
+              </div>
             </div>
           </div>
-          <div className="col-sm">{button}</div>
+        ))}
+        <div>
+          <div className="row">
+            <div className="col-sm">
+              <label>Rating</label>
+            </div>
+            <div className="col-sm">
+              <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                <label
+                  className="btn btn-secondary active"
+                  onClick={() => this.setRating(1)}
+                >
+                  <input type="radio" name="options" id="option1" />1
+                </label>
+                <label
+                  className="btn btn-secondary"
+                  onClick={() => this.setRating(2)}
+                >
+                  <input type="radio" name="options" id="option2" />2
+                </label>
+                <label
+                  className="btn btn-secondary"
+                  onClick={() => this.setRating(3)}
+                >
+                  <input type="radio" name="options" id="option2" />3
+                </label>
+                <label
+                  className="btn btn-secondary"
+                  onClick={() => this.setRating(4)}
+                >
+                  <input type="radio" name="options" id="option2" />4
+                </label>
+                <label
+                  className="btn btn-secondary"
+                  onClick={() => this.setRating(5)}
+                >
+                  <input type="radio" name="options" id="option2" />5
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
-      );
-    }
+        <div className="row">
+          <div className="col-sm">
+            <label>Anonymous</label>
+          </div>
+          <div className="col-sm">
+            <div className="btn-group btn-group-toggle" data-toggle="buttons">
+              <label
+                className="btn btn-secondary active"
+                onClick={() => this.setAnon(false)}
+              >
+                <input type="radio" name="options" id="option1" />
+                No
+              </label>
+              <label
+                className="btn btn-secondary"
+                onClick={() => this.setAnon(true)}
+              >
+                <input type="radio" name="options" id="option2" />
+                Yes
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+    return (
+      <div className="row task-row">
+        <Modal
+          show={this.state.show}
+          modalClosed={this.modalCloseHandler}
+          modalAccept={this.modalAcceptHandler}
+          children={child}
+        />
+        <div className="col-sm">
+          <div className={color}>{this.state.curTask.id}</div>
+        </div>
+        <div className="col-sm">
+          <div>
+            <span>
+              {this.state.curTask.number + " " + this.state.curTask.street}
+            </span>
+          </div>
+          <div>
+            <span>
+              {this.state.curTask.city + ", " + this.state.curTask.zipcode}
+            </span>
+          </div>
+        </div>
+        <div className="col-sm">{button}</div>
+      </div>
+    );
   }
 }
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.Availability.AvailabilityService;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Task.Task;
@@ -15,6 +16,8 @@ import team830.SuperCanvasser.Task.TaskService;
  *
  * @author Chris
  */
+
+@Service
 public class Algorithm {
     @Autowired
     static TaskService taskService;
@@ -22,7 +25,7 @@ public class Algorithm {
     static CampaignService campaignService;
     @Autowired
     static AvailabilityService availabilityService;
-    // Walking speed in respect to Latitude and Longitude is 0.05/69
+    // Walking speed in rgespect to Latitude and Longitude is 0.05/69
     // degrees of Latitude/Longitude a minute
     private static final double CANVASSER_SPEED = (0.05/69);
     private static final int CANVASSER_WORKDAY = 480;
@@ -62,7 +65,6 @@ public class Algorithm {
         if (totalCanvasserDates < tasks.size()) {
             //error
         }
-
         else {
             int canvasserIndex = 0;
             while (totalCanvasserDates > 0) {
@@ -72,6 +74,7 @@ public class Algorithm {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String format = formatter.format(campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).get(0));
                     availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex)).getAvailabilityDates().add(format);
+                    tasks.get(totalCanvasserDates).setDate(format);
                 }
                 else {
                     canvasserIndex++;
@@ -305,7 +308,7 @@ public class Algorithm {
                             visitsInd2 = j;
                             mode = 0;
                         }
-
+                        
                         combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(visits.get(i).size() - 1), visits.get(j).get(0))/CANVASSER_SPEED;
                         if (combinedDist < shortestDist) {
                             shortestDist = combinedDist;
@@ -313,7 +316,7 @@ public class Algorithm {
                             visitsInd2 = j;
                             mode = 1;
                         }
-
+                        
                         combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(0), visits.get(j).get(visits.get(j).size() - 1))/CANVASSER_SPEED;
                         if (combinedDist < shortestDist) {
                             shortestDist = combinedDist;
@@ -321,7 +324,7 @@ public class Algorithm {
                             visitsInd2 = j;
                             mode = 2;
                         }
-
+                        
                         combinedDist = totalDistOfCanvasser(visits.get(i)) + totalDistOfCanvasser(visits.get(j)) + manhattanDistance(visits.get(i).get(visits.get(i).size() - 1), visits.get(j).get(visits.get(j).size() - 1))/CANVASSER_SPEED;
                         if (combinedDist < shortestDist) {
                             shortestDist = combinedDist;
@@ -331,7 +334,7 @@ public class Algorithm {
                         }
                     }
                 }
-
+                
                 ArrayList<ArrayList<Location>> tempVisits = new ArrayList();
                 for (int i = 0; i < visits.size(); i++) {
                     ArrayList tempArr = new ArrayList();
@@ -340,7 +343,7 @@ public class Algorithm {
                     }
                     tempVisits.add(tempArr);
                 }
-
+                
                 if (mode == 0) {
                     ArrayList<Location> newPath = new ArrayList();
                     for (int i = tempVisits.get(visitsInd1).size() - 1; i >= 0; i--) {
@@ -379,11 +382,11 @@ public class Algorithm {
                     for (int i = tempVisits.get(visitsInd2).size() - 1; i >= 0; i--) {
                         tempVisits.get(visitsInd1).add(tempVisits.get(visitsInd2).get(i));
                     }
-                    tempVisits.remove(visitsInd2);
+                    tempVisits.remove(visitsInd2); 
                 }
-
+                
                 optimizeHelper(tempVisits);
-
+                
                 if (canvasserIsValid(tempVisits)) {
                     visits = tempVisits;
                     bestSol = tempVisits;
@@ -412,7 +415,7 @@ public class Algorithm {
         }
         return (tempDist/CANVASSER_SPEED) + (TIME_PER_VISIT * canvasser.size());
     }
-    
+
     // Checks if there is a canvasser of time longer than CANVASSER_WORKDAY
     static boolean canvasserIsValid(ArrayList<ArrayList<Location>> canvassers) {
         for (ArrayList canvasser : canvassers) {

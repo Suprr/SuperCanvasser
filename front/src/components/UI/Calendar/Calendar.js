@@ -75,10 +75,10 @@ class Calendar extends React.Component {
               !dateFns.isSameMonth(day, monthStart)
                 ? classes.disabled
                 : dateFns.isSameDay(day, selectedDate)
-                ? classes.selected
-                : this.isInavailableDay(day)
-                ? classes.inavailable
-                : null
+                  ? classes.selected
+                  : this.isInavailableDay(day)
+                    ? classes.inavailable
+                    : null
             ].join(" ")}
             key={day}
             onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
@@ -131,6 +131,16 @@ class Calendar extends React.Component {
     return false;
   };
 
+  correctInvalidDates() {
+    const todayDate = new Date();
+    let tempInavailDates = this.state.inavailableDate;
+    for (let i = 0; i < tempInavailDates.length; i++) {
+      if (tempInavailDates[i] < todayDate) {
+        tempInavailDates.splice(i, 1);
+      }
+    }
+    this.setState({ inavailableDate: tempInavailDates });
+  }
   render() {
     return (
       <div className={classes.calendar}>

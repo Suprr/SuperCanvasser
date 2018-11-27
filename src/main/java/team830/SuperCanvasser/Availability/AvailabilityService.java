@@ -9,12 +9,11 @@ import team830.SuperCanvasser.SuperCanvasserApplication;
 import java.util.List;
 
 @Service
-public class AvailabilityService implements AvailabilityInterface {
+public class AvailabilityService {
     @Autowired
     private AvailabilityRepo availabilityRepo;
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
-    @Override
     public Availability editAvailability(Availability availability) {
         log.info("Edit Availability - Service");
         if (availability.get_id() != null){

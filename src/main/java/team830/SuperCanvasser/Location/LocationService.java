@@ -12,14 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class LocationService implements LocationInterface{
-    private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
+public class LocationService{
 
     @Autowired
     LocationRepo locationRepo;
 
-    @Override
     public List<Location> findLocationsById(List<String> locs){
         List<Location> locations = new ArrayList<>();
         for(String loc : locs){
@@ -28,7 +26,6 @@ public class LocationService implements LocationInterface{
         return locations;
     }
 
-    @Override
     public Location updateLocation(Location location){
         Location updatedLocation = null;
         if(locationRepo.findLocationBy_id(location.get_id()) != null){
@@ -36,9 +33,9 @@ public class LocationService implements LocationInterface{
             return updatedLocation;
         }
         return updatedLocation;
-
     }
     public List<Double> getAllRatings(List<Task> tasks){
+
         List<Double> ratings = new ArrayList<>();
         for(int i = 0; i < tasks.size(); i++){
             List<Location> locations = findLocationsById(tasks.get(i).getLocations());
