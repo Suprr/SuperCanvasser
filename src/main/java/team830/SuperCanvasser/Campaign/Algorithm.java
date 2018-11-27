@@ -25,7 +25,7 @@ public class Algorithm {
     static CampaignService campaignService;
     @Autowired
     static AvailabilityService availabilityService;
-    // Walking speed in respect to Latitude and Longitude is 0.05/69
+    // Walking speed in rgespect to Latitude and Longitude is 0.05/69
     // degrees of Latitude/Longitude a minute
     private static final double CANVASSER_SPEED = (0.05/69);
     private static final int CANVASSER_WORKDAY = 480;
