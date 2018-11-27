@@ -11,24 +11,24 @@ class TaskDetailBody extends Component{
 		isMounted:false
 	}
 	componentDidMount(){
-		// this.setState( { isMounted: true }, () => {
-	 //    	  //change this url
-	 //    	  if(this.props.task){
-	 //    	  	  console.log(['TaskDetailBody'],this.props.task.canvasserId);
-		//           axios.get('task/canvasser/?_id='+this.props.task.canvasserId).then(response=>{
+		this.setState( { isMounted: true }, () => {
+	    	  //change this url
+	    	  if(this.props.task){
+	    	  	  console.log(['TaskDetailBody'],this.props.task.canvasserId);
+		          axios.get('task/canvasser/?_id='+this.props.task.canvasserId).then(response=>{
 			           
-		// 	          const canvasser = response.data;
-		// 	          console.log(['TaskDetailBody'],canvasser);
+			          const canvasser = response.data;
+			          console.log(['TaskDetailBody'],canvasser);
 
-		// 	          if(this.state.isMounted){
-		// 	            this.setState({canvasser:canvasser});
-		// 	          }
-		//           }).catch(error=>{
-		// 	        console.log(error)
-		// 	      })
-  //     		  }
+			          if(this.state.isMounted){
+			            this.setState({canvasser:canvasser});
+			          }
+		          }).catch(error=>{
+			        console.log(error)
+			      })
+      		  }
 	        
-	 //    });
+	    });
 	}
 
 	componentWillUnMount(){
@@ -47,8 +47,8 @@ class TaskDetailBody extends Component{
 						Canvasser
 					</div>
 					<div className={['col-6', classes.Item].join(' ')}>
-						{/*this.state.canvasser?this.state.canvasser.firstName+' '+this.state.canvasser.lastName:null*/}
-						{this.props.task.canvasserId}
+						{this.state.canvasser?this.state.canvasser.firstName+' '+this.state.canvasser.lastName:null}
+						{/*this.props.task.canvasserId*/}
 					</div>
 				</div>
 				<div className={['row', 'col-9',classes.ItemSection].join(' ')}>
