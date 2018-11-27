@@ -21,4 +21,23 @@ public class Variable{
         this.type = type;
         this.value = value;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(@NonNull String value) {
+        this.value = value;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(@NonNull String type) {
+        this.type = type;
+    }
+
+
+
 }

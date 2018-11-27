@@ -107,7 +107,7 @@ public class UserController {
     @RequestMapping(value = "/sysad/viewAll" , method = RequestMethod.GET)
     public ResponseEntity viewAllUser(HttpServletRequest request) {
         if (getRoleInSession(request).equals(Role.ADMIN)) {
-            return ResponseEntity.ok(userService.getAllUSer());
+            return ResponseEntity.ok(userService.getAllUser());
         }
         log.info("UserController :: Does not have authority to view the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");

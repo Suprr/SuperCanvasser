@@ -90,20 +90,9 @@ class AddUser extends Component {
             lastName : "",
             manager : false,
             canvasser : false,
-            sysad : false,
-            show : false,
-            message : ''
+            sysad : false
           });
-          // this.setState({
-          //   email:'',
-          //   password:'',
-          //   confirmPassword: '',
-          //   firstName: '',
-          //   lastName : '',
-          //   manager: false,
-          //   canvasser: false,
-          //   sysad : false
-          // },()=>{});
+          
         } )
         .catch( error => {
             this.showMessageBox('There might be NETWORK ERROR.');

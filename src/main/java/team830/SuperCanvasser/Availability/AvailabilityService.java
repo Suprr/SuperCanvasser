@@ -21,6 +21,7 @@ public class AvailabilityService {
                 log.debug("Availability exists");
                 return availabilityRepo.save(availability);
             }
+
         }else{
             log.debug("Availability doesn't exist");
         }

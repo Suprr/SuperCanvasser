@@ -30,6 +30,9 @@ public class UserService{
 
     public User addUser(User user) {
         log.info("UserService :: Add User");
+//        if(user.hasRole(Role.CANVASSER)){
+//
+//        }
         return userRepo.insert(user);
     }
 
@@ -48,7 +51,7 @@ public class UserService{
         return userRepo.findBy_id(_id);
     }
 
-    public List<User> getAllUSer() {
+    public List<User> getAllUser() {
         log.info("UserService :: Get All the Users");
         return userRepo.findAll();
     }

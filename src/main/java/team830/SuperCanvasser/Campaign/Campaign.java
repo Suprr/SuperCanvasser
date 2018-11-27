@@ -1,4 +1,8 @@
 package team830.SuperCanvasser.Campaign;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.data.annotation.Transient;
 import team830.SuperCanvasser.Status;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -26,7 +30,6 @@ public class Campaign {
     private String startDate;
     @NotNull
     private String endDate;
-    @NotNull(message = "At least one canvasser must work on this campaign.")
     private List<String> canvassers;
     @DBRef
     @NotNull(message = "At least one location must be set.")
@@ -39,7 +42,10 @@ public class Campaign {
     private double avgDuration;
     private String talkingPoints;
     private Status status;
-    private transient Timer statusTimer;
+
+    @JsonIgnore
+    @Transient
+    private Timer statusTimer;
 
     public Campaign(List<String> managersList, String start, String end,
                     List<String> canvassersList, List<Location> locationsList,

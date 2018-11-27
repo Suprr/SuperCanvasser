@@ -4,92 +4,71 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.errorprone.annotations.Var;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.Availability.AvailabilityService;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Task.Task;
 import team830.SuperCanvasser.Task.TaskService;
+import team830.SuperCanvasser.Variable.Variable;
+import team830.SuperCanvasser.Variable.VariableService;
 
 /**
  *
  * @author Chris
  */
 
-@Service
+
 public class Algorithm {
-    @Autowired
-    static TaskService taskService;
-    @Autowired
-    static CampaignService campaignService;
-    @Autowired
-    static AvailabilityService availabilityService;
+
+    //private VariableService variableService;
     // Walking speed in rgespect to Latitude and Longitude is 0.05/69
     // degrees of Latitude/Longitude a minute
-    private static final double CANVASSER_SPEED = (0.05/69);
-    private static final int CANVASSER_WORKDAY = 480;
-    private static final int TIME_PER_VISIT = 15;
+     double CANVASSER_SPEED = (0.05/69);
+     int CANVASSER_WORKDAY = 480;
+     double TIME_PER_VISIT = 15;
     
-    private static double[][] distMatrix;
-    private static double totalDistance = 0;
+    private double[][] distMatrix;
+    private double totalDistance = 0;
     
-    private static ArrayList<ArrayList<Location>> bestSol = new ArrayList();
-    private static List<Task> tasks = new ArrayList();
-    private static List<String> taskIDs = new ArrayList();
+    private ArrayList<ArrayList<Location>> bestSol = new ArrayList();
 
-    public static List<String> start(Campaign campaign){
+    public Algorithm(double visTime, double canSpeed, int canWorkday){
+//        CANVASSER_WORKDAY = canWorkday;
+//        CANVASSER_SPEED = canSpeed* (0.05/(69 * 3));
+//        TIME_PER_VISIT = visTime;
+//        List<Variable> vars = variableService.findAll();
+//        for (Variable var : vars){
+//            if(var.getType().equals("CANVASSER_SPEED"))
+//            CANVASSER_SPEED = Double.parseDouble(var.getValue());
+//            else CANVASSER_WORKDAY = Integer.parseInt(var.getValue());
+//        }
+//
+//        this.TIME_PER_VISIT = visTime;
+
+    }
+
+    public ArrayList<ArrayList<Location>> start(Campaign campaign){
         for (int i = 0; i < campaign.getLocations().size(); i++) {
             campaign.getLocations().get(i).setIndex(i);
         }
         makeDistanceMatrix(campaign.getLocations());
         ArrayList<ArrayList<Location>> canvasserVisits = calculate(campaign.getLocations());
+        for (int i = 0; i < canvasserVisits.size(); i++) {
+            for (int j = 0; j <canvasserVisits.get(i).size(); j++) {
+                System.out.print(canvasserVisits.get(i).get(j) + " ");
+            }
+            System.out.println();
+        }
         optimize(canvasserVisits);
 
-        for (int i = 0; i < bestSol.size(); i++) {
-            List<String> locations = new ArrayList();
-            for (int j = 0; j < bestSol.get(i).size(); j++) {
-                locations.add(bestSol.get(i).get(j).get_id());
-            }
-            Task newTask = new Task(locations, locations.get(0));
-            newTask.set_id(ObjectId.get().toHexString());
-            taskIDs.add(newTask.get_id());
-            tasks.add(newTask);
-        }
-
-        int totalCanvasserDates = 0;
-        for (int i = 0; i < campaign.getCanvassers().size(); i++) {
-            totalCanvasserDates += campaignService.listAvailableDates(campaign.getStartDate(), campaign.getEndDate(), availabilityService.findByCanvasserId(campaign.getCanvassers().get(i))).size();
-        }
-
-        if (totalCanvasserDates < tasks.size()) {
-            //error
-        }
-        else {
-            int canvasserIndex = 0;
-            while (totalCanvasserDates > 0) {
-                if (campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).size() > 0) {
-                    totalCanvasserDates--;
-                    tasks.get(totalCanvasserDates).setCanvasserId(campaign.getCanvassers().get(canvasserIndex));
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                    String format = formatter.format(campaignService.listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex))).get(0));
-                    availabilityService.findByCanvasserId(campaign.getCanvassers().get(canvasserIndex)).getAvailabilityDates().add(format);
-                    tasks.get(totalCanvasserDates).setDate(format);
-                }
-                else {
-                    canvasserIndex++;
-                }
-            }
-        }
-        System.out.println("Task Size :  "+tasks.size()+", "+tasks.get(0).get_id());
-
-        for (Task t : tasks) {
-            taskService.addTask(t);
-        }
-        return taskIDs;
+        return bestSol;
     }
 
-    public static ArrayList<Location> recList(ArrayList<Location> locations) {
+    public ArrayList<Location> recList(ArrayList<Location> locations) {
         ArrayList<Location> recommendedLocations = new ArrayList();
         if (manhattanDistance(locations.get(0), locations.get(1)) > manhattanDistance(locations.get(0), locations.get(locations.size()))) {
             int startInd = 1;
@@ -105,19 +84,12 @@ public class Algorithm {
         return locations;
     }
 
-    List<Task> getTasks () {
-        return tasks;
-    }
-    List<String> getTaskIDs() {
-        return taskIDs;
-    }
-
     
     // Calculate the paths for canvassers by choosing the
     // first location and finding the next not chosen location
     // Returns an array of canvassers each with an array of locations
 
-    public static ArrayList<ArrayList<Location>> calculate(List<Location> locations) {
+    public ArrayList<ArrayList<Location>> calculate(List<Location> locations) {
         Location curLocation = locations.get(0);
         ArrayList<ArrayList<Location>> pathList = new ArrayList();
         ArrayList<Location> curList = new ArrayList();
@@ -141,7 +113,7 @@ public class Algorithm {
     }
     
     // Helper function for optimize, uses the local neighborhood search
-    static void optimizeHelper(ArrayList<ArrayList<Location>> visits) {
+    void optimizeHelper(ArrayList<ArrayList<Location>> visits) {
         double dist = totalDistance;
         int indexASwitch = -1, indexBSwitch = -1, locFromSwitch = -1, locToSwitch = -1;
         ArrayList<Location> locFrom, locTo;
@@ -254,7 +226,7 @@ public class Algorithm {
     
     // Optimizes the simple solution using localized neighborhood search
     // Repeats the optimization when # of canvassers could be reduced
-    static void optimize(ArrayList<ArrayList<Location>> visits) {
+     void optimize(ArrayList<ArrayList<Location>> visits) {
         optimizeHelper(visits);
         
         // Checks if the # of canvassers could be reduced
@@ -264,12 +236,12 @@ public class Algorithm {
     
     // Calculates the distance between two locations
     // adds x component with y component of distance between 2 locations
-    static double manhattanDistance(Location loc1, Location loc2) {
+     double manhattanDistance(Location loc1, Location loc2) {
         return Math.abs(loc1.getLatitude() - loc2.getLatitude()) + Math.abs(loc1.getLongitude() - loc2.getLongitude());
     }
     
     // Creates a distance matrix used in our calculations
-    static double[][] makeDistanceMatrix(List<Location> locations) {
+     double[][] makeDistanceMatrix(List<Location> locations) {
         int numElements = locations.size();
         distMatrix = new double[numElements][numElements];
         double distance;
@@ -287,12 +259,12 @@ public class Algorithm {
     }
 
     // Checks if the CANVASSER_WORKDAY will be exceeded by adding a location
-    static boolean totalTimeWillBeReached(double curtime, int curIndex, int closestIndex) {
+     boolean totalTimeWillBeReached(double curtime, int curIndex, int closestIndex) {
         return curtime + TIME_PER_VISIT + (distMatrix[curIndex][closestIndex]/CANVASSER_SPEED) > CANVASSER_WORKDAY;
     }
 
     // Combines canvassers if the lowest 2 distances can be combined to one
-    static void combineCanvassers(ArrayList<ArrayList<Location>> visits) {
+     void combineCanvassers(ArrayList<ArrayList<Location>> visits) {
         while (true) {
             if (visits.size() > 1) {
                 double shortestDist = Double.MAX_VALUE;
@@ -408,7 +380,7 @@ public class Algorithm {
     }
     
     // Calculates the distance a canvasser will travel
-    static double totalDistOfCanvasser(ArrayList<Location> canvasser){
+     double totalDistOfCanvasser(ArrayList<Location> canvasser){
         double tempDist = 0;
         for (int j = 1; j < canvasser.size(); j++) {
             tempDist += manhattanDistance(canvasser.get(j), canvasser.get(j - 1));
@@ -417,7 +389,7 @@ public class Algorithm {
     }
 
     // Checks if there is a canvasser of time longer than CANVASSER_WORKDAY
-    static boolean canvasserIsValid(ArrayList<ArrayList<Location>> canvassers) {
+     boolean canvasserIsValid(ArrayList<ArrayList<Location>> canvassers) {
         for (ArrayList canvasser : canvassers) {
             if (totalDistOfCanvasser(canvasser) > CANVASSER_WORKDAY) {
                 return false;
