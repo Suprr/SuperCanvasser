@@ -20,18 +20,25 @@ class SignInBody_n extends Component{
             pwd: this.state.password,
         }
         
-        axios.post( '/login', loginInfo)
-            .then( response => {
-            	sessionStorage.setItem('userInfo', JSON.stringify(response.data));
-       			console.log(['SignInBody_n'],response.data);
-       			this.props.history.push('/login/role/');
-       			
-            } )
-            .catch( error => {
-            	this.props.openModal();
-                console.log("Error", error);
-
-            });
+        if(!this.state.userID){
+        	this.props.openModal("Input your ID please.");
+        } else if(!this.state.password){
+        	this.props.openModal("Input your Password please");
+        } else{
+	        axios.post( '/login', loginInfo)
+	            .then( response => {
+	            	sessionStorage.setItem('userInfo', JSON.stringify(response.data));
+	       			console.log(['SignInBody_n'],response.data);
+	       			this.props.history.push('/login/role/');
+	       			
+	            } )
+	            .catch( error => {
+	            	if(error.response.status==401)
+	            		this.props.openModal("ID and Password is invalid. Try again");
+	              	else
+	              		this.props.openModal("Net work error");
+	            });
+        }
 	}
 
 	render(){

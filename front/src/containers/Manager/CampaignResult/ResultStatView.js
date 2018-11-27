@@ -36,11 +36,18 @@ class ResultStatView extends Component{
 	          	let questionnaireList = [];
 	          	let answerList = [];
 
-	          	for (let pair of resultData.qNaCount) {
-				    let [key, value] = pair;
-				    questionnaireList.push(key);
-				    answerList.push(value);
+	          	const qnaData = resultData.qNaCount;
+
+				console.log(['stat qna count'],qnaData, typeof(qnaData));
+	          	if(qnaData) {
+
+	          		Object.keys(qnaData).forEach(key => {
+					    var q = {name : key, key:key}
+					    questionnaireList.push(q);
+					    answerList.push(qnaData[key]);
+					});
 				}
+
 
 				let one = 0;
 				let two = 0;
@@ -100,8 +107,8 @@ class ResultStatView extends Component{
 		let yes = this.state.answerList[index];
 		let no = 100-yes;
 		
-
-		this.setState({selectedQuestionnaire : questionnaire, yes : yes, no : no, showChart:yes});
+		console.log(yes, no);
+		this.setState({selectedQuestionnaire : questionnaire, yes : yes, no : no, showChart:true});
 	}
 
 
@@ -132,7 +139,7 @@ class ResultStatView extends Component{
 			      fill: false,
 			      lineTension: 0.1,
 			      backgroundColor: 'rgba(75,192,192,0.4)',
-			      borderColor: 'rgba(75,192,192,1)',
+			      borderColor: '#CD4B56',
 			      borderCapStyle: 'butt',
 			      borderDash: [],
 			      borderDashOffset: 0.0,
@@ -166,8 +173,22 @@ class ResultStatView extends Component{
 						<button className='btn btn-danger' onClick={this.mapViewBtnClickHandler}>Map View</button>
 				</div>
 				{lineChart}
+				<div className={['row', classes.StatInfoSection].join(' ')}> 
+					
+					<div className={['col-4', classes.StateInfo].join(' ')}>
+						<div className={classes.TitleOfStat}>Average of Rating</div>  {this.state.result?this.state.result.avgRating:null}
+					</div>
+					
+					<div className={['col-4', classes.StateInfo].join(' ')}>
+						<div className={classes.TitleOfStat}>Standar Deviation</div>  {this.state.result?this.state.result.sdRating:null}
+					</div>
+					
+				</div>
+
+				<div className={classes.PieChartSection}>
 				{dropdown}
 				{pieChart}
+				</div>
 			</div>);
 	}
 }

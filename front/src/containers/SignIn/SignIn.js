@@ -12,21 +12,23 @@ class SignIn extends Component {
   //<SignInBody_n signedIn = {this.props.signedIn}/>
 
   state = {
-    show : false
+    show : false,
+    message : '',
   }
 
-  openModalHandelr = () => {
-    this.setState({ show: true });
+  openModalHandelr = (message) => {
+    this.setState({ show: true,
+      message : message  });
   }
 
   modalCloseHandler = () => {
-    this.setState({ show: false });
+    this.setState({ show: false, message:'' });
   }
 
   render() {
     return (
       <Aux>
-        <MessageBox show={this.state.show} modalClosed={this.modalCloseHandler} message="ID and Password is invalid. Try again"/>
+        <MessageBox show={this.state.show} modalClosed={this.modalCloseHandler} message={this.state.message}/>
      
         <div className={[classes.SignIn].join(" ")}>
           <div className={classes.Title}> Super Canvasser </div>
