@@ -5,7 +5,7 @@
 
     <groupId>Team830</groupId>
     <artifactId>SuperCanvasser</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1</version>
     <packaging>jar</packaging>
 
     <name>Super Canvasser</name>

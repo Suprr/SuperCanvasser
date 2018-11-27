@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class AvailabilityController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity addVar(@Valid @RequestBody Availability availability, BindingResult result) {
+    public ResponseEntity addAvailability(@RequestBody Availability availability, BindingResult result) {
         if (result.hasErrors()) {
             log.info("AvailabilityController : Availability add has failed");
             return null;
@@ -43,9 +44,9 @@ public class AvailabilityController {
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public Availability getAvailabilitiesByCanvasser(@RequestParam String id) {
+    public Availability getAvailabilitiesByCanvasser(@RequestParam String _id) {
         log.info("AvailabilityController : Getting all availabilities by canvasser");
-        return (AvailabilityService.findByCanvasserId(id));
+        return (AvailabilityService.findByCanvasserId(_id));
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)

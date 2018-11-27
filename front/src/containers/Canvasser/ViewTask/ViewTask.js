@@ -65,6 +65,7 @@ class ViewTask extends Component {
     }
     newVisitedLoc.push(e);
     this.setState({ visitedLoc: newVisitedLoc, locations: newLoc });
+    axios.post("/task/edit");
   };
 
   render() {
