@@ -113,7 +113,7 @@
 }
 
 .calendar .body .cell:hover {
-  background: var(--bg-color);
+  background: gray;
   transition: 0.5s ease-out;
 }
 

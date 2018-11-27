@@ -18,6 +18,8 @@ class ViewTask extends Component {
 
   componentDidMount() {
     let addresses = {};
+    const userInfoData = JSON.parse(sessionStorage.getItem("userInfo"));
+    const userID = userInfoData._id;
     axios
       .get("/task/activeTask/?_id=" + userID)
       .then(response => {
@@ -36,7 +38,8 @@ class ViewTask extends Component {
             id: this.state.locations.length + 1,
             _id: data[i]._id,
             anonymous: data[i].anonymous,
-            visited: data[i].visited
+            visited: data[i].visited,
+            rating: 1
           };
           addresses.push(newAddress);
         }
@@ -51,10 +54,24 @@ class ViewTask extends Component {
       });
   }
 
-  submitHandler = e => {};
+  submitHandler = e => {
+    e.visited = true;
+    let newLoc = this.state.locations;
+    let newVisitedLoc = this.state.visitedLoc;
+    for (let i = 0; i < newLoc.length; i++) {
+      if (newLoc[i].id == e.id) {
+        newLoc.splice(i, 1);
+      }
+    }
+    newVisitedLoc.push(e);
+    this.setState({ visitedLoc: newVisitedLoc, locations: newLoc });
+  };
 
   render() {
-    if (mounted) {
+    if (
+      this.state.mounted &&
+      (this.state.locations.length > 0 || this.state.visitedLoc.length > 0)
+    ) {
       return (
         <div>
           <h1>View Task</h1>
@@ -70,25 +87,34 @@ class ViewTask extends Component {
             </Map>
             <h2>Next Recommended Location</h2>
             <div className="nest">
-              <Task key={this.state.nextLoc.id} task={this.state.nextLoc} />
+              <Task
+                key={this.state.nextLoc.id}
+                task={this.state.nextLoc}
+                submit={this.submitHandler}
+              />
             </div>
             <h2>Unvisited Location</h2>
             <div className="nest">
               {this.state.locations.map(task => (
-                <Task key={task.id} task={task} />
+                <Task key={task.id} task={task} submit={this.submitHandler} />
               ))}
             </div>
             <h2>Visited Location</h2>
             <div className="nest">
               {this.state.visitedLoc.map(task => (
-                <Task key={task.id} task={task} />
+                <Task key={task.id} task={task} submit={this.submitHandler} />
               ))}
             </div>
           </div>
         </div>
       );
     } else {
-      return <div />;
+      return (
+        <div>
+          <h1>View Task</h1>
+          <h4>No Current Task</h4>
+        </div>
+      );
     }
   }
 }
