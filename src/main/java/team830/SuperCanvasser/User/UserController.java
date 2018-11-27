@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,7 +56,11 @@ public class UserController {
 
     @RequestMapping(value = "/sysad/edit", method = RequestMethod.POST)
     public ResponseEntity editUser(@RequestBody User user, HttpServletRequest request){
-        if(getRoleInSession(request).equals(Role.ADMIN)){
+        if(userService.getUserBy_id(user.get_id())==null){
+            log.info("UserController : User Does Not Exist");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No Such User");
+        }
+        else if(getRoleInSession(request).equals(Role.ADMIN)){
             log.info("UserController : User has been edited");
             return ResponseEntity.ok(userService.editUser(user));
         }
@@ -64,7 +69,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/sysad/add", method = RequestMethod.POST)
-    public ResponseEntity addUser(@RequestBody User user, HttpServletRequest request){
+    public ResponseEntity addUser(@RequestBody User user, HttpServletRequest request, BindingResult result){
+        if(result.hasErrors()){
+            log.info("UserController :: Does not have authority to add the users");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad request");
+        }
         if(getRoleInSession(request).equals(Role.ADMIN)){
             log.info("UserController :: User has been added");
             return ResponseEntity.ok(userService.addUser(user));
