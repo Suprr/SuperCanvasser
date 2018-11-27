@@ -56,14 +56,15 @@ public class UserService{
     public List<User> getAllUsersByNameRegex(String nameRegex){
         log.info("UserService :: Get All the Users By Name");
         //removing duplicates by using set
-
         Set<User> userSet = new HashSet<>(userRepo.findUserByFirstNameRegex(nameRegex));
         userSet.addAll(userRepo.findUserByLastNameRegex(nameRegex));
+        
         for(User user : userSet){
             if(!user.hasRole(Role.MANAGER)){
                 userSet.remove(user);
             }
         }
+
         List<User> users = new ArrayList<>(userSet);
         return users;
     }
