@@ -1,16 +1,16 @@
-/*package team830.SuperCanvasser;
+package team830.SuperCanvasser;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.AssertionErrors;
 import team830.SuperCanvasser.User.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Rollback
 @RunWith(SpringRunner.class)
@@ -27,14 +27,14 @@ public class UserTest {
                         "aaa",
                         "Richy",
                         "Risdell",
-                            new Role[]{});
+                            new ArrayList<Role>(Arrays.asList(Role.ADMIN)));
 
     User user1 = new User("5bc0d1b4fc13ae64f7000001",
             "b@gmail.com",
             "bbb",
             "Joan",
             "Risdell",
-            new Role[]{Role.ADMIN});
+            new ArrayList<Role>(Arrays.asList(Role.ADMIN)));
     @Test
     public void testRepoFindByEmail(){
         Assert.assertEquals(user, userRepo.findByEmail("a@gmail.com"));
@@ -61,7 +61,7 @@ public class UserTest {
                 "bbb",
                 "Joan",
                 "Risdell",
-                new Role[]{Role.ADMIN});
+                new ArrayList<Role>(Arrays.asList(Role.ADMIN)));
         userService.editUser(user1);
         Assert.assertEquals(user1, userRepo.findByEmail("b@gmail.com"));
     }
@@ -69,4 +69,3 @@ public class UserTest {
     //TODO : have to make some test
 
 }
-*/

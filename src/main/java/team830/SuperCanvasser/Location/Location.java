@@ -31,6 +31,7 @@ public class Location {
         this.qNa = new HashMap<>(qNa);
         this.anonymous = anonymous;
         this.index = index;
+        this.rating = 0;
     }
 
     public Location( double latitude, double longitude, String address) {

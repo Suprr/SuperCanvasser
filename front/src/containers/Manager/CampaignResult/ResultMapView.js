@@ -4,7 +4,7 @@ import {withRouter, Route, Switch} from 'react-router-dom'
 import axios from '../../../axios'
 import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
 import './resultMap.css'
-import LocationItem from '../../../components/Campaign/TaskAssignment/TaskDetail/LocationItem'
+import ResultLocationItem from '../../../components/Campaign/CampaignResult/ResultLocationItem'
 import classes from './Result.module.css'
 
 class ResultMapView extends Component{
@@ -23,10 +23,13 @@ class ResultMapView extends Component{
 	          const responseData = response.data[0];
 
 	          //then get locations info by campaign id.
-	          
-	          if(this.state.isMounted){
-	            this.setState({campaign:responseData});               
-	          }
+	          axios.get('/manager/result/mapView/?_id='+cmpId).then(res=>{
+	           		
+		          if(this.state.isMounted){
+		            this.setState({campaign:responseData, locations:res.data});               
+		          }
+
+		      });
 	        }).catch(error=>{
 	          console.log(error)
 	        })
@@ -38,14 +41,14 @@ class ResultMapView extends Component{
       this.setState({isMounted:false});
     } 
 
-    setClassName = (rank)=>{
-    	if(rank==1){
+    setClassName = (rating)=>{
+    	if(rating==1){
     		return 'RankFirst'
-    	} else if(rank==2){
+    	} else if(rating==2){
     		return 'RankSecond'
-    	} else if(rank==3){
+    	} else if(rating==3){
     		return 'RankThird'
-    	} else if(rank==4){
+    	} else if(rating==4){
     		return 'RankFourth'
     	} else{
     		return 'RankFifth'
@@ -65,19 +68,21 @@ class ResultMapView extends Component{
 		let count=0;
 
 		const markers = this.state.locations&&this.state.locations.length>0? this.state.locations.map(loc=>{
-			//const rankClassName = this.setClassName(loc.ranking)
-			//<Tooltip  className={rankClassName} direction='center'permanent>
+			const rankClassName = this.setClassName(loc.rating)
+			
 			let marker =  <Marker key={count++} attribution={count} position={[loc.latitude, loc.longitude]}>
-						     <Tooltip  direction='center'permanent>
+						     <Tooltip  className={rankClassName} direction='center'permanent>
 			                       <span>{count}</span>
 			                </Tooltip>
 						   </Marker>;
 		    return marker;
+
 		}) : null;
 
 		let num = 1;
 		const locations = this.state.locations&&this.state.locations.length>0? this.state.locations.map(loc =>{
-			let location = <LocationItem key= {loc._id} number = {num++} location={loc.address}/> 
+			const color = this.setClassName(loc.rating);
+			let location = <ResultLocationItem key= {loc._id} number = {num++} color={color} rating={loc.rating} location={loc.address}/> 
 		    return location;
 		}): null;
 
@@ -97,6 +102,46 @@ class ResultMapView extends Component{
 					          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
 					    {markers}
 				  	</Map>		
+				</div>
+
+				<div className={classes.CircleSection}>
+					<div className={classes.CircleSectionTitle}>
+						Rating
+					</div>
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Red].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>5</div>
+					</div>
+
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Yellow].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>4</div>
+					</div>
+
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Green].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>3</div>
+					</div>
+					
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Blue].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>2</div>
+					</div>
+
+					<div className={['row', classes.CircleLine].join(' ')}>
+						<div className='col-1'>
+							<div className={[classes.Circle, classes.Purple].join(' ')}></div>
+						</div>
+						<div className={['col-1'].join(' ')}>1</div>
+					</div>
 				</div>
 
 

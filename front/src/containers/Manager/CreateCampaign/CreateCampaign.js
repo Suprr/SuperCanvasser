@@ -47,6 +47,7 @@ class CreateCampaign extends Component{
 		message : null,
 		managerList : false,
 		searchedManagerList : [],
+		isUpdatedLocation : false,
 	}
 
 	handleInputChange = (event)=> {
@@ -67,6 +68,10 @@ class CreateCampaign extends Component{
  			else
    	 			this.showMessageBox('Invalid Type');
    	 	}	
+	}
+
+	isUpdatedLocationHandler = () =>{
+		this.setState({isUpdatedLocation : false})
 	}
 
 	 handleStartDateChange = (newDate)=>{
@@ -283,12 +288,17 @@ class CreateCampaign extends Component{
 						  			this.showMessageBox(locs.length+' locations are added. If there are redundancy locations, it will not be added.');
 						  			this.setState((prevState)=>({
 						  			locations : newlocs,
-							  			newLocations : ''
+							  			newLocations : '',
+							  			isUpdatedLocation:true,
 						  			}))
 					        	}
 					    }}).catch(err=>{
 					    	this.showMessageBox('There are invalid format of location please check it, then input again.\n'+
 					    		'Input ex) 40, Piedmont Drive, Apartment 16B, Brookhaven, NY, 11776');
+					    	this.setState((prevState)=>({
+							  			newLocations : '',
+							  			isUpdatedLocation:true,
+				  			}))
 					    });
 	  				
 	  			}
@@ -533,8 +543,8 @@ class CreateCampaign extends Component{
 					<CreateQNR questionnaire={this.state.newQuestionnaire} onChange={(event)=>this.handleInputChange(event)}
 						onClick = {(event)=>this.addQuestionnaireHandler(event)}/>
 					<AddedQuestionnaire questionnaire = {this.state.questionnaire} onClick={this.removeQuestionnaireHandler}/>
-					<AddLocation location={this.state.newLocations} onChange={this.handleInputChange}
-							onClick = {(event)=>this.addLocationHandler(event)}/>
+					<AddLocation location={this.state.newLocations}  isUpdatedLocation={this.state.isUpdatedLocation} onChange={this.handleInputChange}
+							onClick = {(event)=>this.addLocationHandler(event)} updateHandler={this.isUpdatedLocationHandler}/>
 					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
 					<VisitDuration visitMin = {this.state.visitMin} onChange = {(event) => this.handleInputChange(event)}/>
 					

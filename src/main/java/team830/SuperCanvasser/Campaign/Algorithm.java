@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.Availability.AvailabilityService;
 import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Task.Task;
@@ -15,6 +16,8 @@ import team830.SuperCanvasser.Task.TaskService;
  *
  * @author Chris
  */
+
+@Service
 public class Algorithm {
     @Autowired
     static TaskService taskService;
@@ -22,7 +25,7 @@ public class Algorithm {
     static CampaignService campaignService;
     @Autowired
     static AvailabilityService availabilityService;
-    // Walking speed in respect to Latitude and Longitude is 0.05/69
+    // Walking speed in rgespect to Latitude and Longitude is 0.05/69
     // degrees of Latitude/Longitude a minute
     private static final double CANVASSER_SPEED = (0.05/69);
     private static final int CANVASSER_WORKDAY = 480;
@@ -78,6 +81,8 @@ public class Algorithm {
                 }
             }
         }
+        System.out.println("Task Size :  "+tasks.size()+", "+tasks.get(0).get_id());
+
         for (Task t : tasks) {
             taskService.addTask(t);
         }
@@ -285,7 +290,7 @@ public class Algorithm {
     static boolean totalTimeWillBeReached(double curtime, int curIndex, int closestIndex) {
         return curtime + TIME_PER_VISIT + (distMatrix[curIndex][closestIndex]/CANVASSER_SPEED) > CANVASSER_WORKDAY;
     }
-    
+
     // Combines canvassers if the lowest 2 distances can be combined to one
     static void combineCanvassers(ArrayList<ArrayList<Location>> visits) {
         while (true) {
@@ -399,7 +404,7 @@ public class Algorithm {
                 break;
             }
         }
-        
+
     }
     
     // Calculates the distance a canvasser will travel
@@ -410,7 +415,7 @@ public class Algorithm {
         }
         return (tempDist/CANVASSER_SPEED) + (TIME_PER_VISIT * canvasser.size());
     }
-    
+
     // Checks if there is a canvasser of time longer than CANVASSER_WORKDAY
     static boolean canvasserIsValid(ArrayList<ArrayList<Location>> canvassers) {
         for (ArrayList canvasser : canvassers) {

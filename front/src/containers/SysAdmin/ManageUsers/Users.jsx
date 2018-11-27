@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import User from "./User";
 import "./ManageUsersCSS.css";
+import classes from './ManageUsers.module.css'
 
 class Users extends Component {
   state = {
@@ -30,16 +31,16 @@ class Users extends Component {
     return (
       <div className="nest">
         <h1>Users</h1>
-        <button onClick={() => this.switchDisplay("MANAGER")} className={buttonClass}>
+        <button onClick={() => this.switchDisplay("MANAGER")} className={['btn', 'btn-danger', classes.RoleBtn].join(' ')}>
           Managers
         </button>
-        <button onClick={() => this.switchDisplay("CANVASSER")} className={buttonClass}>
+        <button onClick={() => this.switchDisplay("CANVASSER")} className={['btn', 'btn-danger', classes.RoleBtn].join(' ')}>
           Canvassers
         </button>
-        <button onClick={() => this.switchDisplay("ADMIN")} className={buttonClass}>
+        <button onClick={() => this.switchDisplay("ADMIN")} className={['btn', 'btn-danger', classes.RoleBtn].join(' ')}>
           System Admins
         </button>
-        <div className="nest">
+        <div className={['nest'].join(' ')}>
           {
             display
           }

@@ -49,6 +49,7 @@ class EditCampaign extends Component{
 		message : null,
 		managerList : false,
 		searchedManagerList : [],
+		isUpdatedLocation : false,
 	}
 
 	handleInputChange = (event)=> {
@@ -71,6 +72,10 @@ class EditCampaign extends Component{
    	 		
    	 	}
 		
+	}
+
+	isUpdatedLocationHandler = () =>{
+		this.setState({isUpdatedLocation : false})
 	}
 
 	 handleStartDateChange = (newDate)=>{
@@ -230,12 +235,17 @@ class EditCampaign extends Component{
 						  			this.showMessageBox(locs.length+' locations are added. If there are redundancy locations, it will not be added.');
 						  			this.setState((prevState)=>({
 						  			locations : newlocs,
-							  			newLocations : ''
+							  			newLocations : '',
+							  			isUpdatedLocation:true
 						  			}))
 					        	}
 					    }}).catch(err=>{
 					    	this.showMessageBox('There are invalid format of location please check it, then input again.\n'+
 					    		'Input ex) 40, Piedmont Drive, Apartment 16B, Brookhaven, NY, 11776');
+					    	this.setState((prevState)=>({
+							  			newLocations : '',
+							  			isUpdatedLocation:true,
+				  			}))
 					    });
 	  			}
 	  		}
@@ -472,7 +482,7 @@ class EditCampaign extends Component{
 						onClick = {(event)=>this.addQuestionnaireHandler(event)}/>
 					<AddedQuestionnaire questionnaire = {this.state.questionnaire} onClick={this.removeQuestionnaireHandler}/>
 					<AddLocation location={this.state.newLocations} onChange={this.handleInputChange}
-							onClick = {(event)=>this.addLocationHandler(event)}/>
+							onClick = {(event)=>this.addLocationHandler(event)} isUpdatedLocation={this.state.isUpdatedLocation} updateHandler={this.isUpdatedLocationHandler}/>
 					<AddedLocation locations = {this.state.locations}  onClick = {this.removeLocationHandler}/>
 					<VisitDuration visitMin = {this.state.visitMin} onChange = {(event) => this.handleInputChange(event)}/>
 					

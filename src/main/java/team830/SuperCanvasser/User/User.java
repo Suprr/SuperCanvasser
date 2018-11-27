@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @Document(collection = "users")
 public class User {
@@ -17,7 +19,7 @@ public class User {
     private String pwd;
     private String firstName;
     private String lastName;
-    private Role[] role;
+    private List<Role> role;
 
     public User(){}
 
@@ -26,7 +28,7 @@ public class User {
         this.pwd = pwd;
     }
 
-    public User(String id, String email, String pwd, String firstName, String lastName, Role[] role) {
+    public User(String id, String email, String pwd, String firstName, String lastName, List<Role> role) {
         this._id = id;
         this.email = email;
         this.pwd = pwd;
@@ -73,18 +75,18 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Role[] getRole() {
+    public List<Role> getRole() {
         return role;
     }
 
-    public void setRole(Role[] role) {
+    public void setRole(List<Role> role) {
         this.role = role;
     }
 
     public static boolean validatePwd(String requestedPwd, String pwd){ return requestedPwd.equals(pwd); }
 
     public boolean hasRole(Role tempRole){
-        for (Role r: getRole()) {
+        for (Role r: role) {
             if(r.equals(tempRole)) return true;
         }
         return false;

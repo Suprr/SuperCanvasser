@@ -10,8 +10,11 @@ img.leaflet-marker-icon{
 }
 
 .leaflet-tooltip{
-	border-radius : 100px;
+	height: 30px;
+  	width: 30px;
+	border-radius : 50%;
 	background-color: #cb4d58;
+	border:none;
 	color : white;
 	padding:10px;
 }

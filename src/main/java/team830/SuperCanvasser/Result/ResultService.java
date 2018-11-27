@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ResultService implements ResultInterface{
+public class ResultService {
     @Autowired
     ResultRepo resultRepo;
 
@@ -15,5 +15,7 @@ public class ResultService implements ResultInterface{
     public Result findByCampaignId(String campaignId){
         return resultRepo.findResultByCampaignId(campaignId);
     }
+
+
 
 }
