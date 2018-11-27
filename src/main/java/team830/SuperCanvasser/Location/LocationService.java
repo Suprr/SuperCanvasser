@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-
 public class LocationService{
+    private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
+
 
     @Autowired
     LocationRepo locationRepo;
@@ -33,9 +34,9 @@ public class LocationService{
             return updatedLocation;
         }
         return updatedLocation;
+
     }
     public List<Double> getAllRatings(List<Task> tasks){
-
         List<Double> ratings = new ArrayList<>();
         for(int i = 0; i < tasks.size(); i++){
             List<Location> locations = findLocationsById(tasks.get(i).getLocations());
