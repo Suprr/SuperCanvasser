@@ -40,7 +40,7 @@ public class AvailabilityController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity addAvailability(@RequestBody Availability availability, BindingResult result) {
+    public ResponseEntity addAvailability(@RequestBody Availability availability, HttpServletRequest request, BindingResult result) {
         if (result.hasErrors()) {
             log.info("AvailabilityController : Availability add has failed");
             return null;
