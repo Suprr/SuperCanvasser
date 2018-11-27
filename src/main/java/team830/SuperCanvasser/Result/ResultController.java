@@ -15,6 +15,7 @@ import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Task.Task;
 import team830.SuperCanvasser.Task.TaskService;
 
+ import java.util.ArrayList;
  import java.util.List;
 
 @RequestMapping("/manager/result")
@@ -56,15 +57,23 @@ public class ResultController {
     // TODO have to calculate the questionnaire
     @RequestMapping(value = "/statView", method = RequestMethod.POST)
     public ResponseEntity statViewResult(@RequestBody Campaign campaign){
-        List<Task> tasks = taskService.findAllTasksById(campaign.getTasks());
-        // create and save result
-        Result result = new Result(ObjectId.get().toHexString(), campaign, locationService.getAllRatings(tasks));
+        Result result = resultService.findByCampaignId(campaign.get_id());
+        // this checkes whether result exists in db
         if(result == null){
-            log.info("ResultController :: Failed to gather Result");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request Failed");
-        }
+            List<Task> tasks = taskService.findAllTasksById(campaign.getTasks());
+            // create and save result if the result does not exist!!!
+            result = new Result(ObjectId.get().toHexString(), campaign, locationService.getAllRatings(tasks));
+            // this checks whether the result is created or  // should not be null
+            if(result == null){
+                log.info("ResultController :: Failed to Create Result");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request Failed");
+            }
             log.info("ResultController :: Result for StatView");
             return ResponseEntity.ok(resultService.createResult(result));
+        }
+        else{
+            return ResponseEntity.ok(result);
+        }
 
     }
     // Mapview param = campaignID RETURN = list of all locations from all the tasks
