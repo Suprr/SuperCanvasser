@@ -9,7 +9,7 @@ class Variable extends Component {
   };
 
   handleVarChange = e => {
-    var regex = /(\d*\.)?\d+?/;
+    var regex = /([0-9]+)/;
     var value = e.target.value;
     var matches = value.match(regex);
 

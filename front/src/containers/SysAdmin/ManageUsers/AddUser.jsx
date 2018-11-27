@@ -82,6 +82,18 @@ class AddUser extends Component {
           // console.log(['AddUser'],response.data, "DONE");
           this.showMessageBox('A User Is Created.');
           this.props.refresh();
+          this.setState({
+            email: "",
+            password: "",
+            confirmPassword: "",
+            firstName: "",
+            lastName : "",
+            manager : false,
+            canvasser : false,
+            sysad : false,
+            show : false,
+            message : ''
+          });
           // this.setState({
           //   email:'',
           //   password:'',

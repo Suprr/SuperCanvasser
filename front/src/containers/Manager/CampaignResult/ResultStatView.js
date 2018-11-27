@@ -42,7 +42,7 @@ class ResultStatView extends Component{
 	          	if(qnaData) {
 
 	          		Object.keys(qnaData).forEach(key => {
-					    var q = {name : key, key:key}
+					    var q = {name : key, _id:key}
 					    questionnaireList.push(q);
 					    answerList.push(qnaData[key]);
 					});

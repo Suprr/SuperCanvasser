@@ -19,7 +19,6 @@ class ResultTableView extends Component{
 	           
 	          const responseData = response.data[0];
 
-
 		       //axios get Task List data by campaign ID
 		       axios.post('task/tasks', responseData.tasks).then(res=>{
 			        

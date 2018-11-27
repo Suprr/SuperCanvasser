@@ -82,7 +82,7 @@ public class TaskController {
 
     @RequestMapping(value = "/tasks", method = RequestMethod.POST)
     public ResponseEntity getTasksById(@RequestBody List<String> tasks, HttpServletRequest request) {
-        if (UserController.getRoleInSession(request).equals(Role.CANVASSER)) {
+        if (!UserController.getRoleInSession(request).equals(Role.MANAGER)) {
             log.info("TaskController :: Grabbing tasks by id");
             return ResponseEntity.ok(taskService.findAllTasksById(tasks));
         }
@@ -105,7 +105,7 @@ public class TaskController {
     // ViewTask getting the user for the task
     @RequestMapping(value = "/canvasser", method = RequestMethod.GET)
     public ResponseEntity getAssignedCanvasser(@RequestParam String _id, HttpServletRequest request){
-        if (UserController.getRoleInSession(request).equals(Role.CANVASSER)) {
+        if (UserController.getRoleInSession(request).equals(Role.MANAGER)) {
             log.info("TaskController :: Grabbing canvsser by Id for view task");
             return ResponseEntity.ok(taskService.getCanvasserById(_id));
         }
