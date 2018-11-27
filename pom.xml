@@ -5,7 +5,7 @@
 
     <groupId>Team830</groupId>
     <artifactId>SuperCanvasser</artifactId>
-    <version>1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Super Canvasser</name>
@@ -87,11 +87,11 @@
             <artifactId>guava</artifactId>
             <version>27.0-jre</version>
         </dependency>
-        <dependency>
-            <groupId>Team830</groupId>
-            <artifactId>SuperCanvasser</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>Team830</groupId>-->
+            <!--<artifactId>SuperCanvasser</artifactId>-->
+            <!--<version>0.0.1-SNAPSHOT</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <!--<dependencyManagement>-->
