@@ -293,6 +293,7 @@ class CreateCampaign extends Component{
 						  			}))
 					        	}
 					    }}).catch(err=>{
+					    	console.log(err.resopnse);
 					    	this.showMessageBox('There are invalid format of location please check it, then input again.\n'+
 					    		'Input ex) 40, Piedmont Drive, Apartment 16B, Brookhaven, NY, 11776');
 					    	this.setState((prevState)=>({

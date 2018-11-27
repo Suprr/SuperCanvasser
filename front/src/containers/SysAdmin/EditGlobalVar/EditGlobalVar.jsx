@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import Variable from "./Variable";
 import axios from "../../../axios";
+
+import MessageBox from '../../../components/UI/MessageBox/MessageBox';
+
 class EditGlobalVar extends Component {
   state = {
     variables: null,
     variablesFromServer: [],
-    isMounted: false
+    isMounted: false,
+    show:false,
+    message:''
   };
 
   handleEdit = (newValue, id) => {
@@ -17,7 +22,7 @@ class EditGlobalVar extends Component {
     //   }
     // }
     // this.setState({ variables: tempVariables });
-  };
+  }
 
   // componentDidMount(){
   //   console.log('componentDidMount EditGlobalVar')
@@ -38,6 +43,15 @@ class EditGlobalVar extends Component {
   //       }
   //     });
   // }
+
+
+    showMessageBox = (message) => {
+      this.setState({ show: true , message : message});
+    }
+
+    closeMessageBox = () => {
+      this.setState({ show: false });
+    }
 
   componentDidMount() {
     console.log(["EditGlobalVar componentDidMount"]);
@@ -74,6 +88,8 @@ class EditGlobalVar extends Component {
   render() {
     return (
       <div>
+        <MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
+
         <h1>Global Variables</h1>
         <div className="var-list">
           <div className="row nest">
@@ -89,6 +105,7 @@ class EditGlobalVar extends Component {
         {this.state.variables
           ? this.state.variables.map(variable => (
               <Variable
+                showMessageBox={this.showMessageBox}
                 key={variable._id}
                 variable={variable}
                 onEdit={this.handleEdit}
