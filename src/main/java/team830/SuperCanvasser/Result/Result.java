@@ -20,9 +20,9 @@ public class Result {
     private double sdRating;
     private double avgRating;
     private Map<String, Integer> qNaCount = new HashMap<>(); // List<Integer>
-    private double [] ratings;
+    private List<Double> ratings;
 
-    Result(String _id, Campaign campaign, double [] ratings){
+    Result(String _id, Campaign campaign, List<Double> ratings){
         this._id = _id;
         this.campaignId = campaign.get_id();
         this.ratings = ratings;
@@ -74,22 +74,22 @@ public class Result {
         }
     }
 
-    public double[] getRatings() {
+    public List<Double> getRatings() {
         return ratings;
     }
 
-    public void setRatings(double[] ratings) {
+    public void setRatings(List<Double> ratings) {
         this.ratings = ratings;
     }
 
     // calculate standard deviation rating
-    public double calculateStd(double [] ratings){
-        this.sdRating = Stats.of(ratings).sampleStandardDeviation();
+    public double calculateStd(List<Double> ratings){
+        this.sdRating = Stats.of(ratings).populationStandardDeviation();
         return this.sdRating;
     }
 
     // calculate average rating
-    public double calculateAvg(double [] ratings){
+    public double calculateAvg(List<Double>ratings){
         this.avgRating = Stats.of(ratings).mean();
         return this.avgRating;
     }
