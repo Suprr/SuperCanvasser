@@ -15,15 +15,15 @@ import org.springframework.http.ResponseEntity;
  import team830.SuperCanvasser.Campaign.Campaign;
 import team830.SuperCanvasser.Campaign.CampaignService;
 import team830.SuperCanvasser.Location.Location;
- import team830.SuperCanvasser.Location.LocationService;
- import team830.SuperCanvasser.SuperCanvasserApplication;
+import team830.SuperCanvasser.Location.LocationService;
+import team830.SuperCanvasser.SuperCanvasserApplication;
 import team830.SuperCanvasser.Task.Task;
 import team830.SuperCanvasser.Task.TaskService;
- import team830.SuperCanvasser.User.Role;
- import team830.SuperCanvasser.User.UserController;
+import team830.SuperCanvasser.User.Role;
+import team830.SuperCanvasser.User.UserController;
 
- import javax.servlet.http.HttpServletRequest;
- import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RequestMapping("/manager/result")
 @RestController

@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class LocationService implements LocationInterface{
+public class LocationService{
 
     @Autowired
     LocationRepo locationRepo;
 
-    @Override
     public List<Location> findLocationsById(List<String> locs){
         List<Location> locations = new ArrayList<>();
         for(String loc : locs){
@@ -23,7 +22,6 @@ public class LocationService implements LocationInterface{
         return locations;
     }
 
-    @Override
     public Location updateLocation(Location location){
         Location updatedLocation = null;
         if(locationRepo.findLocationBy_id(location.get_id()) != null){
