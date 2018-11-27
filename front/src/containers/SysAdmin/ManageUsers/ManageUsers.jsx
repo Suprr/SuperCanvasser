@@ -17,12 +17,17 @@ class ManageUsers extends Component {
 
   handleDelete = userID => {
     console.log(['handleDelete'],userID);
-    axios.get('sysad/delete/?_id='+userID).then(resp=>{
-        this.showMessageBox('The User is Removed');
-        this.refreshData();
-    }).catch(err=>{
-        this.showMessageBox('Network Error');
-    });
+    const userData = JSON.parse(sessionStorage.getItem('userInfo'));
+    if(userID==userData._id){
+       this.showMessageBox('User cannot delete by oneself.');
+    } else{
+      axios.get('sysad/delete/?_id='+userID).then(resp=>{
+          this.showMessageBox('The User is Removed');
+          this.refreshData();
+      }).catch(err=>{
+          this.showMessageBox('Network Error');
+      });
+    }
     // axios
     //   .delete("/users/" + userID.id + ".json/", userID)
     //   .then(response => {
@@ -31,7 +36,7 @@ class ManageUsers extends Component {
     //   })
     //   .catch(error => {
     //     console.log("Error", error);
-    //   });
+    //    });
   };
 
   handleAdd = (role, name) => {

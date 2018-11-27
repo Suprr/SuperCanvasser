@@ -1,14 +1,18 @@
 package team830.SuperCanvasser.Location;
 
 import com.google.common.primitives.Doubles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team830.SuperCanvasser.SuperCanvasserApplication;
 import team830.SuperCanvasser.Task.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+
 public class LocationService{
 
     @Autowired
@@ -30,15 +34,15 @@ public class LocationService{
         }
         return updatedLocation;
     }
+    public List<Double> getAllRatings(List<Task> tasks){
 
-    public double [] getAllRatings(List<Task> tasks){
         List<Double> ratings = new ArrayList<>();
         for(int i = 0; i < tasks.size(); i++){
             List<Location> locations = findLocationsById(tasks.get(i).getLocations());
             for(int k = 0; k < locations.size(); k++){
-                ratings.add((double)locations.get(k).getRating());
+                ratings.add((double) locations.get(k).getRating());
             }
         }
-        return Doubles.toArray(ratings);
+        return ratings;
     }
 }

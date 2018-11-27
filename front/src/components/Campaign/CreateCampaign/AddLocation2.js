@@ -71,7 +71,7 @@ class AddLocation2 extends Component{
 				</div>
 			);
 			const progressBar = (					<div className={[classes.Section, 'row'].join(' ')}>
-<CircularProgressbar
+									<CircularProgressbar
 									  percentage={100}
 									  initialAnimation={true}
 									  text={'Adding Locations'}

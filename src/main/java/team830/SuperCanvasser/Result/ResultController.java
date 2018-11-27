@@ -22,6 +22,7 @@ import team830.SuperCanvasser.Task.TaskService;
 import team830.SuperCanvasser.User.Role;
 import team830.SuperCanvasser.User.UserController;
 
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class ResultController {
     }
     // TODO have to calculate the questionnaire
     @RequestMapping(value = "/statView", method = RequestMethod.POST)
+
     public ResponseEntity statViewResult(@RequestBody Campaign campaign, HttpServletRequest request){
         List<Task> tasks = taskService.findAllTasksById(campaign.getTasks());
         // create and save result

@@ -15,6 +15,7 @@
 
 .LocationList{
 	text-align: center;
+	margin-bottom: 100px;
 
 }
 .LocationListHeader{
@@ -95,3 +96,18 @@
 	background-color: #8B4AC4;
 }
 
+
+/*Stat View*/
+.StatInfoSection{
+	margin-top:10px;
+	margin-bottom: 100px;
+	text-align: center;
+}
+
+.TitleOfStat{
+	color : #CD4B56;
+}
+
+.PieChartSection{
+	margin-bottom: 200px;
+}
