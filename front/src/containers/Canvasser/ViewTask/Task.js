@@ -11,7 +11,7 @@ class Task extends Component {
     show: false,
     questions: [],
     modalData: "",
-    curTask: this.props.task
+    curTask: this.props.loc
   };
 
   handleQuestionaire = event => {
@@ -62,10 +62,11 @@ class Task extends Component {
       </button>
     );
     console.log(this.state.curTask);
-    let child = (
+    let count = 0;
+    let child = this.state.curTask.qNa != null ?(
       <div className="container">
         {Object.keys(this.state.curTask.qNa).map(key => (
-          <div className="row">
+          <div className="row" key={count++}>
             <div className="col-sm">{key}</div>
             <div className="col-sm">
               <div className="btn-group btn-group-toggle" data-toggle="buttons">
@@ -152,7 +153,7 @@ class Task extends Component {
           </div>
         </div>
       </div>
-    );
+    ):null;
     return (
       <div className="row task-row">
         <Modal

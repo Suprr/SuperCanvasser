@@ -1,3 +1,7 @@
 .nest {
   padding-left: 50px;
 }
+
+.leaflet-control{
+	z-index:200;
+}

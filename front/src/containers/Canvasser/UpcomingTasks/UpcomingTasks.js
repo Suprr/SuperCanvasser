@@ -162,8 +162,10 @@ class Upcomingtasks extends Component {
             modalClosed={this.closeModal}
             children={locations}
           />
+          <div className='col-11'>
           <h1>Upcoming Canvassing</h1>
           {map}
+          </div>
         </div>
       );
     } else {

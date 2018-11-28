@@ -85,12 +85,14 @@ class EditAvailability extends Component {
        <MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
 
         <h1>Edit Availability</h1>
+        <div className='col-10'>
         {
           <Calendar
             onClick={this.onCalendarClick}
             inavailable={this.state.inAvailableDates}
           />
         }
+        </div>
       </div>
     );
   }

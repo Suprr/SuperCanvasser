@@ -34,11 +34,8 @@ public class TaskController {
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editTask(@RequestBody Task task, HttpServletRequest request, BindingResult result) {
-        if (result.hasErrors()) {
-            log.info("TaskController : Task editing failed");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Editing Failed");
-        } else if (UserController.getRoleInSession(request).equals(Role.MANAGER)){
+    public ResponseEntity editTask(@RequestBody Task task, HttpServletRequest request) {
+        if (UserController.getRoleInSession(request).equals(Role.CANVASSER)){
             log.info("TaskController : Task has been edited");
             return ResponseEntity.ok(taskService.editTask(task));
         }
@@ -114,13 +111,12 @@ public class TaskController {
     // this is after canvasser finished answer questionnaire
     @RequestMapping(value = "/updateLoc", method = RequestMethod.POST)
     public ResponseEntity getAssignedCanvasser(@RequestBody Location location, HttpServletRequest request, BindingResult result){
-        Location updatedLoc = locationService.updateLocation(location);
-        if(result.hasErrors() || updatedLoc == null){
+        if(result.hasErrors()){
             log.info("TaskController :: Location not found in DB");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Location Not Found");
         } else if (UserController.getRoleInSession(request).equals(Role.CANVASSER)) {
             log.info("TaskController :: Save Updated Location");
-            return ResponseEntity.ok(updatedLoc);
+            return ResponseEntity.ok(locationService.updateLocation(location));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
