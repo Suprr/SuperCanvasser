@@ -3,6 +3,7 @@ package team830.SuperCanvasser.Campaign;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -58,6 +59,7 @@ public class CampaignController {
             }
             return ResponseEntity.ok(returnList);
         }
+        log.info("CampaignController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -74,6 +76,7 @@ public class CampaignController {
             log.info("CampaignController :: Campaign is returning all the list found by manager");
             return ResponseEntity.ok(campaigns);
         }
+        log.info("CampaignController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -90,6 +93,7 @@ public class CampaignController {
             log.info("CampaignController :: Getting the Managers (User) for Campaign");
             return ResponseEntity.ok(manList);
         }
+        log.info("CampaignController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -109,6 +113,7 @@ public class CampaignController {
             log.info("CampaignController :: Campaign has been edited");
             return ResponseEntity.ok(campaignService.editCampaign(originalCampaign, campaign));
         }
+        log.info("CampaignController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -119,8 +124,15 @@ public class CampaignController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create campaign");
         } else if (UserController.getRoleInSession(request).equals(Role.MANAGER)) {
             log.info("CampaignController :: Campaign has been created");
-            return ResponseEntity.ok(campaignService.addCampaign(campaign));
+            Campaign newCampaign = campaignService.addCampaign(campaign);
+            if(newCampaign.getCanvassers().isEmpty()){
+                log.info("CampaignController :: Not Enough Canvassers");
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not Enough Canvasssers");
+            }
+            log.info("CampaignController :: Campaign has been created");
+            return ResponseEntity.ok(newCampaign);
         }
+        log.info("CampaignController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -134,6 +146,7 @@ public class CampaignController {
             log.info("CampaignController :: List of Managers for createCampaign");
             return ResponseEntity.ok(users);
         }
+        log.info("CampaignController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 }

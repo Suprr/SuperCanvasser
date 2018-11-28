@@ -39,6 +39,7 @@ public class TaskController {
             log.info("TaskController : Task has been edited");
             return ResponseEntity.ok(taskService.editTask(task));
         }
+        log.info("TaskController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -52,6 +53,7 @@ public class TaskController {
             task.setTaskStatus(Status.INACTIVE);
             return ResponseEntity.ok(taskService.addTask(task));
         }
+        log.info("TaskController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -66,6 +68,7 @@ public class TaskController {
             log.info("TaskController : Grabbing Tasks by canvasser: " + _id);
             return ResponseEntity.ok(taskService.findByCanvasserIdAndTaskStatus(_id, Status.INACTIVE));
         }
+        log.info("TaskController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -81,6 +84,7 @@ public class TaskController {
             log.info("TaskController :: Grabbing tasks by id");
             return ResponseEntity.ok(taskService.findAllTasksById(tasks));
         }
+        log.info("TaskController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -94,6 +98,7 @@ public class TaskController {
             log.info("TaskController :: Grabbing task by canvasserId");
             return ResponseEntity.ok(task);
         }
+        log.info("TaskController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -104,6 +109,7 @@ public class TaskController {
             log.info("TaskController :: Grabbing canvsser by Id for view task");
             return ResponseEntity.ok(taskService.getCanvasserById(_id));
         }
+        log.info("TaskController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -118,6 +124,7 @@ public class TaskController {
             log.info("TaskController :: Save Updated Location");
             return ResponseEntity.ok(locationService.updateLocation(location));
         }
+        log.info("TaskController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 }

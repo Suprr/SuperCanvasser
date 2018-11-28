@@ -168,12 +168,12 @@ class Task extends Component {
         <div className="col-sm">
           <div>
             <span>
-              {this.state.curTask.number + " " + this.state.curTask.street}
+              {this.state.curTask.number}
             </span>
           </div>
           <div>
             <span>
-              {this.state.curTask.city + ", " + this.state.curTask.zipcode}
+              {this.state.curTask.street + ", " + this.state.curTask.city + ", "+ this.state.curTask.state}
             </span>
           </div>
         </div>

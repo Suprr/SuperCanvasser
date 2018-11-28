@@ -36,6 +36,7 @@ public class AvailabilityController {
             log.info("AvailabilityController : Availability has been edited");
             return ResponseEntity.ok(AvailabilityService.editAvailability(availability));
         }
+        log.info("AvailabilityController : Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -48,6 +49,7 @@ public class AvailabilityController {
             log.info("AvailabilityController : Availability has been added");
             return ResponseEntity.ok(AvailabilityService.addAvailability(availability));
         }
+        log.info("AvailabilityController : Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -66,6 +68,7 @@ public class AvailabilityController {
             log.info("AvailabilityController : Fetching canvassers availabilities by id");
             return ResponseEntity.ok(AvailabilityService.findByCanvasserIdEquals(id.getStrings()));
         }
+        log.info("AvailabilityController : Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 }

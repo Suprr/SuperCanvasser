@@ -4,6 +4,8 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import team830.SuperCanvasser.Availability.Availability;
 import team830.SuperCanvasser.Availability.AvailabilityService;
@@ -122,10 +124,7 @@ public class CampaignService{
             totalCanvasserDates += listAvailableDates(campaign.getStartDate(), campaign.getEndDate(), availabilityService.findByCanvasserId(canvassers.get(i).get_id())).size();
         }
 
-        if (totalCanvasserDates < tasks.size()) {
-            //erroru
-        }
-        else {
+        if (totalCanvasserDates >= tasks.size()) {
             int canvasserIndex = 0;
             int taskIndex = 0;
             System.out.println("totalCanvasserDates"+ totalCanvasserDates);

@@ -31,6 +31,7 @@ public class VariableController {
             log.info("VarController :: Variable has been edited");
             return ResponseEntity.ok(variableService.editVariable(var));
         }
+        log.info("VarController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
@@ -40,6 +41,7 @@ public class VariableController {
             log.info("VarController :: Getting all variables");
             return ResponseEntity.ok(variableService.findAll());
         }
+        log.info("VarController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 

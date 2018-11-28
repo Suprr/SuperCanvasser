@@ -3,6 +3,8 @@ import { Map, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 import Modal from "../../../components/UI/Modal/Modal";
 import axios from "../../../axios";
 import classes from './UpcomingTask.module.css'
+import moment from 'moment';
+
 class Upcomingtasks extends Component {
   state = {
     center: [],
@@ -37,7 +39,10 @@ class Upcomingtasks extends Component {
           else {
             data[i].selected = false;
           }
-          newTasks.push(data[i]);
+          const compareDate = moment(data[i].date);
+          if((!compareDate.isSame(moment(),'day'))&&!moment().isAfter(compareDate)){
+            newTasks.push(data[i]);
+          }
         }
         console.log(['ComponentDidmont'], newTasks);
         

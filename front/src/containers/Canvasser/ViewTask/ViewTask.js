@@ -31,14 +31,15 @@ class ViewTask extends Component {
           const length = data.length;
           console.log(res, res.data);
           for (let i = 0; i < length; i++) {
-            const splitAddress = data[i].address.split(" ");
+            const splitAddress = data[i].address.split(",");
             const newAddress = {
               latitude: data[i].latitude,
               longitude: data[i].longitude,
               number: splitAddress[0],
               street: splitAddress[1],
               city: splitAddress[2],
-              zipcode: splitAddress[3],
+              state: splitAddress[3],
+              zipcode: splitAddress[4],
               address: data[i].address,
               qNa: data[i].qNa,
               id: i + 1,
@@ -78,7 +79,6 @@ class ViewTask extends Component {
     let task = this.state.task;
     let allVisited = true;
     for (let i = 0; i < newLoc.length; i++) {
-
       if (newLoc[i].id == e.id) {
         task.locations.map(location =>{
           if (location._id == newLoc[i].id) {
@@ -92,6 +92,16 @@ class ViewTask extends Component {
           }
         });
         newLoc.splice(i, 1);
+        if (i != 0) {
+          if ((Math.abs(e.latitude - newLoc[0].latitude) + Math.abs(e.longitude - newLoc[0].longitude)) > (Math.abs(e.latitude - newLoc[newLoc.length-1].latitude) + Math.abs(e.longitude - newLoc[newLoc.length-1].longitude))) {
+            console.log("Reverse List",(Math.abs(e.latitude - newLoc[0].latitude) + Math.abs(e.longitude - newLoc[0].longitude)) , Math.abs(e.latitude - newLoc[newLoc.length-1].latitude) + Math.abs(e.longitude - newLoc[newLoc.length-1].longitude));
+            let tempList = [];
+            for (let j = newLoc.length - 1; j >=0; j--) {
+              tempList.push(newLoc[j]);
+            }
+            newLoc = tempList;
+          }
+        }
       }
     }
     if (allVisited) {
@@ -136,12 +146,12 @@ class ViewTask extends Component {
               />
               {this.state.locations.map(loc=> (
               <Marker
-              key={marker}
-              attribution={marker}
-              position={[this.state.locations[0].latitude, this.state.locations[0].longitude]}
+              key={loc.id}
+              attribution={loc.id}
+              position={[loc.latitude, loc.longitude]}
               >
               <Tooltip direction="center"permanent>
-              <span>{marker++}</span>
+              <span>{loc.id}</span>
               </Tooltip>
               </Marker>
               ))}

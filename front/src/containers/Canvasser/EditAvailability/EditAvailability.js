@@ -16,27 +16,39 @@ class EditAvailability extends Component {
     },
     show : false,
     message : null,
+    assignedDates: []
   }
 
   onCalendarClick = day => {
-    let newInavDates = this.state.inAvailableDates;
-    let bool = false;
-    for (let i = 0; i < newInavDates.length; i++) {
-      if (newInavDates[i].toString() === dateFns.format(day, "YYYY-MM-DD")) {
-        bool = true;
-        newInavDates.splice(i, 1);
+    let assigned = false;
+    for (let i = 0; i < this.state.assignedDates.length; i++) {
+      if (dateFns.format(day, "YYYY-MM-DD") ===this.state.assignedDates[i]) {
+        assigned = true;
       }
     }
-    if (!bool) {
-      newInavDates.push(dateFns.format(day, "YYYY-MM-DD"));
+    if (assigned) {
+      this.showMessageBox("Cannot select dates assigned to task");
     }
+    else {
+      let newInavDates = this.state.inAvailableDates;
+      let bool = false;
+      for (let i = 0; i < newInavDates.length; i++) {
+        if (newInavDates[i].toString() === dateFns.format(day, "YYYY-MM-DD")) {
+          bool = true;
+          newInavDates.splice(i, 1);
+        }
+      }
+      if (!bool) {
+        newInavDates.push(dateFns.format(day, "YYYY-MM-DD"));
+      }
 
-    this.correctInvalidDates();
-    let newAvailData = this.state.availData;
-    newAvailData.availabilityDates = newInavDates;
-    this.setState({ inAvailableDates: newInavDates, availData: newAvailData });
+      this.correctInvalidDates();
+      let newAvailData = this.state.availData;
+      newAvailData.availabilityDates = newInavDates;
+      this.setState({ inAvailableDates: newInavDates, availData: newAvailData });
 
-    axios.post("/avail/edit", this.state.availData);
+      axios.post("/avail/edit", this.state.availData);
+    }
   }
 
 
@@ -46,10 +58,22 @@ class EditAvailability extends Component {
     axios
       .get("/avail/get/?_id=" + userID)
       .then(response => {
+
+        axios
+      .get("/task/getByCan/?_id=" + userID)
+      .then(res => {
+        const data = res.data;
+        const length = data.length;
+        let tempAssigned = [];
+        for (let i = 0; i < length; i++) {
+          tempAssigned.push(data[i].date);
+        }
         this.setState({
+          assignedDates : tempAssigned,
           availData: response.data,
           inAvailableDates: response.data.availabilityDates
         }, this.correctInvalidDates());
+        });
       })
       .catch(error => {
         console.log("USER ID Error", userID);
