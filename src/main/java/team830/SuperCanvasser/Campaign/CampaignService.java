@@ -73,7 +73,7 @@ public class CampaignService{
             return campaignRepo.insert(campaign);
         }
         //stopping the timer for the original one and start a new timer for edited campaign
-        return originalCampaign;
+        return campaignRepo.save(campaign);
     }
 
     public Campaign addCampaign(Campaign campaign) {
