@@ -507,7 +507,7 @@ class CreateCampaign extends Component{
 					canvassers : []
 				}
 		  		axios.post('/manager/campaign/create', campaign).then(response=>{
-		  			console.log(['Create Campaign'], "Campaign is Created ", campaign);
+		  			console.log(['Create Campaign'], "Campaign is Created ", response);
 		  			this.props.history.push('/manager/campaign/list');
 		  		}).catch(err=>{
 		  			console.log(err);
