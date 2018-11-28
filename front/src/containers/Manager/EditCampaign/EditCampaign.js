@@ -277,7 +277,7 @@ class EditCampaign extends Component{
 	          	  console.log(['ManagerList'], managerList)
 		          this.setState({searchedManagerList: managerList, managerList : true});
 	        }).catch(error=>{
-	          this.showMessageBox('No manager on the database');
+	          this.showMessageBox('No manager is on the database');
 	        });	
 	    }
 	  }
@@ -402,6 +402,7 @@ class EditCampaign extends Component{
 		  		axios.post('/manager/campaign/edit', campaign).then(response=>{
 		  			console.log(['Edit Campaign'], campaign);
 		  			this.props.history.push('/manager/campaign/view');
+		  			this.showMessageBox('Not Enough Canvassers');
 		  		})
 		  	}
 

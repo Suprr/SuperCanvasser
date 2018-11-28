@@ -9,7 +9,7 @@ class Variable extends Component {
   };
 
   handleVarChange = e => {
-    var regex = /([0-9]+)/;
+    var regex = /^([0-9]*)$/;
     var value = e.target.value;
     var matches = value.match(regex);
 
@@ -28,14 +28,18 @@ class Variable extends Component {
     };
 
     console.log(["HANDLE EDIT"], newVariable);
-    axios
-      .post("/sysad/var/edit", newVariable)
-      .then(response => {
-        console.log(["handleEdit"], "Done");
-      })
-      .catch(error => {
-        console.log("Error", error);
-      });
+    if(this.state.newValue==''){
+       this.setState({ newValue: this.state.originalValue}, this.props.showMessageBox('The variable is empty'));
+    }else{
+      axios
+        .post("/sysad/var/edit", newVariable)
+        .then(response => {
+          console.log(["handleEdit"], "Done");
+        })
+        .catch(error => {
+          console.log("Error", error);
+        });
+    }
     // axios.put('/global-variable/'+this.props.variable._id+'.json/',newVariable).then( response => {
 
     //   console.log("edit gbv success");
