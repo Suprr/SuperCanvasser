@@ -135,7 +135,7 @@ public class CampaignController {
             Campaign newCampaign = campaignService.addCampaign(campaign);
             if(newCampaign == null){
                 log.info("CampaignController :: Not Enough Canvassers");
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not Enough Canvasssers");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not Enough Canvasssers");
             }
             log.info("CampaignController :: Campaign has been created");
             return ResponseEntity.ok(newCampaign);
