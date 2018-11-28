@@ -142,7 +142,7 @@ public class CampaignService{
         else {
             int canvasserIndex = 0;
             int taskIndex = 0;
-            System.out.println("totalCanvasserDates"+ totalCanvasserDates);
+            log.info("CampaignService :: totalCanvasserDates"+ totalCanvasserDates);
             while (tasks.size() > taskIndex) {
                 if (listAvailableDates(campaign.getStartDate(),campaign.getEndDate(),availabilityService.findByCanvasserId(canvassers.get(canvasserIndex).get_id())).size() > 0) {
                     totalCanvasserDates--;
@@ -165,8 +165,11 @@ public class CampaignService{
                 }
             }
         }
-        System.out.println("Task Size :  "+tasks.size()+", "+tasks.get(0).get_id());
-
+        log.info("CampaignService :: Task Size :  "+tasks.size()+", "+tasks.get(0).get_id());
+        // adding location to db
+        for(Location location: locations){
+            locationRepo.insert(location);
+        }
         for (Task t : tasks) {
             taskService.addTask(t);
         }
@@ -212,7 +215,7 @@ public class CampaignService{
         }
         location.set_id(ObjectId.get().toHexString());
         location.setqNa(qNa);
-        return locationRepo.insert(location);
+        return location;
     }
 
     private List<Location> createLocations(Campaign campaign, List<Location> locations){
