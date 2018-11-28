@@ -65,15 +65,18 @@ public class CampaignService{
         }
 
         if(locationEdited || campaign.getAvgDuration()!= originalCampaign.getAvgDuration()){
-            for(Task task : taskRepo.findAll()){
-                if(originalCampaign.getTasks().contains(task.get_id())){
-                    taskRepo.delete(task);
+            Campaign newCampaign = addCampaign(campaign);
+            if(newCampaign !=null){
+                log.info("TaskService :: Update Campaign");
+                for(Task task : taskRepo.findAll()){
+                    if(originalCampaign.getTasks().contains(task.get_id())){
+                        taskRepo.delete(task);
+                    }
                 }
+                campaignRepo.delete(originalCampaign);
+                campaign.scheduleTimerForDate();
             }
-            campaignRepo.delete(originalCampaign);
-            campaign.scheduleTimerForDate();
-            log.info("TaskService :: Update Campaign");
-            return addCampaign(campaign);
+            return newCampaign;
         }
 
         //stopping the timer for the original one and start a new timer for edited campaign
