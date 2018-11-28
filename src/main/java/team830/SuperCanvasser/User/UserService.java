@@ -22,8 +22,6 @@ public class UserService{
 
     @Autowired
     private UserRepo userRepo;
-    @Autowired
-    private AvailabilityRepo availabilityRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
