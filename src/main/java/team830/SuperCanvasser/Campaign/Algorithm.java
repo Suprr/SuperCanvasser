@@ -37,6 +37,9 @@ public class Algorithm {
     private ArrayList<ArrayList<Location>> bestSol = new ArrayList();
 
     public Algorithm(double visTime, double canSpeed, int canWorkday){
+        CANVASSER_SPEED = canSpeed;
+        CANVASSER_WORKDAY = canWorkday;
+        TIME_PER_VISIT = visTime;
 //        CANVASSER_WORKDAY = canWorkday;
 //        CANVASSER_SPEED = canSpeed* (0.05/(69 * 3));
 //        TIME_PER_VISIT = visTime;

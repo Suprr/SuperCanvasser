@@ -91,6 +91,7 @@ public class CampaignService{
         }
 
         double TIME_PER_VISIT = campaign.getAvgDuration();
+
         Algorithm algo = new Algorithm(TIME_PER_VISIT, CANVASSER_SPEED, CANVASSER_WORKDAY);
         // Create Locations
         List<Location> locations = createLocations(campaign, new ArrayList<Location>());
@@ -122,6 +123,7 @@ public class CampaignService{
             }
         }
         for (int i = 0; i < canvassers.size(); i++) {
+            System.out.println("Canvasser " +canvassers+", " +canvassers.size() +", "+ availabilityService.findByCanvasserId(canvassers.get(i).get_id()));
             totalCanvasserDates += listAvailableDates(campaign.getStartDate(), campaign.getEndDate(), availabilityService.findByCanvasserId(canvassers.get(i).get_id())).size();
         }
 
