@@ -85,7 +85,7 @@ public class CampaignService{
             return newCampaign;
         }
         // putting back the deleted originalCampaign
-        newCampaign = addCampaign(originalCampaign);
+        addCampaign(originalCampaign);
         // null
         return newCampaign;
     }
@@ -122,7 +122,6 @@ public class CampaignService{
             taskIDs.add(newTask.get_id());
             tasks.add(newTask);
         }
-
 
         int totalCanvasserDates = 0;
         List<User> users = userService.getAllUser();
