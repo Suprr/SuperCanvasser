@@ -156,7 +156,16 @@ class EditCampaign extends Component{
 	  		if(locations==''){
 	  			this.showMessageBox('Fill the location info please.');
 	  		} else{
-	  			const locationArray = locations.split('\n');
+	  			const tempLocationArray = locations.split('\n');
+	  			let locationArray = [];
+	  			
+	  			for(let i=0; i<tempLocationArray.length; i++){
+	  				if(!tempLocationArray[i]==''){
+	  					locationArray.push(tempLocationArray[i]);
+	  				}else {
+	  					console.log(['add Location Handler'], tempLocationArray[i]+'is deleted');
+	  				}
+	  			}
 	  			if(locationArray.length==100){
 	  				this.showMessageBox('Number of locations must be smaller than 100');
 	  			} else{
@@ -260,13 +269,17 @@ class EditCampaign extends Component{
 	  }
 
 	  openSearchModal = () =>{
+	  	if(this.state.newManager==''){
+      	  	this.showMessageBox('please put some words');
+      	  }else{
            axios.get('/manager/campaign/create/manlist?regex='+this.state.newManager).then(response=>{
 	          	  const managerList = response.data;
 	          	  console.log(['ManagerList'], managerList)
 		          this.setState({searchedManagerList: managerList, managerList : true});
 	        }).catch(error=>{
-	          console.log(error)
+	          this.showMessageBox('No manager on the database');
 	        });	
+	    }
 	  }
 
 	  closeSearchModal = () =>{

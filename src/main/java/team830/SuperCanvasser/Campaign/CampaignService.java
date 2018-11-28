@@ -11,6 +11,7 @@ import team830.SuperCanvasser.Location.Location;
 import team830.SuperCanvasser.Location.LocationRepo;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 import team830.SuperCanvasser.Task.Task;
+import team830.SuperCanvasser.Task.TaskRepo;
 import team830.SuperCanvasser.Task.TaskService;
 import team830.SuperCanvasser.User.Role;
 import team830.SuperCanvasser.User.User;
@@ -37,41 +38,46 @@ public class CampaignService{
     private CampaignRepo campaignRepo;
     @Autowired
     private LocationRepo locationRepo;
+    @Autowired
+    private TaskRepo taskRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     public Campaign editCampaign(Campaign originalCampaign, Campaign campaign) {
         List<Location> locations = campaign.getLocations();
         boolean locationEdited = false;
-        // if new location added
-        for(Location location : campaign.getLocations()) {
-            if(location.get_id().equals("")){
-                locationEdited = true;
-                // if new location is added
-                HashMap<String, Boolean> qNa = new HashMap<>();
-                for(String s: campaign.getQuestions()){
-                    qNa.put(s, false);
-                }
-                location.setqNa(qNa);
-                location.set_id(ObjectId.get().toHexString());
-                locationRepo.insert(location);
-            }
-        }
 
         // if location deleted
         for(Location loc : locationRepo.findAll()){
             if(!locations.contains(loc)){
                 locationEdited = true;
+            }
+            if(originalCampaign.getLocations().contains(loc)){
                 locationRepo.delete(loc);
             }
         }
 
-        if(locationEdited){
+        // if new location added
+        for(Location location : campaign.getLocations()) {
+            if(location.get_id().equals("")){
+                locationEdited = true;
+            }
+        }
+
+        if(locationEdited || campaign.getAvgDuration()!= originalCampaign.getAvgDuration()){
+            for(Task task : taskRepo.findAll()){
+                if(originalCampaign.getTasks().contains(task.get_id())){
+                    taskRepo.delete(task);
+                }
+            }
             campaignRepo.delete(originalCampaign);
             campaign.scheduleTimerForDate();
-            return campaignRepo.insert(campaign);
+            log.info("TaskService :: Update Campaign");
+            return addCampaign(campaign);
         }
+
         //stopping the timer for the original one and start a new timer for edited campaign
+        log.info("TaskService :: Update Campaign");
         return campaignRepo.save(campaign);
     }
 
@@ -123,7 +129,7 @@ public class CampaignService{
         }
 
         if (totalCanvasserDates < tasks.size()) {
-            //erroru
+            //error
         }
         else {
             int canvasserIndex = 0;
