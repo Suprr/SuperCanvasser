@@ -46,30 +46,36 @@ public class CampaignService{
     public Campaign editCampaign(Campaign originalCampaign, Campaign campaign) {
         List<Location> locations = campaign.getLocations();
         boolean locationEdited = false;
-
-        // if location deleted
-        for(Location loc : locationRepo.findAll()){
-            if(!locations.contains(loc)){
+        // have to check whether the location has been deleted or not
+        for (Location loc : locationRepo.findAll()) {
+            if (!locations.contains(loc)) {
                 locationEdited = true;
             }
-            if(originalCampaign.getLocations().contains(loc)){
-                locationRepo.delete(loc);
-            }
         }
-
         // if new location added
-        for(Location location : campaign.getLocations()) {
-            if(location.get_id().equals("")){
+        for (Location location : campaign.getLocations()) {
+            if (location.get_id().equals("")) {
                 locationEdited = true;
             }
         }
-
-        if(locationEdited || campaign.getAvgDuration()!= originalCampaign.getAvgDuration()){
-            Campaign newCampaign = addCampaign(campaign);
-            if(newCampaign !=null){
+        // if the location didn't change, just update the db
+        if(!locationEdited){
+            log.info("TaskService :: Update Campaign");
+            return campaignRepo.save(campaign);
+        }
+        // Only delete the locations for the old one if the campaign has been created
+        Campaign newCampaign = addCampaign(campaign);
+        if (newCampaign != null) {
+            // if location deleted
+            for (Location loc : locationRepo.findAll()) {
+                if (originalCampaign.getLocations().contains(loc)) {
+                    locationRepo.delete(loc);
+                }
+            }
+            if (locationEdited || campaign.getAvgDuration() != originalCampaign.getAvgDuration()) {
                 log.info("TaskService :: Update Campaign");
-                for(Task task : taskRepo.findAll()){
-                    if(originalCampaign.getTasks().contains(task.get_id())){
+                for (Task task : taskRepo.findAll()) {
+                    if (originalCampaign.getTasks().contains(task.get_id())) {
                         taskRepo.delete(task);
                     }
                 }
@@ -79,10 +85,8 @@ public class CampaignService{
             log.info("TaskService :: Update Campaign");
             return newCampaign;
         }
-
-        //stopping the timer for the original one and start a new timer for edited campaign
-        log.info("TaskService :: Update Campaign");
-        return campaignRepo.save(campaign);
+        // null
+        return newCampaign;
     }
 
     public Campaign addCampaign(Campaign campaign) {
