@@ -64,6 +64,7 @@ public class CampaignService{
             return campaignRepo.save(campaign);
         }
         // Only delete the locations for the old one if the campaign has been created
+        campaignRepo.delete(originalCampaign);
         Campaign newCampaign = addCampaign(campaign);
         if (newCampaign != null) {
             // if location deleted
@@ -79,12 +80,12 @@ public class CampaignService{
                         taskRepo.delete(task);
                     }
                 }
-                campaignRepo.delete(originalCampaign);
-                campaign.scheduleTimerForDate();
             }
             log.info("TaskService :: Update Campaign");
             return newCampaign;
         }
+        // putting back the deleted originalCampaign
+        newCampaign = addCampaign(originalCampaign);
         // null
         return newCampaign;
     }
