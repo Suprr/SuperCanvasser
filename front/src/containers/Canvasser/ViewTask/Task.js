@@ -4,7 +4,7 @@ import Questionnaire from "./Questionnaire";
 import "./ViewTaskCSS.css";
 import Modal from "./QModal";
 import QuestionnaireList from "../../../components/Campaign/ViewCampaign/QuestionnaireList";
-
+import classes from './CanvasserTask.module.css'
 class Task extends Component {
   state = {
     mounted: false,
@@ -69,7 +69,7 @@ class Task extends Component {
           <div className="row" key={count++}>
             <div className="col-sm">{key}</div>
             <div className="col-sm">
-              <div className="btn-group btn-group-toggle" data-toggle="buttons">
+              <div className={['btn-group', 'btn-group-toggle', classes.Btns].join(' ')} data-toggle="buttons">
                 <label
                   className="btn btn-secondary active"
                   onClick={() => this.setQuestion(key, false)}
@@ -94,7 +94,7 @@ class Task extends Component {
               <label>Rating</label>
             </div>
             <div className="col-sm">
-              <div className="btn-group btn-group-toggle" data-toggle="buttons">
+              <div className={['btn-group', 'btn-group-toggle', classes.Btns].join(' ')} data-toggle="buttons">
                 <label
                   className="btn btn-secondary active"
                   onClick={() => this.setRating(1)}
