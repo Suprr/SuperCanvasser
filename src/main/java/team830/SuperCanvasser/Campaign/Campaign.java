@@ -169,10 +169,6 @@ public class Campaign {
         this.statusTimer.schedule(endTimerTask, endDate);
     }
 
-    public void stopStatusTimer(){
-        this.statusTimer.cancel();
-    }
-
     class StartTimerTask extends TimerTask{
         Campaign campaign;
         StartTimerTask(Campaign campaign){

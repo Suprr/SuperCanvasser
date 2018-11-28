@@ -68,15 +68,11 @@ public class CampaignService{
         }
 
         if(locationEdited){
-            // calculating the tasks again. triggering the Algo
-            //Algorithm algorithm = new Algorithm(campaign.getAvgDuration());
-            //List<String> taskIDs = algorithm.start(campaign);
-            //log.info("CampaignService :: Algorithm was triggered");
-            //campaign.setTasks(taskIDs);
+            campaignRepo.delete(originalCampaign);
+            campaign.scheduleTimerForDate();
+            return campaignRepo.insert(campaign);
         }
         //stopping the timer for the original one and start a new timer for edited campaign
-        originalCampaign.stopStatusTimer();
-        campaign.scheduleTimerForDate();
         return campaignRepo.save(campaign);
     }
 
