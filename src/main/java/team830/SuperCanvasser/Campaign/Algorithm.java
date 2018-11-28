@@ -40,18 +40,8 @@ public class Algorithm {
         CANVASSER_SPEED = canSpeed;
         CANVASSER_WORKDAY = canWorkday;
         TIME_PER_VISIT = visTime;
-//        CANVASSER_WORKDAY = canWorkday;
-//        CANVASSER_SPEED = canSpeed* (0.05/(69 * 3));
-//        TIME_PER_VISIT = visTime;
-//        List<Variable> vars = variableService.findAll();
-//        for (Variable var : vars){
-//            if(var.getType().equals("CANVASSER_SPEED"))
-//            CANVASSER_SPEED = Double.parseDouble(var.getValue());
-//            else CANVASSER_WORKDAY = Integer.parseInt(var.getValue());
-//        }
-//
-//        this.TIME_PER_VISIT = visTime;
 
+        System.out.println(CANVASSER_SPEED + " " + CANVASSER_WORKDAY + " " +TIME_PER_VISIT);
     }
 
     public ArrayList<ArrayList<Location>> start(Campaign campaign){

@@ -32,8 +32,8 @@ class EditCampaign extends Component{
 	state = {
 		campaignTitle : '',
 		managers : [],
-		startDate : moment(),
-		endDate : moment(),
+		startDate : moment().add(1,'days'),
+		endDate : moment().add(1,'days'),
 		talkingPoint : '',
 		questionnaire : [],
 		locations : [],
@@ -80,7 +80,7 @@ class EditCampaign extends Component{
 
 	 handleStartDateChange = (newDate)=>{
 	   
-	   if((!newDate.isSame(moment(),'day'))&&moment().isAfter(newDate)){
+	   if((!newDate.isSame(moment().add(1,'days'),'day'))&&moment().isAfter(newDate)){
 	 		this.showMessageBox('The Start Date Must Be After Today');
 	 	} else{
 	 		//valid date
