@@ -76,6 +76,7 @@ public class CampaignService{
                 campaignRepo.delete(originalCampaign);
                 campaign.scheduleTimerForDate();
             }
+            log.info("TaskService :: Update Campaign");
             return newCampaign;
         }
 
