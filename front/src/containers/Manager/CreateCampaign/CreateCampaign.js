@@ -509,6 +509,7 @@ class CreateCampaign extends Component{
 		  		axios.post('/manager/campaign/create', campaign).then(response=>{
 		  			console.log(['Create Campaign'], "Campaign is Created ", campaign);
 		  			this.props.history.push('/manager/campaign/list');
+		  			this.showMessageBox('Not Enough Canvassers');
 		  		})
 	  		}
 	  }
