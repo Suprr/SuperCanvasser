@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import Calendar from "../../../components/UI/Calendar/Calendar";
+import MessageBox from '../../../components/UI/MessageBox/MessageBox'
+
 import axios from "../../../axios";
+
+import dateFns from "date-fns";
+import moment from 'moment';
 
 class EditAvailability extends Component {
   state = {
@@ -8,20 +13,22 @@ class EditAvailability extends Component {
     mounted: false,
     availData: {
       availabilityDates: []
-    }
-  };
+    },
+    show : false,
+    message : null,
+  }
 
-  onCalendarClick = e => {
+  onCalendarClick = day => {
     let newInavDates = this.state.inAvailableDates;
     let bool = false;
     for (let i = 0; i < newInavDates.length; i++) {
-      if (newInavDates[i].toString() === e.toString()) {
+      if (newInavDates[i].toString() === dateFns.format(day, "YYYY-MM-DD")) {
         bool = true;
         newInavDates.splice(i, 1);
       }
     }
     if (!bool) {
-      newInavDates.push(e);
+      newInavDates.push(dateFns.format(day, "YYYY-MM-DD"));
     }
 
     this.correctInvalidDates();
@@ -30,7 +37,8 @@ class EditAvailability extends Component {
     this.setState({ inAvailableDates: newInavDates, availData: newAvailData });
 
     axios.post("/avail/edit", this.state.availData);
-  };
+  }
+
 
   componentDidMount() {
     const userInfoData = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -41,29 +49,41 @@ class EditAvailability extends Component {
         this.setState({
           availData: response.data,
           inAvailableDates: response.data.availabilityDates
-        });
+        }, this.correctInvalidDates());
       })
       .catch(error => {
         console.log("USER ID Error", userID);
         console.log(error);
       });
-    this.setState({ mounted: true });
   }
 
   correctInvalidDates() {
-    const todayDate = new Date();
     let tempInavailDates = this.state.inAvailableDates;
     for (let i = 0; i < tempInavailDates.length; i++) {
-      if (tempInavailDates[i] < todayDate) {
+      const compareDate = moment(tempInavailDates[i]);
+      if((!compareDate.isSame(moment(),'day'))&&moment().isAfter(compareDate)){
         tempInavailDates.splice(i, 1);
-      }
+        this.showMessageBox('Cannot select previous dates');
+      } 
     }
+    
     this.setState({ inAvailableDates: tempInavailDates });
   }
+
+
+   showMessageBox = (message) => {
+      this.setState({ show: true , message : message});
+    }
+
+    closeMessageBox = () => {
+      this.setState({ show: false });
+    }
 
   render() {
     return (
       <div>
+       <MessageBox show={this.state.show} modalClosed={this.closeMessageBox} message={this.state.message}/>
+
         <h1>Edit Availability</h1>
         {
           <Calendar
