@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import sun.security.krb5.internal.ccache.FileCredentialsCache;
+import team830.SuperCanvasser.Availability.Availability;
+import team830.SuperCanvasser.Availability.AvailabilityRepo;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AvailabilityRepo availabilityRepo;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody User user, HttpServletRequest request) throws IOException {
@@ -76,7 +81,13 @@ public class UserController {
         }
         if(getRoleInSession(request).equals(Role.ADMIN)){
             log.info("UserController :: User has been added");
-            return ResponseEntity.ok(userService.addUser(user));
+            User resUser = userService.addUser(user);
+            if(user.hasRole(Role.CANVASSER)){
+                Availability availability = new Availability(user.get_id());
+                log.info("Canvasser availability object created for " + user.get_id());
+                availabilityRepo.save(availability);
+            }
+            return ResponseEntity.ok(resUser);
         }
         log.info("UserController :: Does not have authority to add the users");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");

@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import team830.SuperCanvasser.Availability.Availability;
+import team830.SuperCanvasser.Availability.AvailabilityRepo;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import java.io.UnsupportedEncodingException;
@@ -20,6 +22,8 @@ public class UserService{
 
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private AvailabilityRepo availabilityRepo;
 
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
@@ -30,9 +34,6 @@ public class UserService{
 
     public User addUser(User user) {
         log.info("UserService :: Add User");
-//        if(user.hasRole(Role.CANVASSER)){
-//
-//        }
         return userRepo.insert(user);
     }
 

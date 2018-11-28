@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import team830.SuperCanvasser.SuperCanvasserApplication;
 
 import javax.validation.constraints.NotNull;
+import java.nio.file.attribute.AttributeView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,11 @@ public class Availability {
     public Availability(List<String> dates, String id) {
         availabilityDates = new ArrayList<String>(dates);
         this.canvasserId = id;
+    }
+
+    public Availability(String id){
+        this.canvasserId = id;
+        availabilityDates = new ArrayList<>();
     }
 
     public String get_id() {
