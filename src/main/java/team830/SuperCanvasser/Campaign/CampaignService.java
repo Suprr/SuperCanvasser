@@ -37,8 +37,7 @@ public class CampaignService{
     private CampaignRepo campaignRepo;
     @Autowired
     private LocationRepo locationRepo;
-//    @Autowired
-//    private Algorithm algorithm;
+
     private static final Logger log = LoggerFactory.getLogger(SuperCanvasserApplication.class);
 
     public Campaign editCampaign(Campaign originalCampaign, Campaign campaign) {

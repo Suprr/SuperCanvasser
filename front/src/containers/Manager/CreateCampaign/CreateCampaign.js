@@ -30,8 +30,8 @@ class CreateCampaign extends Component{
 	state = {
 		campaignTitle : '',
 		managers : [],
-		startDate : moment(),
-		endDate : moment(),
+		startDate : moment().add(1,'days'),
+		endDate : moment().add(1,'days'),
 		talkingPoint : '',
 		questionnaire : [],
 		locations : [],
@@ -76,7 +76,7 @@ class CreateCampaign extends Component{
 
 	 handleStartDateChange = (newDate)=>{
 
-	    if((!newDate.isSame(moment(),'day'))&&moment().isAfter(newDate)){
+	    if((!newDate.isSame(moment().add(1,'days'),'day'))&&moment().isAfter(newDate)){
 	 		this.showMessageBox('The Start Date Must Be After Today');
 	 	} else{
 	 		//valid date
@@ -152,11 +152,21 @@ class CreateCampaign extends Component{
 	  		if(locations==''){
 	  			this.showMessageBox('Fill the location info please.');
 	  		} else{
-	  			const locationArray = locations.split('\n');
+	  			const tempLocationArray = locations.split('\n');
+	  			let locationArray = [];
+	  			
+	  			for(let i=0; i<tempLocationArray.length; i++){
+	  				if(!tempLocationArray[i]==''){
+	  					locationArray.push(tempLocationArray[i]);
+	  				}else {
+	  					console.log(['add Location Handler'], tempLocationArray[i]+'is deleted');
+	  				}
+	  			}
+
 	  			if(locationArray.length==100){
 	  				this.showMessageBox('Number of locations must be smaller than 100');
 	  			} else{
-	  				
+	  					
 	  				let axiosArray=[];
 	  				for(let i=0; i<locationArray.length; i++){
 	  					let location = locationArray[i].split(',');
