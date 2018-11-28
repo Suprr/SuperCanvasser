@@ -124,7 +124,10 @@ public class CampaignService{
             totalCanvasserDates += listAvailableDates(campaign.getStartDate(), campaign.getEndDate(), availabilityService.findByCanvasserId(canvassers.get(i).get_id())).size();
         }
 
-        if (totalCanvasserDates >= tasks.size()) {
+        if(totalCanvasserDates < tasks.size()){
+            return null;
+        }
+        else {
             int canvasserIndex = 0;
             int taskIndex = 0;
             System.out.println("totalCanvasserDates"+ totalCanvasserDates);

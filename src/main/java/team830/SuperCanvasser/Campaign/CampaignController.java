@@ -125,7 +125,7 @@ public class CampaignController {
         } else if (UserController.getRoleInSession(request).equals(Role.MANAGER)) {
             log.info("CampaignController :: Campaign has been created");
             Campaign newCampaign = campaignService.addCampaign(campaign);
-            if(newCampaign.getCanvassers().isEmpty()){
+            if(newCampaign == null){
                 log.info("CampaignController :: Not Enough Canvassers");
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not Enough Canvasssers");
             }
