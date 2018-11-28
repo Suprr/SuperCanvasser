@@ -58,7 +58,6 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
-    // TODO : description
     @RequestMapping(value = "/getById", method = RequestMethod.GET)
     public ResponseEntity getTaskById(@RequestParam String _id) {
         return ResponseEntity.ok(taskService.findBy_Id(_id));
@@ -73,7 +72,6 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");
     }
 
-    // TODO what is this for?
     @RequestMapping(value = "/locations", method = RequestMethod.POST)
     public ResponseEntity getLocationsById(@RequestBody List<String> locations){
         log.info("TaskController :: Grabbing locations by id");

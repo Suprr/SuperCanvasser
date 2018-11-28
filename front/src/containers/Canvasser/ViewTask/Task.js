@@ -61,6 +61,7 @@ class Task extends Component {
         Questionnaire
       </button>
     );
+    console.log(this.state.curTask);
     let child = (
       <div className="container">
         {Object.keys(this.state.curTask.qNa).map(key => (

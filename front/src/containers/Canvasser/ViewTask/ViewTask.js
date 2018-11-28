@@ -17,36 +17,43 @@ class ViewTask extends Component {
   };
 
   componentDidMount() {
-    let addresses = {};
+    let addresses = [];
     const userInfoData = JSON.parse(sessionStorage.getItem("userInfo"));
     const userID = userInfoData._id;
     axios
       .get("/task/activeTask/?_id=" + userID)
       .then(response => {
-        const data = response.data.locations;
-        const length = data.locations.length;
-        for (let i = 0; i < length; i++) {
-          const splitAddress = data[i].address.split(" ");
-          const newAddress = {
-            latitude: data[i].latitude,
-            longitude: data[i].longitude,
-            number: splitAddress[0],
-            street: splitAddress[1],
-            city: splitAddress[2],
-            zipcode: splitAddress[3],
-            qNa: data[i].qNa,
-            id: this.state.locations.length + 1,
-            _id: data[i]._id,
-            anonymous: data[i].anonymous,
-            visited: data[i].visited,
-            rating: 1
-          };
-          addresses.push(newAddress);
-        }
-        this.setState({
-          mounted: true,
-          locations: addresses
+        const resData = response.data.locations;
+        axios.post("/task/locations", resData).then(res => {
+          const data = res.data;
+          const length = data.length;
+          console.log(res, res.data);
+          for (let i = 0; i < length; i++) {
+            const splitAddress = data[i].address.split(" ");
+            const newAddress = {
+              latitude: data[i].latitude,
+              longitude: data[i].longitude,
+              number: splitAddress[0],
+              street: splitAddress[1],
+              city: splitAddress[2],
+              zipcode: splitAddress[3],
+              qNa: data[i].qNa,
+              id: this.state.locations.length + 1,
+              _id: data[i]._id,
+              anonymous: data[i].anonymous,
+              visited: data[i].visited,
+              rating: 1
+            };
+            addresses.push(newAddress);
+          }
+          this.setState({
+            mounted: true,
+            locations: addresses
+          });
         });
+      })
+      .catch(error => {
+        console.log(error);
       })
       .catch(error => {
         console.log("USER ID Error", userID);

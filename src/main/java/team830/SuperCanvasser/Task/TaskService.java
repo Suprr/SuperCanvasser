@@ -59,6 +59,7 @@ public class TaskService {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
         for(Task t : tasks){
+            System.out.println(t.getCanvasserId() + "  " + _id + "    " + t.getDate() + "  gsrg" + (formatter.format(date).toString())+"fkfeml");
             if(t.getCanvasserId().equals(_id) && t.getDate().equals(formatter.format(date).toString()))
                 return t;
         }
