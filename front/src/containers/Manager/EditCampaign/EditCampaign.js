@@ -402,6 +402,8 @@ class EditCampaign extends Component{
 		  		axios.post('/manager/campaign/edit', campaign).then(response=>{
 		  			console.log(['Edit Campaign'], campaign);
 		  			this.props.history.push('/manager/campaign/view');
+		  		}).catch(err=>{
+		  			console.log(err);
 		  			this.showMessageBox('Not Enough Canvassers');
 		  		})
 		  	}

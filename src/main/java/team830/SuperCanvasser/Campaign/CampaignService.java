@@ -59,7 +59,7 @@ public class CampaignService{
             }
         }
         // if the location didn't change, just update the db
-        if(!locationEdited){
+        if(!locationEdited && campaign.getAvgDuration() == originalCampaign.getAvgDuration()){
             log.info("TaskService :: Update Campaign");
             return campaignRepo.save(campaign);
         }

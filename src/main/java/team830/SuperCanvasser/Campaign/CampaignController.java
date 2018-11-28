@@ -99,19 +99,27 @@ public class CampaignController {
 
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, HttpServletRequest request, BindingResult result) {
+    public ResponseEntity editCampaign(@Valid @RequestBody Campaign campaign, HttpServletRequest request) {
         Campaign originalCampaign = campaignService.findBy_Id(campaign.get_id());
 
         if(!campaign.getStatus().equals(Status.INACTIVE)){
             log.info("CampaignController :: Campaign is Active or finished.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campaign Cannot be edited");
         } // checking whether campaign exist in DB
-        else if (originalCampaign == null || result.hasErrors()) {
+        else if (originalCampaign == null) {
             log.info("CampaignController :: Campaign Not Found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to edit");
-        } else if (UserController.getRoleInSession(request).equals(Role.MANAGER)) {
-            log.info("CampaignController :: Campaign has been edited");
-            return ResponseEntity.ok(campaignService.editCampaign(originalCampaign, campaign));
+        }
+        else if (UserController.getRoleInSession(request).equals(Role.MANAGER)) {
+            Campaign newCampaign = campaignService.editCampaign(originalCampaign, campaign);
+            if(newCampaign == null){
+                log.info("CampaignController :: Not Enough Canvassers");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not Enough Canvasssers");
+            }
+            else{
+                log.info("CampaignController :: Campaign has been edited");
+                return ResponseEntity.ok(newCampaign);
+            }
         }
         log.info("CampaignController :: Unauthorized Acceess");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized Acceess");

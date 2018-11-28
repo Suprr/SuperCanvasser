@@ -9,36 +9,44 @@ class Variable extends Component {
   };
 
   handleVarChange = e => {
-    var regex = /^([0-9]*)$/;
-    var value = e.target.value;
-    var matches = value.match(regex);
+    // var regex = /^([0-9]+)(\.([0-9])+)?$/;
+    // var value = e.target.value;
+    //var matches = value.match(regex);
 
-    if(matches){
-      this.setState({ newValue: e.target.value });
-    } else{
-      this.setState({ newValue: this.state.originalValue}, this.props.showMessageBox('The value must be Decmial or Integer'));
-    }
+    //if(matches){
+    this.setState({ newValue: e.target.value });
+    // } else{
+    //   this.setState({ newValue: this.state.originalValue}, this.props.showMessageBox('The value must be Decmial or Integer'));
+    // }
   };
 
   handleEdit = event => {
-    let newVariable = {
-      type: this.props.variable.type,
-      _id: this.props.variable._id,
-      value: this.state.newValue
-    };
+    const regex = /^([0-9]+)(\.([0-9])+)?$/;
+    const matches = this.state.newValue.match(regex);
 
-    console.log(["HANDLE EDIT"], newVariable);
-    if(this.state.newValue==''){
-       this.setState({ newValue: this.state.originalValue}, this.props.showMessageBox('The variable is empty'));
-    }else{
-      axios
-        .post("/sysad/var/edit", newVariable)
-        .then(response => {
-          console.log(["handleEdit"], "Done");
-        })
-        .catch(error => {
-          console.log("Error", error);
-        });
+    if(matches){
+      let newVariable = {
+        type: this.props.variable.type,
+        _id: this.props.variable._id,
+        value: this.state.newValue
+      };
+
+      console.log(["HANDLE EDIT"], newVariable);
+      if(this.state.newValue==''){
+         this.setState({ newValue: this.state.originalValue}, this.props.showMessageBox('The variable is empty'));
+      }else{
+        axios
+          .post("/sysad/var/edit", newVariable)
+          .then(response => {
+            console.log(["handleEdit"], "Done");
+            this.props.showMessageBox('The value is Edited.');
+          })
+          .catch(error => {
+            console.log("Error", error);
+          });
+      }
+    } else{
+      this.setState({ newValue: this.state.originalValue}, this.props.showMessageBox('The value must be Decmial or Integer'));
     }
     // axios.put('/global-variable/'+this.props.variable._id+'.json/',newVariable).then( response => {
 
