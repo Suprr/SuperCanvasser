@@ -382,13 +382,18 @@ class CreateCampaign extends Component{
 	  openSearchModal = () =>{
 
       	  console.log(['ManagerList'], this.state.newManager);
+      	  if(this.state.newManager==''){
+      	  	this.showMessageBox('please put some words');
+      	  }else{
            axios.get('/manager/campaign/create/manlist?regex='+this.state.newManager).then(response=>{
 	          	  const managerList = response.data;
 
 		          this.setState({searchedManagerList: managerList, managerList : true});
 	        }).catch(error=>{
 	          console.log(error)
+	          this.showMessageBox('No manager is on the database');
 	        });	
+	      }
 	        
 	  }
 
