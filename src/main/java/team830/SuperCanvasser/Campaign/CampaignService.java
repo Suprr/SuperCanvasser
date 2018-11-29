@@ -59,11 +59,6 @@ public class CampaignService{
             }
         }
 
-        if(!campaign.getStartDate().equals(originalCampaign.getStartDate())
-                || !campaign.getEndDate().equals(originalCampaign.getEndDate())){
-            locationEdited = true;
-        }
-
         // if the location, avg, date didn't change, just update the db
         if(!locationEdited
                 && campaign.getAvgDuration() == originalCampaign.getAvgDuration()
