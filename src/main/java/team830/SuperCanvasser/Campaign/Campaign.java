@@ -49,7 +49,7 @@ public class Campaign {
 
     public Campaign(List<String> managersList, String start, String end,
                     List<String> canvassersList, List<Location> locationsList,
-                    List<String> questionsList, String campaignName, int avgVisitDuration, String notes) {
+                    List<String> questionsList, String campaignName, double avgVisitDuration, String notes) {
 
         this.managers = new ArrayList<String>(managersList);
         this.startDate = start;

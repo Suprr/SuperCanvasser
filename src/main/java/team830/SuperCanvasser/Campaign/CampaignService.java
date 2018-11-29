@@ -58,11 +58,22 @@ public class CampaignService{
                 locationEdited = true;
             }
         }
-        // if the location didn't change, just update the db
-        if(!locationEdited && campaign.getAvgDuration() == originalCampaign.getAvgDuration()){
+
+        // if the location, avg, date didn't change, just update the db
+        if(!locationEdited
+                && campaign.getAvgDuration() == originalCampaign.getAvgDuration()
+                && campaign.getStartDate().equals(originalCampaign.getStartDate())
+                && campaign.getEndDate().equals(originalCampaign.getEndDate()) ){
             log.info("TaskService :: Update Campaign");
             return campaignRepo.save(campaign);
         }
+        // saving original campaign in case it is failed to edit
+        Campaign tempCampaign =
+                new Campaign(originalCampaign.getManagers(), originalCampaign.getStartDate(), originalCampaign.getEndDate(),
+                        originalCampaign.getCanvassers(), originalCampaign.getLocations(), originalCampaign.getQuestions(),
+                        originalCampaign.getName(), originalCampaign.getAvgDuration(), originalCampaign.getTalkingPoints());
+
+        tempCampaign.set_id(originalCampaign.get_id());
         // Only delete the locations for the old one if the campaign has been created
         campaignRepo.delete(originalCampaign);
         Campaign newCampaign = addCampaign(campaign);
@@ -85,7 +96,7 @@ public class CampaignService{
             return newCampaign;
         }
         // putting back the deleted originalCampaign
-        addCampaign(originalCampaign);
+        addCampaign(tempCampaign);
         // null
         return newCampaign;
     }
@@ -166,7 +177,8 @@ public class CampaignService{
             }
         }
         log.info("CampaignService :: Task Size :  "+tasks.size()+", "+tasks.get(0).get_id());
-        // adding location to db
+
+        // adding locations and tasks to db
         for(Location location: locations){
             locationRepo.insert(location);
         }
