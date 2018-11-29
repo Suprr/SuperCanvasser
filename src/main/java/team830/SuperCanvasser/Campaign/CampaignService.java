@@ -75,15 +75,15 @@ public class CampaignService{
 
         tempCampaign.set_id(originalCampaign.get_id());
         // Only delete the locations for the old one if the campaign has been created
+        for (Location loc : locationRepo.findAll()) {
+            if (originalCampaign.getLocations().contains(loc)) {
+                locationRepo.delete(loc);
+            }
+        }
         campaignRepo.delete(originalCampaign);
+        // if location deleted
         Campaign newCampaign = addCampaign(campaign);
         if (newCampaign != null) {
-            // if location deleted
-            for (Location loc : locationRepo.findAll()) {
-                if (originalCampaign.getLocations().contains(loc)) {
-                    locationRepo.delete(loc);
-                }
-            }
             if (locationEdited || campaign.getAvgDuration() != originalCampaign.getAvgDuration()) {
                 log.info("TaskService :: Update Campaign");
                 for (Task task : taskRepo.findAll()) {
