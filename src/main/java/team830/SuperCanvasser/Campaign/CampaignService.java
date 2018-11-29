@@ -67,6 +67,13 @@ public class CampaignService{
             log.info("TaskService :: Update Campaign");
             return campaignRepo.save(campaign);
         }
+        // saving original campaign in case it is failed to edit
+        Campaign tempCampaign =
+                new Campaign(originalCampaign.getManagers(), originalCampaign.getStartDate(), originalCampaign.getEndDate(),
+                        originalCampaign.getCanvassers(), originalCampaign.getLocations(), originalCampaign.getQuestions(),
+                        originalCampaign.getName(), originalCampaign.getAvgDuration(), originalCampaign.getTalkingPoints());
+
+        tempCampaign.set_id(originalCampaign.get_id());
         // Only delete the locations for the old one if the campaign has been created
         campaignRepo.delete(originalCampaign);
         Campaign newCampaign = addCampaign(campaign);
@@ -89,7 +96,7 @@ public class CampaignService{
             return newCampaign;
         }
         // putting back the deleted originalCampaign
-        addCampaign(originalCampaign);
+        addCampaign(tempCampaign);
         // null
         return newCampaign;
     }
