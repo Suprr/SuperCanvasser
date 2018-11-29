@@ -58,6 +58,12 @@ public class CampaignService{
                 locationEdited = true;
             }
         }
+
+        if(campaign.getStartDate().equals(originalCampaign.getStartDate())
+                || campaign.getEndDate().equals(originalCampaign.getEndDate())){
+            locationEdited = true;
+        }
+
         // if the location didn't change, just update the db
         if(!locationEdited && campaign.getAvgDuration() == originalCampaign.getAvgDuration()){
             log.info("TaskService :: Update Campaign");
@@ -166,7 +172,8 @@ public class CampaignService{
             }
         }
         log.info("CampaignService :: Task Size :  "+tasks.size()+", "+tasks.get(0).get_id());
-        // adding location to db
+
+        // adding locations and tasks to db
         for(Location location: locations){
             locationRepo.insert(location);
         }
