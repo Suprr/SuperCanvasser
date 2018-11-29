@@ -59,13 +59,16 @@ public class CampaignService{
             }
         }
 
-        if(campaign.getStartDate().equals(originalCampaign.getStartDate())
-                || campaign.getEndDate().equals(originalCampaign.getEndDate())){
+        if(!campaign.getStartDate().equals(originalCampaign.getStartDate())
+                || !campaign.getEndDate().equals(originalCampaign.getEndDate())){
             locationEdited = true;
         }
 
-        // if the location didn't change, just update the db
-        if(!locationEdited && campaign.getAvgDuration() == originalCampaign.getAvgDuration()){
+        // if the location, avg, date didn't change, just update the db
+        if(!locationEdited
+                && campaign.getAvgDuration() == originalCampaign.getAvgDuration()
+                && campaign.getStartDate().equals(originalCampaign.getStartDate())
+                && campaign.getEndDate().equals(originalCampaign.getEndDate()) ){
             log.info("TaskService :: Update Campaign");
             return campaignRepo.save(campaign);
         }
