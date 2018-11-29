@@ -1,0 +1,1 @@
+cat *.js *.html *.ejs **/*.js **/*.html **/*.ejs *.jar *.java | md5sum
